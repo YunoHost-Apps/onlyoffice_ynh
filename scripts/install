@@ -82,24 +82,59 @@ yunohost firewall allow --no-upnp TCP $port 2>&1
 ynh_app_setting_set $app port $port
 
 #===============================================
-# ADD COLLABORA REPOSITORY
+# ADD NODEJS REPOSITORY
+#===============================================
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+
+#==============================================
+# INSTALL POSTGRES
+#==============================================
+
+ynh_package_update
+ynh_install_app_dependencies postgresql
+
+#==============================================
+# CREATE DB
+#==============================================
+
+sudo -i -u postgres psql -c "CREATE DATABASE onlyoffice;"
+sudo -i -u postgres psql -c "CREATE USER onlyoffice WITH password 'onlyoffice';"
+sudo -i -u postgres psql -c "GRANT ALL privileges ON DATABASE onlyoffice TO onlyoffice;"
+
+#==============================================
+# INSTALL REDIS & RABBITMQ
+#==============================================
+
+ynh_install_app_dependencies redis-server rabbitmq-server
+
+#==============================================
+# INSTALL NPM
+#==============================================
+
+ynh_install_app_dependencies npm nginx-extras
+
+#==============================================
+# DEFINE PORT
+#==============================================
+
+echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set-selections
+
+#===============================================
+# ADD ONLYOFFCE REPOSITORY
 #===============================================
 
 ynh_install_app_dependencies apt-transport-https
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0C54D189F4BA284D
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 
-if [ "$(lsb_release --codename --short)" = "jessie" ]; then
-echo 'deb https://collaboraoffice.com/repos/CollaboraOnline/CODE-debian8 ./' | sudo tee -a /etc/apt/sources.list.d/collabora.list
-else
-
-echo 'deb https://collaboraoffice.com/repos/CollaboraOnline/CODE-debian9 ./' | sudo tee -a /etc/apt/sources.list.d/collabora.list
-fi
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | tee /etc/apt/sources.list.d/onlyoffice.list
 
 #==============================================
-# INSTALL COLLABORA
+# INSTALL ONLYOFFICE
 #==============================================
+
 ynh_package_update
-ynh_install_app_dependencies loolwsd code-brand
+ynh_install_app_dependencies onlyoffice-documentserver
 
 #=================================================
 # NGINX CONFIGURATION
