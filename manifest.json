@@ -45,28 +45,7 @@
                 "default": "/"
 },
 
-                                   {
-                "name": "password",
-                "type": "string",
-                "ask": {
-                    "en": "Choose a password for Collabora admin",
-                    "fr": "Choisissez un mot de passe pour l'administration de Collabora"
-                },
-                "example": "password",
-                "default": ""
-         
-            },
-                                   {
-                "name": "nextclouddomain",
-                "type": "string",
-                "ask": {
-                    "en": "The domain of your Nextcloud instance",
-                    "fr": "Le domain de votre instance Nextcloud"
-                },
-                "example": "example.com",
-                "default": ""
-         
-                                   }
+                                }
          
         
         ]
