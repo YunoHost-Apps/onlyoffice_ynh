@@ -23,8 +23,7 @@
         "mysql"
     ],
     "arguments": {
-        "install" : [
-            {
+        "install": [{
                 "name": "domain",
                 "type": "domain",
                 "ask": {
@@ -33,8 +32,8 @@
                 },
                 "example": "example.com"
             },
-           
-                       {
+
+            {
                 "name": "path",
                 "type": "path",
                 "ask": {
@@ -43,8 +42,8 @@
                 },
                 "example": "/",
                 "default": "/"
-}
-       
+            }
+
         ]
     }
 }
