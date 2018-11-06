@@ -14,8 +14,7 @@
 
          $ sudo yunohost app install https://github.com/liberodark/onlyoffice_ynh
  1. Admin username is : **root**.
- 1. **Admin password** will be sent to the email address given at the time of the installation.
-
+ 
 ### Upgrade this package:
 
         $ sudo yunohost app upgrade --verbose example -u https://github.com/liberodark/onlyoffice_ynh
