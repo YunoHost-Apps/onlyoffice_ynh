@@ -116,6 +116,7 @@ echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set
 #==============================================
 
 ynh_package_install_from_equivs ../conf/fakenode-deps.control
+ynh_package_install_from_equivs ../conf/fakepostgres-deps.control
 wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
 dpkg --install onlyoffice-documentserver_amd64.deb
 
