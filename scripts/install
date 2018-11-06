@@ -27,8 +27,6 @@ ynh_abort_if_errors
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
 #port=$YNH_APP_ARG_PORT
-#password=$YNH_APP_ARG_PASSWORD
-#nextcloud_domain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
 
 ### If it's a multi-instance app, meaning it can be installed several times independently
 ### The id of the app as stated in the manifest is available as $YNH_APP_ID
@@ -65,8 +63,6 @@ ynh_webpath_register $app $domain /
 
 ynh_app_setting_set $app domain $domain
 #ynh_app_setting_set $app port $port
-#ynh_app_setting_set $app password $password
-#ynh_app_setting_set $app nextcloud_domain $nextcloud_domain
 
 #=================================================
 # FIND AND OPEN A PORT
@@ -88,8 +84,9 @@ ynh_app_setting_set $app port $port
 #==============================================
 
 ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https
-#ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
 #sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-https
+
+#ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
 
 #=================================================
 # INSTALL NODEJS
@@ -124,7 +121,9 @@ echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set
 # INSTALL ONLYOFFICE
 #==============================================
 
-sudo apt-get install -y onlyoffice-documentserver
+ynh_package_install onlyoffice-documentserver
+
+#sudo apt-get install -y onlyoffice-documentserver
 
 #apt install onlyoffice-documentserver
 #wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
