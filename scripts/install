@@ -85,7 +85,7 @@ ynh_app_setting_set $app port $port
 # INSTALL POSTGRES
 #==============================================
 
-ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https
+ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
 
 #=================================================
 # INSTALL NODEJS
