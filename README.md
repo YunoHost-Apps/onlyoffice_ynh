@@ -1,4 +1,5 @@
 # OnlyOffice app for YunoHost
+OnlyOffice Document Server
 
 - [Yunohost project](https://yunohost.org)
 - [OnlyOffice website](https://www.onlyoffice.com)
