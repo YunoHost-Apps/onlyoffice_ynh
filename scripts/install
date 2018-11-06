@@ -106,6 +106,7 @@ ynh_install_nodejs 8
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | tee /etc/apt/sources.list.d/onlyoffice.list
+ynh_package_update
 
 #==============================================
 # CREATE DB
@@ -125,7 +126,6 @@ echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set
 # INSTALL ONLYOFFICE
 #==============================================
 
-ynh_package_update
 ynh_install_app_dependencies onlyoffice-documentserver
 
 #=================================================
