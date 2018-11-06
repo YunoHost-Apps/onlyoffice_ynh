@@ -119,10 +119,8 @@ echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set
 # INSTALL ONLYOFFICE
 #==============================================
 
-
 wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
 dpkg --install onlyoffice-documentserver_amd64.deb
-
 
 #=================================================
 # NGINX CONFIGURATION
