@@ -81,18 +81,25 @@ port=$(ynh_find_port 9980)
 yunohost firewall allow --no-upnp TCP $port 2>&1
 ynh_app_setting_set $app port $port
 
-#===============================================
-# ADD NODEJS REPOSITORY
-#===============================================
-
-curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
-
 #==============================================
 # INSTALL POSTGRES
 #==============================================
 
+ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https
+
+#=================================================
+# INSTALL NODEJS
+#=================================================
+# Use Helper instead of package from the repo
+ynh_install_nodejs 8
+
+#===============================================
+# ADD ONLYOFFCE REPOSITORY
+#===============================================
+
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | tee /etc/apt/sources.list.d/onlyoffice.list
 ynh_package_update
-ynh_install_app_dependencies postgresql
 
 #==============================================
 # CREATE DB
@@ -103,37 +110,15 @@ sudo -i -u postgres psql -c "CREATE USER onlyoffice WITH password 'onlyoffice';"
 sudo -i -u postgres psql -c "GRANT ALL privileges ON DATABASE onlyoffice TO onlyoffice;"
 
 #==============================================
-# INSTALL REDIS & RABBITMQ
-#==============================================
-
-ynh_install_app_dependencies redis-server rabbitmq-server
-
-#==============================================
-# INSTALL NPM
-#==============================================
-
-ynh_install_app_dependencies npm nginx-extras
-
-#==============================================
 # DEFINE PORT
 #==============================================
 
 echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set-selections
 
-#===============================================
-# ADD ONLYOFFCE REPOSITORY
-#===============================================
-
-ynh_install_app_dependencies apt-transport-https
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-
-echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | tee /etc/apt/sources.list.d/onlyoffice.list
-
 #==============================================
 # INSTALL ONLYOFFICE
 #==============================================
 
-ynh_package_update
 ynh_install_app_dependencies onlyoffice-documentserver
 
 #=================================================
