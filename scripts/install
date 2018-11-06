@@ -153,10 +153,11 @@ ynh_system_user_create $app
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
-cp -a ../conf/loolwsd.xml /etc/loolwsd
-ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "/etc/loolwsd/loolwsd.xml"
-ynh_replace_string "__PASSWORD__" "$password" "/etc/loolwsd/loolwsd.xml"
-systemctl start loolwsd
+systemctl stop nginx
+cp -a ../conf/onlyoffice-documentserver.conf /etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf
+#ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "/etc/loolwsd/loolwsd.xml"
+#ynh_replace_string "__PASSWORD__" "$password" "/etc/loolwsd/loolwsd.xml"
+#systemctl start loolwsd
 
 
 #=================================================
@@ -168,7 +169,7 @@ systemctl start loolwsd
 ### you can make a backup of this file before modifying it again if the admin had modified it.
 
 # Calculate and store the config file checksum into the app settings
-ynh_store_file_checksum "/etc/loolwsd/loolwsd.xml"
+ynh_store_file_checksum "/etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf"
 
 
 #=================================================
@@ -182,7 +183,7 @@ ynh_store_file_checksum "/etc/loolwsd/loolwsd.xml"
 ### that really need such authorization.
 
 # Set permissions to app files
-chown -R root: /etc/loolwsd
+#chown -R root: /etc/loolwsd
 
 
 #=================================================
@@ -193,6 +194,6 @@ chown -R root: /etc/loolwsd
 ynh_app_setting_set $app unprotected_uris "/"
 
 # Reload services
-systemctl restart loolwsd
-systemctl reload nginx
+#systemctl restart loolwsd
+systemctl start nginx
 
