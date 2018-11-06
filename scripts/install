@@ -85,9 +85,9 @@ ynh_app_setting_set $app port $port
 # INSTALL POSTGRES
 #==============================================
 
-ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https
-
-#ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
+ynh_package_update
+#ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https
+ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
 
 #=================================================
 # INSTALL NODEJS
@@ -99,9 +99,9 @@ ynh_install_nodejs 8
 # ADD ONLYOFFCE REPOSITORY
 #===============================================
 
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-ynh_package_update
+#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+#echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+#ynh_package_update
 
 #==============================================
 # CREATE DB
@@ -121,9 +121,9 @@ echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set
 # INSTALL ONLYOFFICE
 #==============================================
 
-apt install onlyoffice-documentserver
-#wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
-#dpkg --install onlyoffice-documentserver_amd64.deb
+#apt install onlyoffice-documentserver
+wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
+dpkg --install onlyoffice-documentserver_amd64.deb
 
 #=================================================
 # NGINX CONFIGURATION
