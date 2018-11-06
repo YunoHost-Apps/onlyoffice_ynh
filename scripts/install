@@ -26,6 +26,7 @@ ynh_abort_if_errors
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
+#port=$YNH_APP_ARG_PORT
 #password=$YNH_APP_ARG_PASSWORD
 #nextcloud_domain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
 
@@ -63,6 +64,7 @@ ynh_webpath_register $app $domain /
 #=================================================
 
 ynh_app_setting_set $app domain $domain
+#ynh_app_setting_set $app port $port
 #ynh_app_setting_set $app password $password
 #ynh_app_setting_set $app nextcloud_domain $nextcloud_domain
 
