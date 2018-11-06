@@ -81,6 +81,14 @@ port=$(ynh_find_port 9980)
 yunohost firewall allow --no-upnp TCP $port 2>&1
 ynh_app_setting_set $app port $port
 
+#==============================================
+# INSTALL POSTGRES
+#==============================================
+
+ynh_package_update
+ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https
+#ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
+
 #=================================================
 # INSTALL NODEJS
 #=================================================
@@ -95,18 +103,6 @@ curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 ynh_package_update
-
-#==============================================
-# INSTALL POSTGRES
-#==============================================
-
-#ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https
-#ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
-ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https gconf-service gconf2-common gnome-icon-theme gtk-update-icon-cache icu-devtools libasound2 libasound2-data libatk1.0-0 libatk1.0-data libboost-regex-dev libboost-regex1.62-dev libboost-regex1.62.0
-libboost1.62-dev libdrm-amdgpu1 libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libfontenc1 libgail-common libgail18 libgconf-2-4 libgconf2-4 libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libglu1-mesa
-libgtk2.0-0 libgtk2.0-bin libgtk2.0-common libgtkglext1 libice6 libicu-dev libllvm3.9 libpangox-1.0-0 libpciaccess0 librsvg2-2 librsvg2-common libsm6 libtxc-dxtn-s2tc libx11-xcb1 libxaw7 libxcb-dri2-0
-libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-sync1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxfont1 libxfont2 libxi6 libxinerama1 libxkbfile1 libxmu6 libxrandr2 libxshmfence1 libxt6 libxtst6
-libxxf86vm1 nodejs postgresql-client pwgen python-meld3 supervisor x11-xkb-utils xfonts-base xfonts-encodings xfonts-utils xserver-common xvfb
 
 #==============================================
 # CREATE DB
