@@ -94,9 +94,8 @@ sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-ht
 # INSTALL NODEJS
 #=================================================
 # Use Helper instead of package from the repo
-
-ynh_install_nodejs 8
-#curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+#ynh_install_nodejs 8
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 
 #===============================================
 # ADD ONLYOFFCE REPOSITORY
