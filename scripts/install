@@ -63,8 +63,8 @@ ynh_webpath_register $app $domain /
 #=================================================
 
 ynh_app_setting_set $app domain $domain
-ynh_app_setting_set $app password $password
-ynh_app_setting_set $app nextcloud_domain $nextcloud_domain
+#ynh_app_setting_set $app password $password
+#ynh_app_setting_set $app nextcloud_domain $nextcloud_domain
 
 #=================================================
 # FIND AND OPEN A PORT
