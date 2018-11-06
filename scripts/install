@@ -26,8 +26,8 @@ ynh_abort_if_errors
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
-password=$YNH_APP_ARG_PASSWORD
-nextcloud_domain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
+#password=$YNH_APP_ARG_PASSWORD
+#nextcloud_domain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
 
 ### If it's a multi-instance app, meaning it can be installed several times independently
 ### The id of the app as stated in the manifest is available as $YNH_APP_ID
