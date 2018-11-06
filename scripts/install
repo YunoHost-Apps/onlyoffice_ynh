@@ -88,7 +88,7 @@ ynh_app_setting_set $app port $port
 ynh_package_update
 #ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https
 #ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
-sudo apt-get install postgresql redis-server rabbitmq-server apt-transport-https
+sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-https
 
 #=================================================
 # INSTALL NODEJS
@@ -123,9 +123,7 @@ echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set
 # INSTALL ONLYOFFICE
 #==============================================
 
-
-
-sudo apt-get install onlyoffice-documentserver
+sudo apt-get install -y onlyoffice-documentserver
 
 #apt install onlyoffice-documentserver
 #wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
@@ -151,8 +149,6 @@ ynh_system_user_create $app
 #cp -a ../conf/onlyoffice-documentserver.conf /etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf
 #ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "/etc/loolwsd/loolwsd.xml"
 #ynh_replace_string "__PASSWORD__" "$password" "/etc/loolwsd/loolwsd.xml"
-#systemctl start loolwsd
-
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
@@ -188,6 +184,5 @@ ynh_store_file_checksum "/etc/onlyoffice/documentserver/nginx/onlyoffice-documen
 ynh_app_setting_set $app unprotected_uris "/"
 
 # Reload services
-#systemctl restart loolwsd
 systemctl restart nginx
 
