@@ -139,7 +139,7 @@ ynh_system_user_create $app
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
-cp -a ../conf/onlyoffice-documentserver.conf /etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf
+#cp -a ../conf/onlyoffice-documentserver.conf /etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf
 #ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "/etc/loolwsd/loolwsd.xml"
 #ynh_replace_string "__PASSWORD__" "$password" "/etc/loolwsd/loolwsd.xml"
 #systemctl start loolwsd
