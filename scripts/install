@@ -87,21 +87,23 @@ ynh_app_setting_set $app port $port
 
 ynh_package_update
 #ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https
-ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
+#ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https supervisor xvfb pwgen libxtst6 libgtkglext1 libgconf2-4 libboost-regex-dev libasound2
+sudo apt-get install postgresql redis-server rabbitmq-server apt-transport-https
 
 #=================================================
 # INSTALL NODEJS
 #=================================================
 # Use Helper instead of package from the repo
-ynh_install_nodejs 8
+#ynh_install_nodejs 8
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 
 #===============================================
 # ADD ONLYOFFCE REPOSITORY
 #===============================================
 
-#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-#echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-#ynh_package_update
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+ynh_package_update
 
 #==============================================
 # CREATE DB
@@ -121,9 +123,13 @@ echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set
 # INSTALL ONLYOFFICE
 #==============================================
 
+
+
+sudo apt-get install onlyoffice-documentserver
+
 #apt install onlyoffice-documentserver
-wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
-dpkg --install onlyoffice-documentserver_amd64.deb
+#wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
+#dpkg --install onlyoffice-documentserver_amd64.deb
 
 #=================================================
 # NGINX CONFIGURATION
