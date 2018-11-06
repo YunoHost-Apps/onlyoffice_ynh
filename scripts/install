@@ -85,13 +85,12 @@ ynh_app_setting_set $app port $port
 # INSTALL POSTGRES
 #==============================================
 
-ynh_package_update
 ynh_install_app_dependencies postgresql redis-server rabbitmq-server nginx-extras apt-transport-https
 
 #=================================================
 # INSTALL NODEJS
 #=================================================
-# Use Helper instead of package from tthe repo
+# Use Helper instead of package from the repo
 ynh_install_nodejs 8
 
 #===============================================
