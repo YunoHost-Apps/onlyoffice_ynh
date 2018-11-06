@@ -95,17 +95,7 @@ ynh_install_app_dependencies postgresql redis-server apt-transport-https libcurl
 #=================================================
 # Use Helper instead of package from the repo
 
-#Next for new test 5
 ynh_install_nodejs 8.12.0
-# curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
-
-#===============================================
-# ADD ONLYOFFCE REPOSITORY
-#===============================================
-
-# apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-# echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-# ynh_package_update
 
 #==============================================
 # CREATE DB
@@ -125,15 +115,9 @@ echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set
 # INSTALL ONLYOFFICE
 #==============================================
 
-# ynh_package_install onlyoffice-documentserver
-
-#sudo apt-get install -y onlyoffice-documentserver
-
-#apt install onlyoffice-documentserver
 ynh_package_install_from_equivs ../conf/fakenode-deps.control
 wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
 dpkg --install onlyoffice-documentserver_amd64.deb
-# ynh_apt remove nodejs
 
 #=================================================
 # NGINX CONFIGURATION
