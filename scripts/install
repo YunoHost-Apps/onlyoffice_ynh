@@ -109,7 +109,7 @@ sudo -i -u postgres psql -c "GRANT ALL privileges ON DATABASE onlyoffice TO only
 # DEFINE PORT
 #==============================================
 
-echo onlyoffice-documentserver onlyoffice/ds-port select 9980 | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
 
 #==============================================
 # INSTALL ONLYOFFICE
