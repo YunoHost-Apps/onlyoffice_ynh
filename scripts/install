@@ -83,7 +83,7 @@ ynh_app_setting_set $app port $port
 # INSTALL POSTGRES
 #==============================================
 #Next for new test 5
-ynh_install_app_dependencies postgresql redis-server apt-transport-https libboost1.62-dev libdrm-amdgpu1 libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libfontenc1 libgail-common libgail18 libgconf-2-4 libgconf2-4 libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libglu1-mesa libgtk2.0-0 libgtk2.0-bin libgtk2.0-common libgtkglext1 libice6 libicu-dev libllvm3.9 libpangox-1.0-0 libpciaccess0 librsvg2-2 librsvg2-common libsm6 libtxc-dxtn-s2tc libx11-xcb1 libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-sync1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxfont1 libxfont2 libxi6 libxinerama1 libxkbfile1 libxmu6 libxrandr2 libxshmfence1 libxt6 libxtst6 libxxf86vm1 nodejs postgresql-client pwgen python-meld3 supervisor x11-xkb-utils xfonts-base xfonts-encodings xfonts-utils xserver-common xvfb
+ynh_install_app_dependencies postgresql redis-server apt-transport-https libboost1.62-dev libdrm-amdgpu1 libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libfontenc1 libgail-common libgail18 libgconf-2-4 libgconf2-4 libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libglu1-mesa libgtk2.0-0 libgtk2.0-bin libgtk2.0-common libgtkglext1 libice6 libicu-dev libllvm3.9 libpangox-1.0-0 libpciaccess0 librsvg2-2 librsvg2-common libsm6 libtxc-dxtn-s2tc libx11-xcb1 libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-sync1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxfont1 libxfont2 libxi6 libxinerama1 libxkbfile1 libxmu6 libxrandr2 libxshmfence1 libxt6 libxtst6 libxxf86vm1 postgresql-client pwgen python-meld3 supervisor x11-xkb-utils xfonts-base xfonts-encodings xfonts-utils xserver-common xvfb
 
 
 #Work in commit : add yes
@@ -98,7 +98,7 @@ ynh_install_app_dependencies postgresql redis-server apt-transport-https libboos
 #=================================================
 # Use Helper instead of package from the repo
 
-#ynh_install_nodejs 8.12.0
+ynh_install_nodejs 8.12.0
 
 #Work in commit : add yes
 #curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
@@ -130,7 +130,7 @@ echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-
 # INSTALL ONLYOFFICE
 #==============================================
 
-#ynh_package_install_from_equivs ../conf/fakenode-deps.control
+ynh_package_install_from_equivs ../conf/fakenode-deps.control
 ynh_package_install_from_equivs ../conf/fakepostgres-deps.control
 wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
 dpkg --install onlyoffice-documentserver_amd64.deb
