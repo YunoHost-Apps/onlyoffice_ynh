@@ -82,12 +82,14 @@ ynh_app_setting_set $app port $port
 #==============================================
 # INSTALL POSTGRES
 #==============================================
-
-# ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https
-#sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-https
-
 #Next for new test 5
 ynh_install_app_dependencies postgresql redis-server apt-transport-https libcurl3 libxml2 supervisor fonts-dejavu fonts-liberation ttf-mscorefonts-installer fonts-crosextra-carlito fonts-takao-gothic fonts-opensymbol libasound2 libboost-regex-dev libcairo2 libgconf2-4 libgtkglext1 libxtst6 postgresql-client pwgen xvfb
+
+#Work in commit : add yes
+#sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-https
+
+#Old
+# ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https
 # ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https libcurl3 libxml2 supervisor fonts-dejavu fonts-liberation ttf-mscorefonts-installer fonts-crosextra-carlito fonts-takao-gothic fonts-opensymbol
 
 #=================================================
@@ -96,6 +98,18 @@ ynh_install_app_dependencies postgresql redis-server apt-transport-https libcurl
 # Use Helper instead of package from the repo
 
 ynh_install_nodejs 8.12.0
+
+#Work in commit : add yes
+#curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+
+#===============================================
+# ADD ONLYOFFCE REPOSITORY
+#===============================================
+
+#Work in commit : add yes
+#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+#echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+#ynh_package_update
 
 #==============================================
 # CREATE DB
@@ -119,6 +133,9 @@ ynh_package_install_from_equivs ../conf/fakenode-deps.control
 ynh_package_install_from_equivs ../conf/fakepostgres-deps.control
 wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
 dpkg --install onlyoffice-documentserver_amd64.deb
+
+#Work in commit : add yes
+#sudo apt-get install -y onlyoffice-documentserver
 
 #=================================================
 # NGINX CONFIGURATION
