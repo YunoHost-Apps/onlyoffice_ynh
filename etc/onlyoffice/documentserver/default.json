@@ -1,0 +1,241 @@
+{
+	"statsd": {
+		"useMetrics": false,
+		"host": "localhost",
+		"port": "8125",
+		"prefix": "ds."
+	},
+	"log": {
+		"filePath": "",
+		"options": { "reloadSecs": 60 }
+	},
+	"queue": {
+		"visibilityTimeout": 300,
+		"retentionPeriod": 900
+	},
+	"storage": {
+		"name": "storage-fs",
+		"fs": {
+			"folderPath": "",
+			"urlExpires": 900,
+			"secretString": "onlyoffice"
+		},
+		"region": "",
+		"endpoint": "http://localhost/s3",
+		"bucketName": "cache",
+		"storageFolderName": "files",
+		"urlExpires": 604800,
+		"accessKeyId": "AKID",
+		"secretAccessKey": "SECRET",
+		"useRequestToGetUrl": false,
+		"useSignedUrl": false,
+		"externalHost": ""
+	},
+	"rabbitmq": {
+		"url": "amqp://guest:guest@localhost:5672",
+		"socketOptions": {},
+		"exchangepubsub": "ds.pubsub",
+		"queueconverttask": "ds.converttask",
+		"queueconvertresponse": "ds.convertresponse",
+		"exchangeconvertdead": "ds.exchangeconvertdead",
+		"queueconvertdead": "ds.convertdead"
+	},
+	"dnscache": {
+		"enable" : true,
+		"ttl" : 300,
+		"cachesize" : 1000
+	},
+	"services": {
+		"CoAuthoring": {
+			"server": {
+				"port": 8000,
+				"workerpercpu": 1,
+				"mode": "development",
+				"limits_tempfile_upload": 104857600,
+				"limits_image_size": 26214400,
+				"limits_image_download_timeout": 120,
+				"callbackRequestTimeout": 120,
+				"healthcheckfilepath": "../public/healthcheck.docx",
+				"savetimeoutdelay": 5000,
+				"edit_singleton": false,
+				"forgottenfiles": "forgotten",
+				"forgottenfilesname": "output",
+				"maxRequestChanges": 20000,
+				"openProtectedFile": true
+			},
+			"requestDefaults": {
+				"headers": {
+					"userAgent": "Node.js/6.13"
+				},
+				"rejectUnauthorized": true
+			},
+			"autoAssembly": {
+				"enable": false,
+				"interval": "5m",
+				"step": "1m"
+			},
+			"utils": {
+				"utils_common_fontdir": "null",
+				"utils_fonts_search_patterns": "*.ttf;*.ttc;*.otf",
+				"resource_expires": 31536000,
+				"limits_image_types_upload": "jpg;png;gif;bmp"
+			},
+			"sql": {
+				"type": "postgres",
+				"tableChanges": "doc_changes",
+				"tableResult": "task_result",
+				"dbHost": "localhost",
+				"dbPort": 5432,
+				"dbName": "onlyoffice",
+				"dbUser": "onlyoffice",
+				"dbPass": "onlyoffice",
+				"charset": "utf8",
+				"connectionlimit": 10,
+				"max_allowed_packet": 1048575
+			},
+			"redis": {
+				"name": "redis",
+				"prefix": "ds:",
+				"host": "localhost",
+				"port": 6379
+			},
+			"pubsub": {
+				"name": "pubsubRabbitMQ",
+				"maxChanges": 1000
+			},
+			"expire": {
+				"saveLock": 60,
+				"presence": 300,
+				"locks": 604800,
+				"changeindex": 86400,
+				"lockDoc": 30,
+				"message": 86400,
+				"lastsave": 604800,
+				"forcesave": 604800,
+				"saved": 3600,
+				"documentsCron": "0 */2 * * * *",
+				"files": 86400,
+				"filesCron": "00 00 */1 * * *",
+				"filesremovedatonce": 100,
+				"sessionidle": "0",
+				"sessionabsolute": "30d",
+				"sessionclosecommand": "2m",
+				"pemStdTTL": "1h",
+				"pemCheckPeriod": "10m",
+				"updateVersionStatus": "5m"
+			},
+			"ipfilter": {
+				"rules": [{"address": "*", "allowed": true}],
+				"useforrequest": false,
+				"errorcode": 401
+			},
+			"secret": {
+				"browser": {"string": "secret", "file": "", "tenants": {}},
+				"inbox": {"string": "secret", "file": "", "tenants": {}},
+				"outbox": {"string": "secret", "file": ""},
+				"session": {"string": "secret", "file": ""}
+			},
+			"token": {
+				"enable": {
+					"browser": false,
+					"request": {
+						"inbox": false,
+						"outbox": false
+					}
+				},
+				"browser": {
+					"secretFromInbox": true
+				},
+				"inbox": {
+					"header": "Authorization",
+					"prefix": "Bearer ",
+					"inBody": false
+				},
+				"outbox": {
+					"header": "Authorization",
+					"prefix": "Bearer ",
+					"algorithm": "HS256",
+					"expires": "5m",
+					"inBody": false
+				},
+				"session": {
+					"algorithm": "HS256",
+					"expires": "30d"
+				}
+			},
+			"plugins": {
+				"uri": "/sdkjs-plugins",
+				"autostart": []
+			},
+			"editor":{
+				"spellcheckerUrl": "/spellchecker",
+				"reconnection":{
+					"attempts": 50,
+					"delay": "2s"
+				}
+			},
+			"sockjs": {
+				"sockjs_url": "",
+				"websocket": true
+			}
+		}
+	},
+	"license" : {
+		"license_file": "",
+		"warning_limit_percents": "70"
+	},
+	"FileConverter": {
+		"converter": {
+			"maxDownloadBytes": 104857600,
+			"downloadTimeout": 120,
+			"downloadAttemptMaxCount": 3,
+			"downloadAttemptDelay": 1000,
+			"maxprocesscount": 1,
+			"fontDir": "null",
+			"presentationThemesDir": "null",
+			"x2tPath": "null",
+			"docbuilderPath": "null",
+			"docbuilderAllFontsPath": "null",
+			"args": "",
+			"spawnOptions": {},
+			"errorfiles": "",
+			"streamWriterBufferSize": 8388608,
+			"maxRedeliveredCount": 2,
+			"inputLimits": [
+				{
+				"type": "docx;dotx;docm;dotm",
+				"zip": {
+					"uncompressed": "50MB",
+					"template": "*.xml"
+				}
+				},
+				{
+				"type": "xlsx;xltx;xlsm;xltm",
+				"zip": {
+					"uncompressed": "300MB",
+					"template": "*.xml"
+				}
+				},
+				{
+				"type": "pptx;ppsx;potx;pptm;ppsm;potm",
+				"zip": {
+					"uncompressed": "50MB",
+					"template": "*.xml"
+				}
+				}
+			]
+		}
+	},
+	"FileStorage": {
+		"host": "",
+		"port": 4567,
+		"directory": "",
+		"silent": true
+	},
+	"SpellChecker": {
+		"server": {
+			"port": 8080,
+			"mode": "development"
+		}
+	}
+}

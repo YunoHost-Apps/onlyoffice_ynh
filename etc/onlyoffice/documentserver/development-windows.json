@@ -1,0 +1,63 @@
+{
+  "log": {
+    "filePath": "../../Common/config/log4js/development.json"
+  },
+  "storage": {
+    "fs": {
+      "folderPath": "../../App_Data"
+    }
+  },
+  "services": {
+    "CoAuthoring": {
+      "server": {
+        "port": 8001,
+        "static_content": {
+          "/fonts": {
+            "path": "../../../fonts"
+          },
+          "/sdkjs": {
+            "path": "../../../sdkjs"
+          },
+          "/web-apps": {
+            "path": "../../../web-apps"
+          },
+          "/web-apps-pro": {
+            "path": "../../../web-apps-pro"
+          },
+          "/sdkjs-plugins": {
+            "path": "../../../sdkjs-plugins"
+          }
+        }
+      },
+      "utils": {
+        "utils_common_fontdir": "C:\\Windows\\Fonts"
+      },
+      "sql": {
+        "type": "mysql",
+        "dbPort": 3306,
+        "dbUser": "root",
+        "dbPass": "onlyoffice"
+      },
+      "editor": {
+        "spellcheckerUrl": "http://127.0.0.1:8080"
+      },
+      "sockjs": {
+        "sockjs_url": "/web-apps/vendor/sockjs/sockjs.min.js"
+      }
+    }
+  },
+  "license": {
+    "license_file": "./../../license.lic",
+    "warning_limit_percents": "70"
+  },
+  "FileConverter": {
+    "converter": {
+      "fontDir": "",
+      "presentationThemesDir": "../../../sdkjs/slide/themes",
+      "x2tPath": "../../FileConverter/Bin/x2t.exe",
+      "docbuilderPath": "../../FileConverter/Bin/docbuilder.exe",
+      "docbuilderAllFontsPath": "../../App_Data/docbuilder/AllFonts.js",
+      "errorfiles": "error"
+    }
+  }
+}
