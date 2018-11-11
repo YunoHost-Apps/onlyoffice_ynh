@@ -9,6 +9,14 @@ OnlyOffice Document Server
 
 [![Install OnlyOffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=onlyoffice)
 
+### Branch
+
+1. Master = Stable is version respect yunohost type install
+
+2. Beta = Beta is version for multi-instances
+
+3. Beta_work = Working version but run official commands of onlyoffice and two depots are installed nodejs and onlyoffice
+
 ### Installing guide
 
  1. App can be installed by YunoHost **admin web-interface** or by **running following command**:
