@@ -13,9 +13,9 @@ OnlyOffice Document Server
 
 1. Master = Stable is version respect yunohost type install
 
-2. Beta = Beta is version for multi-instances
+2. Beta = Beta is version for multi-instances (add possibility to install on same domain as nextcloud)
 
-3. Beta_work = Working version but run official commands of onlyoffice and two depots are installed nodejs and onlyoffice
+3. Beta_work = Working version but run official commands of onlyoffice (two depots are installed nodejs and onlyoffice)
 
 ### Installing guide
 
