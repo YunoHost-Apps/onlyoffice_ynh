@@ -1,0 +1,207 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+ynh_clean_setup () {
+	### Remove this function if there's nothing to clean before calling the remove script.
+	true
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
+
+# Retrieve arguments
+domain=$YNH_APP_ARG_DOMAIN
+#path_url=$YNH_APP_ARG_PATH
+#port=$YNH_APP_ARG_PORT
+
+### If it's a multi-instance app, meaning it can be installed several times independently
+### The id of the app as stated in the manifest is available as $YNH_APP_ID
+### The instance number is available as $YNH_APP_INSTANCE_NUMBER (equals "1", "2", ...)
+### The app instance name is available as $YNH_APP_INSTANCE_NAME
+###    - the first time the app is installed, YNH_APP_INSTANCE_NAME = ynhexample
+###    - the second time the app is installed, YNH_APP_INSTANCE_NAME = ynhexample__2
+###    - ynhexample__{N} for the subsequent installations, with N=3,4, ...
+### The app instance name is probably what interests you most, since this is
+### guaranteed to be unique. This is a good unique identifier to define installation path,
+### db names, ...
+app=$YNH_APP_INSTANCE_NAME
+domain=$YNH_APP_ARG_DOMAIN
+path_url=$YNH_APP_ARG_PATH
+
+#=================================================
+# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
+#=================================================
+
+### If the app uses nginx as web server (written in HTML/PHP in most cases), the final path should be "/var/www/$app".
+### If the app provides an internal web server (or uses another application server such as uwsgi), the final path should be "/opt/yunohost/$app"
+final_path=/opt/yunohost/$app
+test ! -e "$final_path" || ynh_die "This path already contains a folder"
+
+# Normalize the url path syntax
+path_url=$(ynh_normalize_url_path $path_url)
+
+# Check web path availability
+ynh_webpath_available $domain $path_url
+# Register (book) web path
+ynh_webpath_register $app $domain $path_url
+#=================================================
+# STORE SETTINGS FROM MANIFEST
+#=================================================
+
+ynh_app_setting_set $app domain $domain
+ynh_app_setting_set $app path $path_url
+#ynh_app_setting_set $app port $port
+
+#=================================================
+# FIND AND OPEN A PORT
+#=================================================
+
+### Use these lines if you have to open a port for the application
+### `ynh_find_port` will find the first available port starting from the given port.
+### If you're not using these lines:
+###		- Remove the section "CLOSE A PORT" in the remove script
+
+# Find a free port
+port=$(ynh_find_port 9980)
+# Open this port
+yunohost firewall allow --no-upnp TCP $port 2>&1
+ynh_app_setting_set $app port $port
+
+#==============================================
+# INSTALL POSTGRES
+#==============================================
+
+#Master
+#ynh_install_app_dependencies postgresql redis-server apt-transport-https libasound2 libboost-regex-dev libboost1.62-dev libdrm-amdgpu1 libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libfontenc1 libgail-common libgail18 libgconf-2-4 libgconf2-4 libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libglu1-mesa libgtk2.0-0 libgtk2.0-bin libgtk2.0-common libgtkglext1 libice6 libicu-dev libllvm3.9 libpangox-1.0-0 libpciaccess0 librsvg2-2 librsvg2-common libsm6 libtxc-dxtn-s2tc libx11-xcb1 libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-sync1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxfont1 libxfont2 libxi6 libxinerama1 libxkbfile1 libxmu6 libxrandr2 libxshmfence1 libxt6 libxtst6 libxxf86vm1 postgresql-client pwgen python-meld3 supervisor x11-xkb-utils xfonts-base xfonts-encodings xfonts-utils xserver-common xvfb
+
+#Beta
+sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-https
+
+#Old
+# ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https
+# ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https libcurl3 libxml2 supervisor fonts-dejavu fonts-liberation ttf-mscorefonts-installer fonts-crosextra-carlito fonts-takao-gothic fonts-opensymbol
+
+#=================================================
+# INSTALL NODEJS
+#=================================================
+# Use Helper instead of package from the repo
+
+#Master
+#ynh_install_nodejs 8.12.0
+
+#Beta
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+
+#===============================================
+# ADD ONLYOFFCE REPOSITORY
+#===============================================
+
+#Beta no for Master version
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+ynh_package_update
+
+#==============================================
+# CREATE DB
+#==============================================
+
+sudo -i -u postgres psql -c "CREATE DATABASE onlyoffice;"
+sudo -i -u postgres psql -c "CREATE USER onlyoffice WITH password 'onlyoffice';"
+sudo -i -u postgres psql -c "GRANT ALL privileges ON DATABASE onlyoffice TO onlyoffice;"
+
+#==============================================
+# DEFINE PORT
+#==============================================
+
+echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
+
+#==============================================
+# INSTALL ONLYOFFICE
+#==============================================
+
+#Master
+#ynh_package_install_from_equivs ../conf/fakenode-deps.control
+#ynh_package_install_from_equivs ../conf/fakepostgres-deps.control
+#wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
+#dpkg --install onlyoffice-documentserver_amd64.deb
+
+#Beta
+sudo apt-get install -y onlyoffice-documentserver
+
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+
+# Create a dedicated nginx config
+ynh_add_nginx_config
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+
+# Create a system user
+ynh_system_user_create $app
+
+#=================================================
+# MODIFY A CONFIG FILE
+#=================================================
+
+# Fix https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues/172#issuecomment-411746394
+cp -a ../conf/default.json /etc/onlyoffice/documentserver/default.json
+
+#cp -a ../conf/onlyoffice-documentserver.conf /etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf
+#ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "/etc/loolwsd/loolwsd.xml"
+#ynh_replace_string "__PASSWORD__" "$password" "/etc/loolwsd/loolwsd.xml"
+
+#=================================================
+# STORE THE CONFIG FILE CHECKSUM
+#=================================================
+
+### `ynh_store_file_checksum` is used to store the checksum of a file.
+### That way, during the upgrade script, by using `ynh_backup_if_checksum_is_different`,
+### you can make a backup of this file before modifying it again if the admin had modified it.
+
+# Calculate and store the config file checksum into the app settings
+#ynh_store_file_checksum "/etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf"
+
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+### For security reason, any app should set the permissions to root: before anything else.
+### Then, if write authorization is needed, any access should be given only to directories
+### that really need such authorization.
+
+# Set permissions to app files
+#chown -R root: /etc/loolwsd
+
+
+#=================================================
+# SETUP SSOWAT
+#=================================================
+
+# unprotected_uris allows SSO credentials to be passed anyway.
+ynh_app_setting_set $app unprotected_uris "/"
+ynh_app_setting_set $app skipped_regex \
+"$(sed 's/[\.\-]/\%&/g' <<< $domain)/%.well%-known/.*"
+
+# Reload services
+systemctl restart nginx

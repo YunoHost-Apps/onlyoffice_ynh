@@ -1,0 +1,82 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+
+app=$YNH_APP_INSTANCE_NAME
+
+domain=$(ynh_app_setting_get $app domain)
+port=$(ynh_app_setting_get $app port)
+final_path=$(ynh_app_setting_get $app final_path)
+
+#=================================================
+# STANDARD REMOVE
+#=================================================
+#=================================================
+# REMOVE DEPENDENCIES
+#=================================================
+
+# Remove metapackage and its dependencies
+ynh_remove_app_dependencies
+
+#=================================================
+# REMOVE APP MAIN DIR
+#=================================================
+
+# Remove the app directory securely
+ynh_secure_remove "$final_path"
+
+#=================================================
+# REMOVE NGINX CONFIGURATION
+#=================================================
+
+# Remove the dedicated nginx config
+ynh_remove_nginx_config
+
+#=================================================
+# CLOSE A PORT
+#=================================================
+
+if yunohost firewall list | grep -q "\- $port$"
+then
+	echo "Close port $port" >&2
+	yunohost firewall disallow TCP $port 2>&1
+fi
+
+#=================================================
+# SPECIFIC REMOVE
+#=================================================
+# REMOVE THE CRON FILE
+#=================================================
+
+# Remove a cron file
+ynh_secure_remove "/etc/cron.d/$app"
+
+# Remove a directory securely
+ynh_secure_remove "/etc/apt/sources.list.d/onlyoffice.list"
+
+# Remove DB
+sudo -i -u postgres psql -c "DROP DATABASE onlyoffice;"
+sudo -i -u postgres psql -c "DROP USER onlyoffice;"
+
+# Remove the log files
+ynh_secure_remove "/var/log/$app/"
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# REMOVE DEDICATED USER
+#=================================================
+
+# Delete a system user
+ynh_system_user_delete $app
