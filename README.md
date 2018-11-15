@@ -25,9 +25,9 @@ OnlyOffice Document Server
          
         $ sudo yunohost app install --debug https://github.com/liberodark/onlyoffice_ynh/
         
-        $ sudo yunohost app install --debug https://github.com/liberodark/onlyoffice_ynh/BETA_VERSION/
+        $ sudo yunohost app install --debug https://github.com/liberodark/onlyoffice_ynh/tree/master/BETA_VERSION/
         
-        $ sudo yunohost app install --debug https://github.com/liberodark/onlyoffice_ynh/YHN_VERSION/
+        $ sudo yunohost app install --debug https://github.com/liberodark/onlyoffice_ynh/tree/master/YHN_VERSION/
          
  1. Admin username is : **root**.
  
