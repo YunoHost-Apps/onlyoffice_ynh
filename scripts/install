@@ -26,6 +26,7 @@ ynh_abort_if_errors
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
+#path_url=$YNH_APP_ARG_PATH
 #port=$YNH_APP_ARG_PORT
 
 ### If it's a multi-instance app, meaning it can be installed several times independently
@@ -82,12 +83,12 @@ ynh_app_setting_set $app port $port
 #==============================================
 # INSTALL POSTGRES
 #==============================================
-#Next for new test 5
-ynh_install_app_dependencies postgresql redis-server apt-transport-https libasound2 libboost-regex-dev libboost1.62-dev libdrm-amdgpu1 libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libfontenc1 libgail-common libgail18 libgconf-2-4 libgconf2-4 libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libglu1-mesa libgtk2.0-0 libgtk2.0-bin libgtk2.0-common libgtkglext1 libice6 libicu-dev libllvm3.9 libpangox-1.0-0 libpciaccess0 librsvg2-2 librsvg2-common libsm6 libtxc-dxtn-s2tc libx11-xcb1 libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-sync1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxfont1 libxfont2 libxi6 libxinerama1 libxkbfile1 libxmu6 libxrandr2 libxshmfence1 libxt6 libxtst6 libxxf86vm1 postgresql-client pwgen python-meld3 supervisor x11-xkb-utils xfonts-base xfonts-encodings xfonts-utils xserver-common xvfb
 
+#Master
+#ynh_install_app_dependencies postgresql redis-server apt-transport-https libasound2 libboost-regex-dev libboost1.62-dev libdrm-amdgpu1 libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libfontenc1 libgail-common libgail18 libgconf-2-4 libgconf2-4 libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libglu1-mesa libgtk2.0-0 libgtk2.0-bin libgtk2.0-common libgtkglext1 libice6 libicu-dev libllvm3.9 libpangox-1.0-0 libpciaccess0 librsvg2-2 librsvg2-common libsm6 libtxc-dxtn-s2tc libx11-xcb1 libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-sync1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxfont1 libxfont2 libxi6 libxinerama1 libxkbfile1 libxmu6 libxrandr2 libxshmfence1 libxt6 libxtst6 libxxf86vm1 postgresql-client pwgen python-meld3 supervisor x11-xkb-utils xfonts-base xfonts-encodings xfonts-utils xserver-common xvfb
 
-#Work in commit : add yes
-#sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-https
+#Beta
+sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-https
 
 #Old
 # ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https
@@ -98,19 +99,20 @@ ynh_install_app_dependencies postgresql redis-server apt-transport-https libasou
 #=================================================
 # Use Helper instead of package from the repo
 
-ynh_install_nodejs 8.12.0
+#Master
+#ynh_install_nodejs 8.12.0
 
-#Work in commit : add yes
-#curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+#Beta
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 
 #===============================================
 # ADD ONLYOFFCE REPOSITORY
 #===============================================
 
-#Work in commit : add yes
-#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-#echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-#ynh_package_update
+#Beta no for Master version
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+ynh_package_update
 
 #==============================================
 # CREATE DB
@@ -130,13 +132,14 @@ echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-
 # INSTALL ONLYOFFICE
 #==============================================
 
-ynh_package_install_from_equivs ../conf/fakenode-deps.control
-ynh_package_install_from_equivs ../conf/fakepostgres-deps.control
-wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
-dpkg --install onlyoffice-documentserver_amd64.deb
+#Master
+#ynh_package_install_from_equivs ../conf/fakenode-deps.control
+#ynh_package_install_from_equivs ../conf/fakepostgres-deps.control
+#wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
+#dpkg --install onlyoffice-documentserver_amd64.deb
 
-#Work in commit : add yes
-#sudo apt-get install -y onlyoffice-documentserver
+#Beta
+sudo apt-get install -y onlyoffice-documentserver
 
 #=================================================
 # NGINX CONFIGURATION
@@ -155,9 +158,18 @@ ynh_system_user_create $app
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
+
+# Fix https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues/172#issuecomment-411746394
+cp -a ../conf/default.json /etc/onlyoffice/documentserver/default.json
+
+# Fix Nextcloud http://dev.onlyoffice.org/viewtopic.php?f=53&t=10001
+#sed -i "/# Add headers to serve security.*/a  \ \ \ \ add_header X-Frame-Options \"ALLOW-FROM https://$domain/\";" /etc/nginx/conf.d/$nextcloud_domain.d/nextcloud.conf
+
+# Fix OnlyOffice http://dev.onlyoffice.org/viewtopic.php?f=53&t=10001
+#sed -i "/# Add headers to serve security.*/a  \ \ \ \ add_header X-Frame-Options \"ALLOW-FROM https://$domain/\";" /etc/nginx/conf.d/$domain.d/onlyoffice.conf
+
 #cp -a ../conf/onlyoffice-documentserver.conf /etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf
 #ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "/etc/loolwsd/loolwsd.xml"
-#ynh_replace_string "__PASSWORD__" "$password" "/etc/loolwsd/loolwsd.xml"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
@@ -168,7 +180,7 @@ ynh_system_user_create $app
 ### you can make a backup of this file before modifying it again if the admin had modified it.
 
 # Calculate and store the config file checksum into the app settings
-ynh_store_file_checksum "/etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf"
+#ynh_store_file_checksum "/etc/onlyoffice/documentserver/nginx/onlyoffice-documentserver.conf"
 
 
 #=================================================
@@ -194,3 +206,4 @@ ynh_app_setting_set $app unprotected_uris "/"
 
 # Reload services
 systemctl restart nginx
+supervisorctl restart all
