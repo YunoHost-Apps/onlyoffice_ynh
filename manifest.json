@@ -40,7 +40,7 @@
                     "fr": "Choisissez un chemin pour OnlyOffice uniquement / est accepté"
                 },
                 "example": "/onlyoffice",
-                "default": "onlyoffice"
+                "default": "/onlyoffice"
             },
             
             {
