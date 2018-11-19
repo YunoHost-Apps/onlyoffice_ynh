@@ -39,8 +39,8 @@
                     "en": "Choose a path for OnlyOffice only / is accepted",
                     "fr": "Choisissez un chemin pour OnlyOffice uniquement / est accepté"
                 },
-                "example": "/onlyoffice",
-                "default": "/onlyoffice"
+                "example": "/",
+                "default": "/"
             },
             
             {
