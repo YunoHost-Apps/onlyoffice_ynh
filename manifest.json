@@ -1,17 +1,16 @@
 {
-    "name": "PlexMediaServer",
-    "id": "plexmediaserver",
+    "name": "OnlyOffice",
+    "id": "onlyoffice",
     "packaging_format": 1,
     "description": {
-        "en": "PlexMediaServer package for YunoHost.",
-        "fr": "PlexMediaServer pour YunoHost."
+        "en": "OnlyOffice package for YunoHost.",
+        "fr": "OnlyOffice pour YunoHost."
     },
-    "url": "https://",
+    "url": "https://www.plex.tv/",
     "license": "free",
     "maintainer": {
         "name": "liberodark",
-        "email": "liberodark@gmail.com",
-        "url": "https://www.plex.tv/"
+        "email": "liberodark@gmail.com"
     },
     "requirements": {
         "yunohost": ">= 2.7.2"
@@ -27,8 +26,8 @@
                 "name": "domain",
                 "type": "domain",
                 "ask": {
-                    "en": "Choose a domain name for PlexMediaServer",
-                    "fr": "Choisissez un nom de domaine pour PlexMediaServer"
+                    "en": "Choose a domain name for OnlyOffice",
+                    "fr": "Choisissez un nom de domaine pour OnlyOffice"
                 },
                 "example": "example.com"
             },
@@ -37,11 +36,11 @@
                 "name": "path",
                 "type": "path",
                 "ask": {
-                    "en": "Choose a path for PlexMediaServer only / is accepted",
-                    "fr": "Choisissez un chemin pour PlexMediaServer uniquement / est accepté"
+                    "en": "Choose a path for OnlyOffice only / is accepted",
+                    "fr": "Choisissez un chemin pour OnlyOffice uniquement / est accepté"
                 },
-                "example": "/",
-                "default": "/"
+                "example": "/onlyoffice",
+                "default": "onlyoffice"
             },
             
             {
