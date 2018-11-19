@@ -24,12 +24,8 @@ OnlyOffice Document Server
         $ sudo yunohost app install https://github.com/YunoHost-Apps/onlyoffice_ynh
          
         $ sudo yunohost app install --debug https://github.com/YunoHost-Apps/onlyoffice_ynh
-        
-        $ sudo yunohost app install --debug https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/master/BETA_VERSION/
-        
-        $ sudo yunohost app install --debug https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/master/YHN_VERSION/
          
- 1. Admin username is : **root**.
+ 2. Need to restart yunohost.
  
 ### Upgrade this package:
 
