@@ -1,7 +1,0 @@
-Section: misc
-Priority: optional
-Package: nodejs
-Version: 8.0.0
-Depends:
-Architecture: all
-Description: Fake package for nodejs
