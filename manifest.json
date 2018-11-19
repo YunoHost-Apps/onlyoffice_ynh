@@ -6,12 +6,11 @@
     "en": "OnlyOffice package for YunoHost.",
     "fr": "OnlyOffice pour YunoHost."
   },
-  "url": "https://",
+  "url": "https://onlyoffice.com",
   "license": "free",
   "maintainer": {
     "name": "liberodark",
     "email": "liberodark@gmail.com",
-    "url": "https://onlyoffice.com"
   },
   "requirements": {
     "yunohost": ">= 2.7.2"
@@ -42,8 +41,17 @@
       },
       "example": "/onlyoffice",
       "default": "/onlyoffice"
-    }
-
-  ]
-}
+    },
+    
+    {
+     "name": "is_public",
+     "type": "boolean",
+     "ask": {
+     	"en": "Is it a public site ?",
+     	"fr": "Est-ce un site public ?"
+     },
+     "default": "true"
+     }
+    ]
+   }
 }
