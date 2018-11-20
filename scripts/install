@@ -149,8 +149,7 @@ sudo apt-get install -y onlyoffice-documentserver
 #=================================================
 
 # Create a dedicated nginx config
-#ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "../conf/nginx.conf"
-ynh_add_nginx_config
+ynh_add_nginx_config "nextclouddomain"
 
 #=================================================
 # CREATE DEDICATED USER
@@ -165,8 +164,6 @@ ynh_system_user_create $app
 
 # Fix https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues/172#issuecomment-411746394
 cp -a ../conf/default.json /etc/onlyoffice/documentserver/default.json
-
-ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "/etc/nginx/conf.d/$domain.d/onlyoffice.conf"
 
 # Fix Nextcloud http://dev.onlyoffice.org/viewtopic.php?f=53&t=10001
 #sed -i "/# Add headers to serve security.*/a  \ \ \ \ add_header X-Frame-Options \"ALLOW-FROM https://$domain/\";" /etc/nginx/conf.d/$nextcloud_domain.d/nextcloud.conf
