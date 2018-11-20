@@ -41,7 +41,7 @@
                 },
                 "example": "example.com",
                 "default": ""
-            }
+            },
 
             {
                 "name": "path",
