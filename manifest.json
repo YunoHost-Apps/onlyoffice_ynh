@@ -40,7 +40,7 @@
                     "fr": "Le domain de votre instance Nextcloud"
                 },
                 "example": "example.com",
-                "default": ""
+                "default": "example.com"
             },
 
             {
