@@ -31,6 +31,17 @@
                 },
                 "example": "example.com"
             },
+            
+            {
+                "name": "nextclouddomain",
+                "type": "string",
+                "ask": {
+                    "en": "The domain of your Nextcloud instance",
+                    "fr": "Le domain de votre instance Nextcloud"
+                },
+                "example": "example.com",
+                "default": ""
+            }
 
             {
                 "name": "path",
