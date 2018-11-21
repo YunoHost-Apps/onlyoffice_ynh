@@ -25,6 +25,7 @@ ynh_backup "/var/www/${app}" "sources"
 # Copy NGINX configuration
 domain=$(ynh_app_setting_get "$app" domain)
 ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "nginx.conf"
+ynh_backup "/etc/onlyoffice/documentserver/default.json"
 
 ### PHP (remove if not used) ###
 # If a dedicated php-fpm process is used:
