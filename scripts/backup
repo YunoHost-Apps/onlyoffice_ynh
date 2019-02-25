@@ -46,8 +46,6 @@ ynh_backup "$final_path"
 ynh_print_info "Backing up nginx web server configuration..."
 
 ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
-9999 ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "nginx.conf"
-9999 ynh_backup "/etc/onlyoffice/documentserver/default.json"
 
 #=================================================
 # BACKUP THE POSTGRESQL DATABASE

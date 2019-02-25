@@ -32,6 +32,7 @@ path_url=$(ynh_app_setting_get $app path)
 final_path=$(ynh_app_setting_get $app final_path)
 db_name=$(ynh_app_setting_get $app db_name)
 db_pwd=$(ynh_app_setting_get $app db_pwd)
+port=$(ynh_app_setting_get $app port)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
@@ -71,7 +72,7 @@ ynh_system_user_create $app
 #=================================================
 
 # Restore permissions on app files
-chown -R root: $final_path
+chown -R $app: $final_path
 
 #=================================================
 # SPECIFIC RESTORATION
@@ -81,7 +82,13 @@ chown -R root: $final_path
 ynh_print_info "Reinstalling dependencies..."
 
 # Define and install dependencies
-ynh_install_app_dependencies deb1 deb2
+ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server
+
+#=================================================
+# INSTALL NODEJS
+#=================================================
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 
 #=================================================
 # RESTORE THE POSTGRESQL DATABASE
@@ -92,7 +99,25 @@ ynh_psql_test_if_first_run
 ynh_psql_create_db $db_name $db_name $db_pwd
 ynh_psql_execute_file_as_root ./db.sql "$db_name"
 
+#=================================================
+# DEFINE PORT
+#=================================================
 
+echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
+
+#=================================================
+# ADD ONLYOFFICE REPOSITORY
+#=================================================
+
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+ynh_package_update
+
+#=================================================
+# INSTALL ONLYOFFICE
+#=================================================
+
+ynh_package_install onlyoffice-documentserver
 
 
 #=================================================
@@ -103,6 +128,8 @@ ynh_psql_execute_file_as_root ./db.sql "$db_name"
 ynh_print_info "Reloading nginx web server..."
 
 systemctl reload nginx
+supervisorctl stop all
+supervisorctl start all
 
 #=================================================
 # END OF SCRIPT
