@@ -173,7 +173,7 @@ ynh_package_install onlyoffice-documentserver
 #=================================================
 
 # Fix https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues/172#issuecomment-411746394
-#cp -a ../conf/default.json /etc/onlyoffice/documentserver/default.json
+cp -a ../conf/default.json /etc/onlyoffice/documentserver/default.json
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
