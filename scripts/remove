@@ -52,6 +52,7 @@ ynh_print_info "Removing app main directory"
 
 # Remove the app directory securely
 ynh_secure_remove "$final_path"
+rm -rf "$final_path"
 
 #=================================================
 # REMOVE NGINX CONFIGURATION
