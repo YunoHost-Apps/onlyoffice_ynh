@@ -1,57 +1,142 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -eu
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-# See comments in install script
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+ynh_print_info "Loading installation settings..."
+
 app=$YNH_APP_INSTANCE_NAME
 
-# Source YunoHost helpers
-source /usr/share/yunohost/helpers
-source _common.sh
-
-# Retrieve app settings
-domain=$(ynh_app_setting_get "$app" domain)
-password=$(ynh_app_setting_get "$app" password)
-is_public=$(ynh_app_setting_get "$app" is_public)
-nextclouddomain=$(ynh_app_setting_get "$app" nextclouddomain)
-
-
-# Set permissions to app files
-# you may need to make some file and/or directory writeable by www-data (nginx user)
-sudo chown -R root: $src_path
+domain=$(ynh_app_setting_get $app domain)
+path_url=$(ynh_app_setting_get $app path)
+is_public=$(ynh_app_setting_get $app is_public)
+db_name=$(ynh_app_setting_get $app db_name)
+nextclouddomain=$(ynh_app_setting_get $app nextclouddomain)
 
 #=================================================
-# UPGRADE COLLABORA
+# ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-ynh_package_update
-ynh_install_app_dependencies loolwsd code-brand
+ynh_print_info "Ensuring downward compatibility..."
 
+# Fix is_public as a boolean value
+if [ "$is_public" = "Yes" ]; then
+	ynh_app_setting_set $app is_public 1
+	is_public=1
+elif [ "$is_public" = "No" ]; then
+	ynh_app_setting_set $app is_public 0
+	is_public=0
+fi
+
+# If db_name doesn't exist, create it
+if [ -z $db_name ]; then
+	db_name=$(ynh_sanitize_dbid $app)
+	ynh_app_setting_set $app db_name $db_name
+fi
+
+# If final_path doesn't exist, create it
+if [ -z $final_path ]; then
+	final_path=/var/www/$app
+	ynh_app_setting_set $app final_path $final_path
+fi
+
+#=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
+ynh_print_info "Backing up the app before upgrading (may take a while)..."
+
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# CHECK THE PATH
+#=================================================
+
+# Normalize the URL path syntax
+path_url=$(ynh_normalize_url_path $path_url)
+
+#=================================================
+# STANDARD UPGRADE STEPS
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
+ynh_print_info "Upgrading nginx web server configuration..."
 
 # Create a dedicated nginx config
 ynh_add_nginx_config
 
+#=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_print_info "Upgrading dependencies..."
+
+ynh_install_app_dependencies deb1 deb2
 
 #=================================================
-# UPGRADE CONFIG
+# CREATE DEDICATED USER
 #=================================================
-cp -a ../conf/loolwsd.xml /etc/loolwsd
-ynh_replace_string "__NEXTCLOUDDOMAIN__" "$nextcloud_domain" "/etc/loolwsd/loolwsd.xml"
-ynh_replace_string "__PASSWORD__" "$password" "/etc/loolwsd/loolwsd.xml"
-systemctl restart loolwsd
+ynh_print_info "Making sure dedicated system user exists..."
+
+# Create a dedicated user (if not existing)
+ynh_system_user_create $app
+
+#=================================================
+# SPECIFIC UPGRADE
+#=================================================
+# ...
+#=================================================
+
+### Verify the checksum of a file, stored by `ynh_store_file_checksum` in the install script.
+### And create a backup of this file if the checksum is different. So the file will be backed up if the admin had modified it.
+#ynh_backup_if_checksum_is_different "$final_path/CONFIG_FILE"
+# Recalculate and store the checksum of the file for the next upgrade.
+#ynh_store_file_checksum "$final_path/CONFIG_FILE"
 
 
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
 
-# If app is public, add url to SSOWat conf as skipped_uris
-if [[ $is_public -eq 1 ]]; then
-  # See install script
-  ynh_app_setting_set "$app" unprotected_uris "/"
+# Set permissions on app files
+chown -R root: $final_path
+
+#=================================================
+# SETUP SSOWAT
+#=================================================
+ynh_print_info "Upgrading SSOwat configuration..."
+
+# Make app public if necessary
+if [ $is_public -eq 1 ]
+then
+	# unprotected_uris allows SSO credentials to be passed anyway
+	ynh_app_setting_set $app unprotected_uris "/"
 fi
 
-# Reload nginx service
-systemctl restart nginx
-systemctl restart loolwsd
+#=================================================
+# RELOAD NGINX
+#=================================================
+ynh_print_info "Reloading nginx web server..."
 
+systemctl reload nginx
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info "Upgrade of $app completed"

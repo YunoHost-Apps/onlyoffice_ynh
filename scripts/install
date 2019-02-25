@@ -6,7 +6,7 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-#source _common.sh
+source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -26,7 +26,7 @@ ynh_abort_if_errors
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
-path_url=$YNH_APP_ARG_PATH
+path_url="/"
 is_public=$YNH_APP_ARG_IS_PUBLIC
 nextclouddomain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
 
@@ -45,6 +45,7 @@ app=$YNH_APP_INSTANCE_NAME
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
+ynh_print_info "Validating installation parameters..."
 
 ### If the app uses nginx as web server (written in HTML/PHP in most cases), the final path should be "/var/www/$app".
 ### If the app provides an internal web server (or uses another application server such as uwsgi), the final path should be "/opt/yunohost/$app"
@@ -54,14 +55,13 @@ test ! -e "$final_path" || ynh_die "This path already contains a folder"
 # Normalize the url path syntax
 path_url=$(ynh_normalize_url_path $path_url)
 
-# Check web path availability
-ynh_webpath_available $domain $path_url
 # Register (book) web path
 ynh_webpath_register $app $domain $path_url
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
+ynh_print_info "Storing installation settings..."
 
 ynh_app_setting_set $app domain $domain
 ynh_app_setting_set $app nextclouddomain $nextclouddomain
@@ -69,8 +69,11 @@ ynh_app_setting_set $app path $path_url
 ynh_app_setting_set $app is_public $is_public
 
 #=================================================
+# STANDARD MODIFICATIONS
+#=================================================
 # FIND AND OPEN A PORT
 #=================================================
+ynh_print_info "Configuring firewall..."
 
 ### Use these lines if you have to open a port for the application
 ### `ynh_find_port` will find the first available port starting from the given port.
@@ -80,73 +83,49 @@ ynh_app_setting_set $app is_public $is_public
 # Find a free port
 port=$(ynh_find_port 9980)
 # Open this port
-yunohost firewall allow --no-upnp TCP $port 2>&1
+#ynh_exec_warn_less yunohost firewall allow --no-upnp TCP $port
 ynh_app_setting_set $app port $port
 
-#==============================================
-# INSTALL POSTGRES
-#==============================================
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_print_info "Installing dependencies..."
 
-#Master
-#ynh_install_app_dependencies postgresql redis-server apt-transport-https libasound2 libboost-regex-dev libboost1.62-dev libdrm-amdgpu1 libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libfontenc1 libgail-common libgail18 libgconf-2-4 libgconf2-4 libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libglu1-mesa libgtk2.0-0 libgtk2.0-bin libgtk2.0-common libgtkglext1 libice6 libicu-dev libllvm3.9 libpangox-1.0-0 libpciaccess0 librsvg2-2 librsvg2-common libsm6 libtxc-dxtn-s2tc libx11-xcb1 libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-sync1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxfont1 libxfont2 libxi6 libxinerama1 libxkbfile1 libxmu6 libxrandr2 libxshmfence1 libxt6 libxtst6 libxxf86vm1 postgresql-client pwgen python-meld3 supervisor x11-xkb-utils xfonts-base xfonts-encodings xfonts-utils xserver-common xvfb
-
-#Beta
-sudo apt-get install -y postgresql redis-server rabbitmq-server apt-transport-https
-
-#Old
-# ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https
-# ynh_install_app_dependencies postgresql redis-server rabbitmq-server apt-transport-https libcurl3 libxml2 supervisor fonts-dejavu fonts-liberation ttf-mscorefonts-installer fonts-crosextra-carlito fonts-takao-gothic fonts-opensymbol
+ynh_install_app_dependencies postgresql libstdc redis-server rabbitmq-server
 
 #=================================================
 # INSTALL NODEJS
 #=================================================
-# Use Helper instead of package from the repo
 
-#Master
-#ynh_install_nodejs 8.12.0
+ynh_install_nodejs 8.12.0
 
-#Beta
-curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+#=================================================
+# CREATE A POSTGRESQL DATABASE
+#=================================================
+ynh_print_info "Creating a PostgreSQL database..."
 
-#===============================================
-# ADD ONLYOFFCE REPOSITORY
-#===============================================
+### Use these lines if you need a database for the application.
+### `ynh_mysql_setup_db` will create a database, an associated user and a ramdom password.
+### The password will be stored as 'mysqlpwd' into the app settings,
+### and will be available as $db_pwd
+### If you're not using these lines:
+###		- Remove the section "BACKUP THE POSTGRESQL DATABASE" in the backup script
+###		- Remove also the section "REMOVE THE POSTGRESQL DATABASE" in the remove script
+###		- As well as the section "RESTORE THE POSTGRESQL DATABASE" in the restore script
 
-#Beta no for Master version
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-ynh_package_update
-
-#==============================================
-# CREATE DB
-#==============================================
-
-sudo -i -u postgres psql -c "CREATE DATABASE onlyoffice;"
-sudo -i -u postgres psql -c "CREATE USER onlyoffice WITH password 'onlyoffice';"
-sudo -i -u postgres psql -c "GRANT ALL privileges ON DATABASE onlyoffice TO onlyoffice;"
-
-#==============================================
-# DEFINE PORT
-#==============================================
-
-echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
-
-#==============================================
-# INSTALL ONLYOFFICE
-#==============================================
-
-#Master
-#ynh_package_install_from_equivs ../conf/fakenode-deps.control
-#ynh_package_install_from_equivs ../conf/fakepostgres-deps.control
-#wget --no-verbose https://github.com/ONLYOFFICE/DocumentServer/releases/download/ONLYOFFICE-DocumentServer-5.2.3/onlyoffice-documentserver_amd64.deb
-#dpkg --install onlyoffice-documentserver_amd64.deb
-
-#Beta
-sudo apt-get install -y onlyoffice-documentserver
+db_name=$(ynh_sanitize_dbid $app)
+db_pwd=$(ynh_string_random 30)
+ynh_app_setting_set $app db_name $db_name
+ynh_app_setting_set $app db_pwd $db_pwd
+ynh_psql_test_if_first_run
+ynh_psql_create_db $db_name $db_name $db_pwd
 
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
+ynh_print_info "Configuring nginx web server..."
+
+### `ynh_add_nginx_config` will use the file conf/nginx.conf
 
 # Create a dedicated nginx config
 ynh_add_nginx_config "nextclouddomain"
@@ -154,11 +133,32 @@ ynh_add_nginx_config "nextclouddomain"
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
+ynh_print_info "Configuring system user..."
 
 # Create a system user
 ynh_system_user_create $app
 
 #=================================================
+# SPECIFIC SETUP
+#==============================================
+# DEFINE PORT
+#==============================================
+
+echo onlyoffice-documentserver onlyoffice/ds-port select $port | sudo debconf-set-selections
+
+#===============================================
+# ADD ONLYOFFICE REPOSITORY
+#===============================================
+
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+ynh_package_update
+
+#==============================================
+# INSTALL ONLYOFFICE
+#==============================================
+
+sudo apt-get install -y onlyoffice-documentserver
 # MODIFY A CONFIG FILE
 #=================================================
 
@@ -200,13 +200,25 @@ cp -a ../conf/default.json /etc/onlyoffice/documentserver/default.json
 #=================================================
 # SETUP SSOWAT
 #=================================================
+ynh_print_info "Configuring SSOwat..."
 
-# If app is public, add url to SSOWat conf as skipped_uris
-if [ $is_public -eq 1 ]; then
-  # unprotected_uris allows SSO credentials to be passed anyway.
-  ynh_app_setting_set "$app" unprotected_uris "/"
+# Make app public if necessary
+if [ $is_public -eq 1 ]
+then
+	# unprotected_uris allows SSO credentials to be passed anyway.
+	ynh_app_setting_set $app unprotected_uris "/"
 fi
 
-# Reload services
+#=================================================
+# RELOAD NGINX
+#=================================================
+ynh_print_info "Reloading nginx web server..."
+
 systemctl reload nginx
 supervisorctl restart all
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info "Installation of $app completed"

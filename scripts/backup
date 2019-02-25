@@ -1,34 +1,63 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -eu
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-# See comments in install script
-app=$YNH_APP_INSTANCE_NAME
-
-# Source YunoHost helpers
+source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
-# Backup sources & data
-# Note: the last argument is where to save this path, see the restore script.
-ynh_backup "/var/www/${app}" "sources"
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
 
-### MySQL (remove if not used) ###
-# If a MySQL database is used:
-# # Dump the database
-# dbname=$app
-# dbuser=$app
-# dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
-# mysqldump -u "$dbuser" -p"$dbpass" --no-create-db "$dbname" > ./dump.sql
-### MySQL end ###
+ynh_clean_setup () {
+	### Remove this function if there's nothing to clean before calling the remove script.
+	true
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
 
-# Copy NGINX configuration
-domain=$(ynh_app_setting_get "$app" domain)
-ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "nginx.conf"
-ynh_backup "/etc/onlyoffice/documentserver/default.json"
+#=================================================
+# LOAD SETTINGS
+#=================================================
+ynh_print_info "Loading installation settings..."
 
-### PHP (remove if not used) ###
-# If a dedicated php-fpm process is used:
-# # Copy PHP-FPM pool configuration
-# ynh_backup "/etc/php5/fpm/pool.d/${app}.conf" "php-fpm.conf"
-### PHP end ###
+app=$YNH_APP_INSTANCE_NAME
+
+final_path=$(ynh_app_setting_get $app final_path)
+domain=$(ynh_app_setting_get $app domain)
+db_name=$(ynh_app_setting_get $app db_name)
+
+#=================================================
+# STANDARD BACKUP STEPS
+#=================================================
+# BACKUP THE APP MAIN DIR
+#=================================================
+ynh_print_info "Backing up the main app directory..."
+
+ynh_backup "$final_path"
+
+#=================================================
+# BACKUP THE NGINX CONFIGURATION
+#=================================================
+ynh_print_info "Backing up nginx web server configuration..."
+
+ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
+9999 ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "nginx.conf"
+9999 ynh_backup "/etc/onlyoffice/documentserver/default.json"
+
+#=================================================
+# BACKUP THE POSTGRESQL DATABASE
+#=================================================
+ynh_print_info "Backing up the PostgreSQL database..."
+
+ynh_psql_dump_db "$db_name" > db.sql
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info "Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."
