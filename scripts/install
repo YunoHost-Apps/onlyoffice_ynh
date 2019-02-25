@@ -145,7 +145,7 @@ ynh_system_user_create $app
 # DEFINE PORT
 #==============================================
 
-echo onlyoffice-documentserver onlyoffice/ds-port select $port | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
 
 #===============================================
 # ADD ONLYOFFICE REPOSITORY
