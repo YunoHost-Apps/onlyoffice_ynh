@@ -115,7 +115,7 @@ ynh_print_info "Creating a PostgreSQL database..."
 ###		- As well as the section "RESTORE THE POSTGRESQL DATABASE" in the restore script
 
 db_name=$(ynh_sanitize_dbid $app)
-db_pwd=$(ynh_string_random 30)
+db_pwd="onlyoffice"
 ynh_app_setting_set $app db_name $db_name
 ynh_app_setting_set $app db_pwd $db_pwd
 ynh_psql_test_if_first_run
