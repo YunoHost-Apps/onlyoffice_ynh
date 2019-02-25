@@ -31,6 +31,8 @@ final_path=$(ynh_app_setting_get $app final_path)
 ynh_print_info "Removing the PostgreSQL database"
 
 # Remove a database if it exists, along with the associated user
+ynh_psql_execute_as_root "\connect $db_name 
+SELECT pg_terminate_backend (pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$db_name';"
 ynh_psql_drop_db $db_name $db_name
 ynh_psql_drop_user $db_name
 
