@@ -34,7 +34,6 @@ ynh_print_info "Removing the PostgreSQL database"
 ynh_psql_execute_as_root "\connect $db_name 
 SELECT pg_terminate_backend (pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$db_name';"
 ynh_psql_remove_db $db_name $db_name
-ynh_psql_drop_user $db_name
 
 #=================================================
 # REMOVE DEPENDENCIES
@@ -79,7 +78,7 @@ fi
 #=================================================
 
 # Remove a cron file
-ynh_secure_remove "/etc/cron.d/$app"
+#ynh_secure_remove "/etc/cron.d/$app"
 
 # Remove a directory securely
 ynh_secure_remove "/etc/apt/sources.list.d/onlyoffice.list"
