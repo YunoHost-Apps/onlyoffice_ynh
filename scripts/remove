@@ -32,6 +32,7 @@ ynh_print_info "Removing the PostgreSQL database"
 
 # Remove a database if it exists, along with the associated user
 ynh_psql_drop_db $db_name $db_name
+ynh_psql_drop_user $db_name
 
 #=================================================
 # REMOVE DEPENDENCIES
