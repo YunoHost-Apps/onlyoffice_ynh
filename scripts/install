@@ -232,6 +232,12 @@ fi
 ynh_print_info "Reloading nginx web server..."
 
 systemctl reload nginx
+
+#=================================================
+# RELOAD ONLYOFFICE
+#=================================================
+ynh_print_info "Reloading OnlyOffice..."
+
 supervisorctl stop all
 supervisorctl start all
 
