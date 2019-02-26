@@ -24,6 +24,11 @@ final_path=$(ynh_app_setting_get $app final_path)
 #=================================================
 # STANDARD REMOVE
 #=================================================
+# STOP ONLYOFFICE
+#=================================================
+ynh_print_info "Stopping OnlyOffice"
+
+supervisorctl stop all
 
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
@@ -79,6 +84,9 @@ fi
 # Remove a directory securely
 ynh_secure_remove "/etc/apt/sources.list.d/onlyoffice.list"
 ynh_secure_remove "/etc/apt/sources.list.d/nodesource.list"
+ynh_secure_remove "/etc/onlyoffice"
+ynh_secure_remove "/var/lib/onlyoffice"
+ynh_secure_remove "/var/cache/nginx/onlyoffice"
 
 # Remove the log files
 ynh_secure_remove "/var/log/$app/"
