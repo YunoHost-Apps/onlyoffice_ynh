@@ -151,12 +151,14 @@ ynh_system_user_create $app $final_path
 #=================================================
 # DEFINE PORT
 #=================================================
+ynh_print_info "Define OnlyOffice server port..."
 
 echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
+ynh_print_info "Add OnlyOffice repository..."
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
@@ -165,12 +167,14 @@ ynh_package_update
 #=================================================
 # INSTALL ONLYOFFICE
 #=================================================
+ynh_print_info "Install OnlyOffice..."
 
 ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server onlyoffice-documentserver
 
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
+ynh_print_info "Fix config file..."
 
 # Fix https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues/172#issuecomment-411746394
 cp -f ../conf/default.json /etc/onlyoffice/documentserver/default.json
