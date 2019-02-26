@@ -84,14 +84,7 @@ ynh_add_nginx_config "nextclouddomain"
 #=================================================
 ynh_print_info "Upgrading dependencies..."
 
-ynh_install_app_dependencies  postgresql libstdc++6 redis-server rabbitmq-server nodejs
-
-#=================================================
-# UPGRADE ONLYOFFICE
-#=================================================
-ynh_print_info "Upgrading OnlyOffice..."
-
-ynh_package_install onlyoffice-documentserver
+ynh_install_app_dependencies  postgresql libstdc++6 redis-server rabbitmq-server onlyoffice-documentserver
 
 #=================================================
 # CREATE DEDICATED USER
@@ -121,7 +114,7 @@ ynh_system_user_create $app
 #=================================================
 
 # Set permissions on app files
-chown -R root: $final_path
+#chown -R root: $final_path
 
 #=================================================
 # SETUP SSOWAT
@@ -141,6 +134,14 @@ fi
 ynh_print_info "Reloading nginx web server..."
 
 systemctl reload nginx
+
+#=================================================
+# RELOAD ONLYOFFICE
+#=================================================
+ynh_print_info "Reloading OnlyOffice..."
+
+supervisorctl stop all
+supervisorctl start all
 
 #=================================================
 # END OF SCRIPT

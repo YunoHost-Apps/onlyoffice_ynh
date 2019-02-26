@@ -77,48 +77,44 @@ chown -R $app: $final_path
 #=================================================
 # SPECIFIC RESTORATION
 #=================================================
-# REINSTALL DEPENDENCIES
-#=================================================
-ynh_print_info "Reinstalling dependencies..."
-
-# Define and install dependencies
-ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server
-
-#=================================================
-# INSTALL NODEJS
-#=================================================
-
-curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
-
-#=================================================
 # RESTORE THE POSTGRESQL DATABASE
 #=================================================
 ynh_print_info "Restoring the PostgreSQL database..."
 
+ynh_package_install postgresql
 ynh_psql_test_if_first_run
 ynh_psql_create_db $db_name $db_name $db_pwd
 ynh_psql_execute_file_as_root ./db.sql "$db_name"
 
 #=================================================
-# DEFINE PORT
+# ADD NODEJS REPOSITORY
 #=================================================
+ynh_print_info "Installing nodejs..."
 
-echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
+ynh_print_info "Add OnlyOffice repository..."
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-ynh_package_update
 
 #=================================================
-# INSTALL ONLYOFFICE
+# DEFINE PORT
 #=================================================
+ynh_print_info "Define OnlyOffice server port..."
 
-ynh_package_install onlyoffice-documentserver
+echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
 
+#=================================================
+# REINSTALL DEPENDENCIES
+#=================================================
+ynh_print_info "Reinstalling dependencies..."
+
+# Define and install dependencies
+ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server onlyoffice-documentserver
 
 #=================================================
 # GENERIC FINALIZATION
@@ -128,6 +124,12 @@ ynh_package_install onlyoffice-documentserver
 ynh_print_info "Reloading nginx web server..."
 
 systemctl reload nginx
+
+#=================================================
+# RELOAD ONLYOFFICE
+#=================================================
+ynh_print_info "Reloading OnlyOffice..."
+
 supervisorctl stop all
 supervisorctl start all
 
