@@ -84,14 +84,7 @@ ynh_add_nginx_config "nextclouddomain"
 #=================================================
 ynh_print_info "Upgrading dependencies..."
 
-ynh_install_app_dependencies  postgresql libstdc++6 redis-server rabbitmq-server
-
-#=================================================
-# UPGRADE NODEJS
-#=================================================
-ynh_print_info "Upgrading nodejs..."
-
-curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+ynh_install_app_dependencies  postgresql libstdc++6 redis-server rabbitmq-server nodejs
 
 #=================================================
 # UPGRADE ONLYOFFICE

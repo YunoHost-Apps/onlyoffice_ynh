@@ -80,6 +80,8 @@ fi
 
 # Remove a directory securely
 ynh_secure_remove "/etc/apt/sources.list.d/onlyoffice.list"
+ynh_secure_remove "/etc/apt/sources.list.d/onlyoffice.list"
+ynh_secure_remove "/etc/apt/sources.list.d/nodesource.list"
 
 # Remove the log files
 ynh_secure_remove "/var/log/$app/"

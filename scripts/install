@@ -87,25 +87,19 @@ port=$(ynh_find_port 8095)
 ynh_app_setting_set $app port $port
 
 #=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-ynh_print_info "Installing dependencies..."
-
-### `ynh_install_app_dependencies` allows you to add any "apt" dependencies to the package.
-### Those deb packages will be installed as dependencies of this package.
-### If you're not using this helper:
-###		- Remove the section "REMOVE DEPENDENCIES" in the remove script
-###		- As well as the section "REINSTALL DEPENDENCIES" in the restore script
-###		- And the section "UPGRADE DEPENDENCIES" in the upgrade script
-
-ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server
-
-#=================================================
-# INSTALL NODEJS
+# ADD NODEJS REPOSITORY
 #=================================================
 ynh_print_info "Installing nodejs..."
 
-#curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+
+#=================================================
+# ADD ONLYOFFICE REPOSITORY
+#=================================================
+ynh_print_info "Add OnlyOffice repository..."
+
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
@@ -121,12 +115,34 @@ ynh_print_info "Creating a PostgreSQL database..."
 ###		- Remove also the section "REMOVE THE POSTGRESQL DATABASE" in the remove script
 ###		- As well as the section "RESTORE THE POSTGRESQL DATABASE" in the restore script
 
+ynh_package_install postgresql
 db_name=$(ynh_sanitize_dbid $app)
 db_pwd="onlyoffice"
 ynh_app_setting_set $app db_name $db_name
 ynh_app_setting_set $app db_pwd $db_pwd
 ynh_psql_test_if_first_run
 ynh_psql_create_db $db_name $db_name $db_pwd
+
+#=================================================
+# DEFINE PORT
+#=================================================
+ynh_print_info "Define OnlyOffice server port..."
+
+echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
+
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_print_info "Installing dependencies..."
+
+### `ynh_install_app_dependencies` allows you to add any "apt" dependencies to the package.
+### Those deb packages will be installed as dependencies of this package.
+### If you're not using this helper:
+###		- Remove the section "REMOVE DEPENDENCIES" in the remove script
+###		- As well as the section "REINSTALL DEPENDENCIES" in the restore script
+###		- And the section "UPGRADE DEPENDENCIES" in the upgrade script
+
+ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server onlyoffice-documentserver
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -162,27 +178,8 @@ ynh_system_user_create $app $final_path
 #=================================================
 # SPECIFIC SETUP
 #=================================================
-# DEFINE PORT
+# ...
 #=================================================
-ynh_print_info "Define OnlyOffice server port..."
-
-echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
-
-#=================================================
-# ADD ONLYOFFICE REPOSITORY
-#=================================================
-ynh_print_info "Add OnlyOffice repository..."
-
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-ynh_package_update
-
-#=================================================
-# INSTALL ONLYOFFICE
-#=================================================
-ynh_print_info "Install OnlyOffice..."
-
-ynh_package_install onlyoffice-documentserver
 
 #=================================================
 # MODIFY A CONFIG FILE
