@@ -29,6 +29,7 @@ final_path=$(ynh_app_setting_get $app final_path)
 ynh_print_info "Stopping OnlyOffice"
 
 supervisorctl stop all
+service rabbitmq-server stop
 
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
