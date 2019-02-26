@@ -21,7 +21,8 @@
         "nginx"
     ],
     "arguments": {
-        "install": [{
+        "install" : [
+            {
                 "name": "domain",
                 "type": "domain",
                 "ask": {
@@ -29,8 +30,7 @@
                     "fr": "Choisissez un nom de domaine pour OnlyOffice"
                 },
                 "example": "example.com"
-            },
-            
+            },            
             {
                 "name": "nextclouddomain",
                 "type": "string",
@@ -40,8 +40,7 @@
                 },
                 "example": "example.com",
                 "default": "example.com"
-            },
-            
+            },            
             {
                 "name": "is_public",
                 "type": "boolean",

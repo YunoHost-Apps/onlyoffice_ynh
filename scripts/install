@@ -25,7 +25,6 @@ ynh_abort_if_errors
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
 
-# Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
 path_url="/"
 is_public=$YNH_APP_ARG_IS_PUBLIC
@@ -65,9 +64,9 @@ ynh_webpath_register $app $domain $path_url
 ynh_print_info "Storing installation settings..."
 
 ynh_app_setting_set $app domain $domain
-ynh_app_setting_set $app nextclouddomain $nextclouddomain
 ynh_app_setting_set $app path $path_url
 ynh_app_setting_set $app is_public $is_public
+ynh_app_setting_set $app nextclouddomain $nextclouddomain
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -82,7 +81,7 @@ ynh_print_info "Configuring firewall..."
 ###		- Remove the section "CLOSE A PORT" in the remove script
 
 # Find a free port
-port=$(ynh_find_port 9980)
+port=$(ynh_find_port 8095)
 # Open this port
 #ynh_exec_warn_less yunohost firewall allow --no-upnp TCP $port
 ynh_app_setting_set $app port $port
@@ -190,7 +189,7 @@ ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server 
 ynh_print_info "Fix config file..."
 
 # Fix https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues/172#issuecomment-411746394
-cp -f ../conf/default.json /etc/onlyoffice/documentserver/default.json
+#cp -f ../conf/default.json /etc/onlyoffice/documentserver/default.json
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
@@ -215,7 +214,7 @@ cp -f ../conf/default.json /etc/onlyoffice/documentserver/default.json
 ### that really need such authorization.
 
 # Set permissions to app files
-chown -R $app: $final_path
+#chown -R $app: $final_path
 
 #=================================================
 # SETUP SSOWAT
