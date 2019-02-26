@@ -166,7 +166,7 @@ ynh_package_update
 # INSTALL ONLYOFFICE
 #=================================================
 
-ynh_package_install onlyoffice-documentserver
+ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server onlyoffice-documentserver
 
 #=================================================
 # MODIFY A CONFIG FILE
