@@ -103,6 +103,7 @@ ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server
 #=================================================
 # INSTALL NODEJS
 #=================================================
+ynh_print_info "Installing nodejs..."
 
 curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
 
@@ -181,7 +182,7 @@ ynh_package_update
 #=================================================
 ynh_print_info "Install OnlyOffice..."
 
-ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server onlyoffice-documentserver
+ynh_package_install onlyoffice-documentserver
 
 #=================================================
 # MODIFY A CONFIG FILE

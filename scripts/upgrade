@@ -77,14 +77,28 @@ path_url=$(ynh_normalize_url_path $path_url)
 ynh_print_info "Upgrading nginx web server configuration..."
 
 # Create a dedicated nginx config
-ynh_add_nginx_config
+ynh_add_nginx_config "nextclouddomain"
 
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
 ynh_print_info "Upgrading dependencies..."
 
-ynh_install_app_dependencies deb1 deb2
+ynh_install_app_dependencies  postgresql libstdc++6 redis-server rabbitmq-server
+
+#=================================================
+# UPGRADE NODEJS
+#=================================================
+ynh_print_info "Upgrading nodejs..."
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+
+#=================================================
+# UPGRADE ONLYOFFICE
+#=================================================
+ynh_print_info "Upgrading OnlyOffice..."
+
+ynh_package_install onlyoffice-documentserver
 
 #=================================================
 # CREATE DEDICATED USER
