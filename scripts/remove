@@ -44,7 +44,7 @@ ynh_psql_remove_db $db_name $db_name
 ynh_print_info "Removing dependencies"
 
 # Remove metapackage and its dependencies
-ynh_secure_remove /var/lib/dpkg/info/onlyoffice-documentserver-ie.postrm
+ynh_secure_remove /var/lib/dpkg/info/onlyoffice-documentserver.prerm
 ynh_remove_app_dependencies
 
 #=================================================
