@@ -29,7 +29,6 @@ final_path=$(ynh_app_setting_get $app final_path)
 ynh_print_info "Stopping OnlyOffice"
 
 supervisorctl stop all
-killall node
 
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
@@ -45,6 +44,7 @@ ynh_psql_remove_db $db_name $db_name
 ynh_print_info "Removing dependencies"
 
 # Remove metapackage and its dependencies
+killall node
 ynh_remove_app_dependencies
 
 #=================================================
