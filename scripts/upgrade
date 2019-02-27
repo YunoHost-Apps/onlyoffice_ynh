@@ -20,6 +20,7 @@ domain=$(ynh_app_setting_get $app domain)
 path_url=$(ynh_app_setting_get $app path)
 is_public=$(ynh_app_setting_get $app is_public)
 db_name=$(ynh_app_setting_get $app db_name)
+port=$(ynh_app_setting_get $app port)
 nextclouddomain=$(ynh_app_setting_get $app nextclouddomain)
 
 #=================================================
