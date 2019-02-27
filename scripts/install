@@ -163,7 +163,7 @@ ynh_app_setting_set $app final_path $final_path
 ynh_print_info "Configuring nginx web server..."
 
 ### `ynh_add_nginx_config` will use the file conf/nginx.conf
-if [ $path = "/" ]; then
+if [ $path_url = "/" ]; then
    ynh_replace_string "__SUB_PATH__" "" "..conf/nginx.conf"
 else
   ynh_replace_string "__SUB_PATH__" "$path" "..conf/nginx.conf"
