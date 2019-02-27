@@ -87,6 +87,7 @@ chown -R $app: $final_path
 ynh_print_info "Add nodejs repository..."
 
 curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+ynh_package_update
 
 #=================================================
 # REINSTALL DEPENDENCIES
@@ -120,6 +121,7 @@ ynh_print_info "Add OnlyOffice repository..."
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+ynh_package_update
 
 #=================================================
 # REINSTALL ONLYOFFICE
