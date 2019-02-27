@@ -82,6 +82,13 @@ chown -R $app: $final_path
 #=================================================
 # SPECIFIC RESTORATION
 #=================================================
+# RESTORE THE CONFIGURATION
+#=================================================
+ynh_print_info "Restoring the configuration..."
+
+ynh_restore_file "/etc/onlyoffice"
+
+#=================================================
 # ADD NODEJS REPOSITORY
 #=================================================
 ynh_print_info "Add nodejs repository..."
