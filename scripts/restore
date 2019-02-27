@@ -34,6 +34,7 @@ final_path=$(ynh_app_setting_get $app final_path)
 db_name=$(ynh_app_setting_get $app db_name)
 db_pwd=$(ynh_app_setting_get $app db_pwd)
 port=$(ynh_app_setting_get $app port)
+nextclouddomain=$(ynh_app_setting_get $app nextclouddomain)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
@@ -52,6 +53,9 @@ test ! -d $final_path \
 #=================================================
 
 ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
+
+# Fix main domain X-Frame-Options
+ynh_replace_string "X-Frame-Options : SAMEORIGIN" "X-Frame-Options : ALLOW-FROM https://$nextclouddomain" "/etc/nginx/conf.d/$domain.conf"
 
 #=================================================
 # RESTORE THE APP MAIN DIR
@@ -78,6 +82,21 @@ chown -R $app: $final_path
 #=================================================
 # SPECIFIC RESTORATION
 #=================================================
+# ADD NODEJS REPOSITORY
+#=================================================
+ynh_print_info "Add nodejs repository..."
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+
+#=================================================
+# REINSTALL DEPENDENCIES
+#=================================================
+ynh_print_info "Reinstalling dependencies..."
+
+# Define and install dependencies
+ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server
+
+#=================================================
 # RESTORE THE POSTGRESQL DATABASE
 #=================================================
 ynh_print_info "Restoring the PostgreSQL database..."
@@ -88,11 +107,11 @@ ynh_psql_create_db $db_name $db_name $db_pwd
 ynh_psql_execute_file_as_root ./db.sql "$db_name"
 
 #=================================================
-# ADD NODEJS REPOSITORY
+# DEFINE PORT
 #=================================================
-ynh_print_info "Installing nodejs..."
+ynh_print_info "Define OnlyOffice server port..."
 
-curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
@@ -103,19 +122,11 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 
 #=================================================
-# DEFINE PORT
+# REINSTALL ONLYOFFICE
 #=================================================
-ynh_print_info "Define OnlyOffice server port..."
+ynh_print_info "Reinstalling OnlyOffice..."
 
-echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
-
-#=================================================
-# REINSTALL DEPENDENCIES
-#=================================================
-ynh_print_info "Reinstalling dependencies..."
-
-# Define and install dependencies
-ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server onlyoffice-documentserver
+ynh_package_install onlyoffice-documentserver
 
 #=================================================
 # GENERIC FINALIZATION
