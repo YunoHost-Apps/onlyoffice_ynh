@@ -102,7 +102,7 @@ ynh_install_app_dependencies  postgresql libstdc++6 redis-server rabbitmq-server
 ynh_print_info "Making sure dedicated system user exists..."
 
 # Create a dedicated user (if not existing)
-ynh_system_user_create $app
+ynh_system_user_create $app $final_path
 
 #=================================================
 # SPECIFIC UPGRADE
