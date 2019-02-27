@@ -7,6 +7,7 @@
 #=================================================
 
 source _common.sh
+source ynh_systemd_action
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -243,8 +244,7 @@ systemctl reload nginx
 #=================================================
 ynh_print_info "Reloading OnlyOffice..."
 
-supervisorctl stop all
-supervisorctl start all
+ynh_systemd_action --service_name=supervisor --action=restart --line_match="INFO success: docservice entered RUNNING state" --log_path="systemd"
 
 #=================================================
 # END OF SCRIPT
