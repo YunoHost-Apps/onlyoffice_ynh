@@ -93,7 +93,14 @@ ynh_app_setting_set $app port $port
 ynh_print_info "Add nodejs repository..."
 
 curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
-ynh_package_update
+
+#=================================================
+# ADD ONLYOFFICE REPOSITORY
+#=================================================
+ynh_print_info "Add OnlyOffice repository..."
+
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 
 #=================================================
 # INSTALL DEPENDENCIES
@@ -123,7 +130,6 @@ ynh_print_info "Creating a PostgreSQL database..."
 ###		- Remove also the section "REMOVE THE POSTGRESQL DATABASE" in the remove script
 ###		- As well as the section "RESTORE THE POSTGRESQL DATABASE" in the restore script
 
-ynh_package_install postgresql
 db_name=$(ynh_sanitize_dbid $app)
 db_pwd="onlyoffice"
 ynh_app_setting_set $app db_name $db_name
@@ -178,15 +184,6 @@ ynh_system_user_create $app $final_path
 ynh_print_info "Define OnlyOffice server port..."
 
 echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
-
-#=================================================
-# ADD ONLYOFFICE REPOSITORY
-#=================================================
-ynh_print_info "Add OnlyOffice repository..."
-
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-ynh_package_update
 
 #=================================================
 # INSTALL ONLYOFFICE
