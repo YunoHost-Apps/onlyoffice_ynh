@@ -166,7 +166,7 @@ fi
 ynh_add_nginx_config "nextclouddomain"
 
 # Fix main domain X-Frame-Options
-#ynh_replace_string "X-Frame-Options : SAMEORIGIN" "X-Frame-Options : ALLOW-FROM https://$nextclouddomain" "/etc/nginx/conf.d/$domain.conf"
+ynh_replace_string "X-Frame-Options : SAMEORIGIN" "X-Frame-Options : ALLOW-FROM https://$nextclouddomain" "/etc/nginx/conf.d/$domain.conf"
 
 #=================================================
 # CREATE DEDICATED USER
