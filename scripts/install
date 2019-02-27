@@ -166,7 +166,7 @@ ynh_print_info "Configuring nginx web server..."
 if [ $path_url = "/" ]; then
    ynh_replace_string "__SUB_PATH__" "" "../conf/nginx.conf"
 else
-  ynh_replace_string "__SUB_PATH__" "$path" "../conf/nginx.conf"
+  ynh_replace_string "__SUB_PATH__" "$path_url" "../conf/nginx.conf"
 fi
 
 # Create a dedicated nginx config
