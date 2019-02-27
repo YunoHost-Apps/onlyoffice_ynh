@@ -79,9 +79,9 @@ ynh_print_info "Upgrading nginx web server configuration..."
 # Create a dedicated nginx config
 if [ $path_url = "/" ]
 then
-   ynh_replace_string "__SUB_PATH__" "" "..conf/nginx.conf"
+   ynh_replace_string "__SUB_PATH__" "" "../conf/nginx.conf"
 else
-  ynh_replace_string "__SUB_PATH__" "$path" "..conf/nginx.conf"
+  ynh_replace_string "__SUB_PATH__" "$path" "../conf/nginx.conf"
 fi
 ynh_add_nginx_config "nextclouddomain"
 
