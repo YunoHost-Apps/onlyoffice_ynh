@@ -173,6 +173,9 @@ fi
 # Create a dedicated nginx config
 ynh_add_nginx_config "nextclouddomain"
 
+# Fix main domain X-Frame-Options
+ynh_replace_string "X-Frame-Options : SAMEORIGIN" "X-Frame-Options : ALLOW-FROM https://$nextclouddomain" "/etc/nginx/conf.d/$domain.conf"
+
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
@@ -245,6 +248,8 @@ systemctl reload nginx
 ynh_print_info "Reloading OnlyOffice..."
 
 ynh_systemd_action --service_name=supervisor --action=restart --line_match="INFO success: docservice entered RUNNING state" --log_path="systemd"
+
+sleep 10
 
 #=================================================
 # END OF SCRIPT
