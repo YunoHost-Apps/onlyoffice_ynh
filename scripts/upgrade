@@ -77,8 +77,7 @@ path_url=$(ynh_normalize_url_path $path_url)
 ynh_print_info "Upgrading nginx web server configuration..."
 
 # Create a dedicated nginx config
-if [ $path = "/" ]
-then
+if [ $path = "/" ]; then
    ynh_replace_string "__SUB_PATH__" "" "..conf/nginx.conf"
 else
   ynh_replace_string "__SUB_PATH__" "$path" "..conf/nginx.conf"
