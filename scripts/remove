@@ -7,7 +7,6 @@
 #=================================================
 
 source _common.sh
-source ynh_systemd_action
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -29,7 +28,7 @@ final_path=$(ynh_app_setting_get $app final_path)
 #=================================================
 ynh_print_info "Stopping OnlyOffice"
 
-ynh_systemd_action --service_name=supervisor --action=stop --log_path="systemd"
+supervisorctl stop all
 
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
