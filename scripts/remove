@@ -45,7 +45,7 @@ ynh_psql_remove_db $db_name $db_name
 ynh_print_info "Removing OnlyOffice"
 
 ynh_secure_remove /var/lib/dpkg/info/onlyoffice-documentserver.prerm
-ynh_package_autopurge onlyoffice-documentserver
+ynh_package_autoremove onlyoffice-documentserver
 
 #=================================================
 # REMOVE DEPENDENCIES
