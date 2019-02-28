@@ -36,7 +36,7 @@ supervisorctl stop all
 ynh_print_info "Removing OnlyOffice"
 
 ynh_secure_remove /var/lib/dpkg/info/onlyoffice-documentserver.prerm
-ynh_package_autoremove onlyoffice-documentserver
+ynh_package_autopurge onlyoffice-documentserver
 
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
