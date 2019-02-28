@@ -250,7 +250,7 @@ ynh_print_info "Reloading OnlyOffice..."
 supervisorctl stop all
 supervisorctl start all
 
-sleep 10
+sleep 30
 
 #=================================================
 # END OF SCRIPT
