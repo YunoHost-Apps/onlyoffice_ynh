@@ -1,7 +1,0 @@
-Section: misc
-Priority: optional
-Package: postgresql-client
-Version: 9.1
-Depends:
-Architecture: all
-Description: Fake package for postgresql-client

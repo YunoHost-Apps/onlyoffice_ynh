@@ -194,10 +194,11 @@ ynh_package_install onlyoffice-documentserver
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
-ynh_print_info "Fix config file..."
 
-# Fix https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues/172#issuecomment-411746394
-#cp -f ../conf/default.json /etc/onlyoffice/documentserver/default.json
+### `ynh_replace_string` is used to replace a string in a file.
+### (It's compatible with sed regular expressions syntax)
+
+#ynh_replace_string "match_string" "replace_string" "$final_path/CONFIG_FILE"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
