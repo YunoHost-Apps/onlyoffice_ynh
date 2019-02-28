@@ -28,6 +28,8 @@ ynh_print_info "Loading installation settings..."
 
 # Needed for helper "ynh_add_nginx_config"
 final_path=$(ynh_app_setting_get $app final_path)
+port=$(ynh_app_setting_get $app port)
+nextclouddomain=$(ynh_app_setting_get $app nextclouddomain)
 
 # Add settings here as needed by your application
 #db_name=$(ynh_app_setting_get "$app" db_name)
@@ -75,8 +77,16 @@ then
 	# Set global variables for nginx helper
 	domain="$old_domain"
 	path_url="$new_path"
+	
+	### `ynh_add_nginx_config` will use the file conf/nginx.conf
+	if [ $new_path = "/" ]; then
+   		ynh_replace_string "__SUB_PATH__" "" "../conf/nginx.conf"
+	else
+  		ynh_replace_string "__SUB_PATH__" "$new_path" "../conf/nginx.conf"
+	fi
+
 	# Create a dedicated nginx config
-	ynh_add_nginx_config
+	ynh_add_nginx_config "nextclouddomain"
 fi
 
 # Change the domain for nginx
@@ -87,6 +97,8 @@ then
 	mv $nginx_conf_path /etc/nginx/conf.d/$new_domain.d/$app.conf
 	# Store file checksum for the new config file location
 	ynh_store_file_checksum "/etc/nginx/conf.d/$new_domain.d/$app.conf"
+	ynh_replace_string "X-Frame-Options : ALLOW-FROM https://$nextclouddomain" "X-Frame-Options : SAMEORIGIN" "/etc/nginx/conf.d/$old_domain.conf"
+	ynh_replace_string "X-Frame-Options : SAMEORIGIN" "X-Frame-Options : ALLOW-FROM https://$nextclouddomain" "/etc/nginx/conf.d/$new_domain.conf"
 fi
 
 #=================================================
