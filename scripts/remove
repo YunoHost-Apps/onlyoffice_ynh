@@ -31,20 +31,20 @@ ynh_print_info "Stopping OnlyOffice"
 supervisorctl stop all
 
 #=================================================
-# REMOVE THE POSTGRESQL DATABASE
-#=================================================
-ynh_print_info "Removing the PostgreSQL database"
-
-# Remove a database if it exists, along with the associated user
-ynh_psql_remove_db $db_name $db_name
-
-#=================================================
 # REMOVE ONLYOFFICE
 #=================================================
 ynh_print_info "Removing OnlyOffice"
 
 ynh_secure_remove /var/lib/dpkg/info/onlyoffice-documentserver.prerm
 ynh_package_autoremove onlyoffice-documentserver
+
+#=================================================
+# REMOVE THE POSTGRESQL DATABASE
+#=================================================
+ynh_print_info "Removing the PostgreSQL database"
+
+# Remove a database if it exists, along with the associated user
+ynh_psql_remove_db $db_name $db_name
 
 #=================================================
 # REMOVE DEPENDENCIES
