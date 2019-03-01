@@ -100,8 +100,6 @@ ynh_print_info "Add OnlyOffice repository..."
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 
-ynh_package_update
-
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
@@ -191,7 +189,7 @@ echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-
 ynh_print_info "Install OnlyOffice..."
 
 wget $source
-dpkg -i onlyoffice-documentserver_amd64.deb
+apt install ./onlyoffice-documentserver_amd64.deb
 
 #=================================================
 # MODIFY A CONFIG FILE
