@@ -181,7 +181,7 @@ echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-
 ynh_print_info "Install OnlyOffice..."
 
 wget $source
-ynh_package_install onlyoffice-documentserver_amd64.deb
+dpkg -i onlyoffice-documentserver_amd64.deb
 
 #=================================================
 # MODIFY A CONFIG FILE
