@@ -9,48 +9,13 @@ If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to
 ## Overview
 OnlyOffice Document Server
 
-**Shipped version:** 1.0
-
-## Screenshots
-
-![](http://kaosenlared.net/wp-content/uploads/2016/10/onlyoffyce-2.jpg)
-
-## Demo
-
-* [Official demo](Link to a demo site for this app)
-
-## Configuration
-
-How to configure this app: by an admin panel, a plain file with SSH, or any other way.
-
-## Documentation
-
- * Official documentation: Link to the official documentation of this app
- * YunoHost documentation: If specific documentation is needed, feel free to contribute.
-
 ## YunoHost specific features
-
-#### Multi-users support
-
-Are LDAP and HTTP auth supported?
-Can the app be used by multiple users?
 
 #### Supported architectures
 
 * x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/onlyoffice/)
 * Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/onlyoffice/)
-
-## Limitations
-
-* Any known limitations.
-
-## Additional information
-
-* Other information you would add about this application
-
-**More information on the documentation page:**  
-https://yunohost.org/packaging_apps
 
 ## Links
 
