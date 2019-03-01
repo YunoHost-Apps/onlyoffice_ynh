@@ -9,6 +9,8 @@ If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to
 ## Overview
 OnlyOffice Document Server
 
+**Shipped version:** 5.2.8
+
 ## YunoHost specific features
 
 #### Supported architectures
