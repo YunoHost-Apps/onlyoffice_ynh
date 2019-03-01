@@ -128,7 +128,7 @@ echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /e
 ynh_print_info "Upgrading OnlyOffice..."
 
 wget $source
-apt install ./onlyoffice-documentserver_amd64.deb
+apt install -y ./onlyoffice-documentserver_amd64.deb
 
 ### Verify the checksum of a file, stored by `ynh_store_file_checksum` in the install script.
 ### And create a backup of this file if the checksum is different. So the file will be backed up if the admin had modified it.

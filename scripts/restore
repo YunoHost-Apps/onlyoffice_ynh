@@ -132,7 +132,7 @@ echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-
 ynh_print_info "Reinstalling OnlyOffice..."
 
 wget $source
-apt install ./onlyoffice-documentserver_amd64.deb
+apt install -y ./onlyoffice-documentserver_amd64.deb
 
 #=================================================
 # GENERIC FINALIZATION
