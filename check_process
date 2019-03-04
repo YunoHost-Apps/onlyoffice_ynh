@@ -17,6 +17,7 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
+		upgrade=1 from_commit=c7d09d7f15a01e85e0354561d737523e1cb18749
 		backup_restore=1
 		multi_instance=0
 		incorrect_path=1
