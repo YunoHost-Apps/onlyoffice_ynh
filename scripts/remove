@@ -12,19 +12,44 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
+ynh_print_info "Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get $app domain)
 port=$(ynh_app_setting_get $app port)
+db_name=$(ynh_app_setting_get $app db_name)
 final_path=$(ynh_app_setting_get $app final_path)
 
 #=================================================
 # STANDARD REMOVE
 #=================================================
+# STOP ONLYOFFICE
+#=================================================
+ynh_print_info "Stopping OnlyOffice"
+
+supervisorctl stop all
+
+#=================================================
+# REMOVE ONLYOFFICE
+#=================================================
+ynh_print_info "Removing OnlyOffice"
+
+ynh_secure_remove /var/lib/dpkg/info/onlyoffice-documentserver.prerm
+ynh_package_autopurge onlyoffice-documentserver
+
+#=================================================
+# REMOVE THE POSTGRESQL DATABASE
+#=================================================
+ynh_print_info "Removing the PostgreSQL database"
+
+# Remove a database if it exists, along with the associated user
+ynh_psql_remove_db $db_name $db_name
+
 #=================================================
 # REMOVE DEPENDENCIES
 #=================================================
+ynh_print_info "Removing dependencies"
 
 # Remove metapackage and its dependencies
 ynh_remove_app_dependencies
@@ -32,6 +57,7 @@ ynh_remove_app_dependencies
 #=================================================
 # REMOVE APP MAIN DIR
 #=================================================
+ynh_print_info "Removing app main directory"
 
 # Remove the app directory securely
 ynh_secure_remove "$final_path"
@@ -39,6 +65,7 @@ ynh_secure_remove "$final_path"
 #=================================================
 # REMOVE NGINX CONFIGURATION
 #=================================================
+ynh_print_info "Removing nginx web server configuration"
 
 # Remove the dedicated nginx config
 ynh_remove_nginx_config
@@ -49,8 +76,8 @@ ynh_remove_nginx_config
 
 if yunohost firewall list | grep -q "\- $port$"
 then
-	echo "Close port $port" >&2
-	yunohost firewall disallow TCP $port 2>&1
+	ynh_print_info "Closing port $port"
+	ynh_exec_warn_less yunohost firewall disallow TCP $port
 fi
 
 #=================================================
@@ -60,14 +87,14 @@ fi
 #=================================================
 
 # Remove a cron file
-ynh_secure_remove "/etc/cron.d/$app"
+#ynh_secure_remove "/etc/cron.d/$app"
 
 # Remove a directory securely
 ynh_secure_remove "/etc/apt/sources.list.d/onlyoffice.list"
-
-# Remove DB
-sudo -i -u postgres psql -c "DROP DATABASE onlyoffice;"
-sudo -i -u postgres psql -c "DROP USER onlyoffice;"
+ynh_secure_remove "/etc/apt/sources.list.d/nodesource.list"
+ynh_secure_remove "/etc/onlyoffice"
+ynh_secure_remove "/var/lib/onlyoffice"
+ynh_secure_remove "/var/cache/nginx/onlyoffice"
 
 # Remove the log files
 ynh_secure_remove "/var/log/$app/"
@@ -77,6 +104,14 @@ ynh_secure_remove "/var/log/$app/"
 #=================================================
 # REMOVE DEDICATED USER
 #=================================================
+ynh_print_info "Removing the dedicated system user"
 
 # Delete a system user
+gpasswd -d www-data onlyoffice
 ynh_system_user_delete $app
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info "Removal of $app completed"

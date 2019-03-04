@@ -1,34 +1,42 @@
-# OnlyOffice app for YunoHost
+# OnlyOffice for YunoHost
+
+[![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice)  
+[![Install onlyoffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=onlyoffice)
+
+> *This package allow you to install OnlyOffice quickly and simply on a YunoHost server.  
+If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
+
+## Overview
 OnlyOffice Document Server
 
-- [Yunohost project](https://yunohost.org)
-- [OnlyOffice website](https://www.onlyoffice.com)
+**Shipped version:** 5.2.8
 
-![](http://kaosenlared.net/wp-content/uploads/2016/10/onlyoffyce-2.jpg)
+## YunoHost specific features
 
-[![Integration level](https://dash.yunohost.org/integration/onlyoffice_ynh.svg)](https://dash.yunohost.org/appci/app/onlyoffice_ynh)  
-[![Install OnlyOffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=onlyoffice)
+#### Supported architectures
 
-### Version
+* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/onlyoffice/)
+* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/onlyoffice/)
 
-1. Master = Is stable and work version
+## Links
 
-2. BETA_VERSION = Beta is version for multi-instances and add possibility to install on same domain as nextcloud (not work need fix).
+ * Report a bug: https://github.com/YunoHost-Apps/onlyoffice_ynh/issues
+ * App website: https://www.onlyoffice.com
+ * Github App website: https://github.com/ONLYOFFICE/CommunityServer
+ * YunoHost website: https://yunohost.org/
 
-3. YHN_VERSION = This version respect rules of yunohost for app install (not work need fix).
+---
 
-### Installing guide
+Developers info
+----------------
 
- 1. App can be installed by YunoHost **admin web-interface** or by **running following command**:
+**Only if you want to use a testing branch for coding, instead of merging directly into master.**
+Please do your pull request to the [testing branch](https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing).
 
-        $ sudo yunohost app install https://github.com/YunoHost-Apps/onlyoffice_ynh
-         
-        $ sudo yunohost app install --debug https://github.com/YunoHost-Apps/onlyoffice_ynh
-         
- 2. Need to restart yunohost.
- 
-### Upgrade this package:
-
-        $ sudo yunohost app upgrade --verbose example -u https://github.com/YunoHost-Apps/onlyoffice_ynh
-
-
+To try the testing branch, please proceed like that.
+```
+sudo yunohost app install https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
+or
+sudo yunohost app upgrade onlyoffice -u https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
+```
