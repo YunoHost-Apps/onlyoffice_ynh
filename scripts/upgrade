@@ -16,12 +16,12 @@ ynh_print_info --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get $app domain)
-path_url=$(ynh_app_setting_get $app path)
-is_public=$(ynh_app_setting_get $app is_public)
-db_name=$(ynh_app_setting_get $app db_name)
-port=$(ynh_app_setting_get $app port)
-nextclouddomain=$(ynh_app_setting_get $app nextclouddomain)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+port=$(ynh_app_setting_get --app=$app --key=port)
+nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -30,17 +30,17 @@ ynh_print_info --message="Ensuring downward compatibility..."
 
 # Fix is_public as a boolean value
 if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set $app is_public 1
+	ynh_app_setting_set --app=$app --key=is_public --value=1
 	is_public=1
 elif [ "$is_public" = "No" ]; then
-	ynh_app_setting_set $app is_public 0
+	ynh_app_setting_set --app=$app --key=is_public --value=0
 	is_public=0
 fi
 
 # If db_name doesn't exist, create it
-if [ -z $db_name ]; then
-	db_name=$(ynh_sanitize_dbid $app)
-	ynh_app_setting_set $app db_name $db_name
+if [ -z "$db_name" ]; then
+	db_name=$(ynh_sanitize_dbid --db_name=$app)
+	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 fi
 
 #=================================================
@@ -62,7 +62,8 @@ ynh_abort_if_errors
 #=================================================
 
 # Normalize the URL path syntax
-path_url=$(ynh_normalize_url_path $path_url)
+
+path_url=$(ynh_normalize_url_path --path_url=$path_url)
 
 #=================================================
 # STANDARD UPGRADE STEPS
@@ -71,24 +72,24 @@ path_url=$(ynh_normalize_url_path $path_url)
 #=================================================
 ynh_print_info --message="Configuring nginx web server..."
 
-if [ $path_url = "/" ]; then
+if [ "$path_url" = "/" ]; then
    ynh_replace_string "__SUB_PATH__" "" "../conf/nginx.conf"
 else
-  ynh_replace_string "__SUB_PATH__" "$path_url" "../conf/nginx.conf"
+  ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$path_url" --target_file="../conf/nginx.conf"
 fi
 
 # Create a dedicated nginx config
 ynh_add_nginx_config "nextclouddomain"
 
 # Fix main domain X-Frame-Options
-ynh_replace_string "X-Frame-Options : SAMEORIGIN" "X-Frame-Options : ALLOW-FROM https://$nextclouddomain" "/etc/nginx/conf.d/$domain.conf"
+ynh_replace_string --match_string="X-Frame-Options : SAMEORIGIN" --replace_string="X-Frame-Options : ALLOW-FROM https://$nextclouddomain" --target_file="/etc/nginx/conf.d/$domain.conf"
 
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
 ynh_print_info --message="Upgrading dependencies..."
 
-ynh_install_app_dependencies  postgresql libstdc++6 redis-server rabbitmq-server
+ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE DEDICATED USER
@@ -96,7 +97,7 @@ ynh_install_app_dependencies  postgresql libstdc++6 redis-server rabbitmq-server
 ynh_print_info --message="Making sure dedicated system user exists..."
 
 # Create a dedicated user (if not existing)
-ynh_system_user_create $app $final_path
+ynh_system_user_create --username=$app
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -121,7 +122,11 @@ echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /e
 ynh_print_info --message="Upgrading OnlyOffice..."
 
 wget $source
-apt install -y ./onlyoffice-documentserver_amd64.deb
+ynh_package_install ./onlyoffice-documentserver_amd64.deb
+
+#=================================================
+# STORE THE CONFIG FILE CHECKSUM
+#=================================================
 
 #ynh_backup_if_checksum_is_different "$final_path/CONFIG_FILE"
 # Recalculate and store the checksum of the file for the next upgrade.
@@ -131,13 +136,6 @@ apt install -y ./onlyoffice-documentserver_amd64.deb
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
-# Set permissions on app files
-#chown -R root: $final_path
-
-#=================================================
 # SETUP SSOWAT
 #=================================================
 ynh_print_info --message="Upgrading SSOwat configuration..."
@@ -146,7 +144,7 @@ ynh_print_info --message="Upgrading SSOwat configuration..."
 if [ $is_public -eq 1 ]
 then
 	# unprotected_uris allows SSO credentials to be passed anyway
-	ynh_app_setting_set $app unprotected_uris "/"
+	ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
 fi
 
 #=================================================
@@ -154,7 +152,7 @@ fi
 #=================================================
 ynh_print_info --message="Reloading nginx web server..."
 
-systemctl reload nginx
+ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # RELOAD ONLYOFFICE
