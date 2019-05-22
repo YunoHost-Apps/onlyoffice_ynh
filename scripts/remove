@@ -7,6 +7,7 @@
 #=================================================
 
 source _common.sh
+source ynh_add_extra_apt_repos__3
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -53,6 +54,9 @@ ynh_print_info --message="Removing dependencies..."
 
 # Remove metapackage and its dependencies
 ynh_remove_app_dependencies
+ynh_remove_extra_repo
+
+apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5"
 
 #=================================================
 # REMOVE NGINX CONFIGURATION
@@ -69,8 +73,6 @@ ynh_remove_nginx_config
 #=================================================
 
 # Remove a directory securely
-ynh_secure_remove --file="/etc/apt/sources.list.d/onlyoffice.list"
-ynh_secure_remove --file="/etc/apt/sources.list.d/nodesource.list"
 ynh_secure_remove --file="/etc/onlyoffice"
 ynh_secure_remove --file="/var/lib/onlyoffice"
 ynh_secure_remove --file="/var/cache/nginx/onlyoffice"
