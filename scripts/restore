@@ -109,8 +109,8 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | sudo debconf
 #=================================================
 ynh_print_info --message="Reinstalling OnlyOffice..."
 
-wget $source
-apt install -y ./onlyoffice-documentserver_amd64.deb
+wget $onlyoffice_source
+ynh_package_install ./onlyoffice-documentserver_amd64.deb
 
 #=================================================
 # RESTORE THE CONFIGURATION
@@ -133,8 +133,7 @@ ynh_systemd_action --service_name=nginx --action=reload
 #=================================================
 ynh_print_info --message="Reloading OnlyOffice..."
 
-supervisorctl stop all
-supervisorctl start all
+supervisorctl restart all
 
 sleep 30
 
