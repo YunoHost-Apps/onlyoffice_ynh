@@ -7,43 +7,39 @@
 #=================================================
 
 source ../settings/scripts/_common.sh
+source ../settings/scripts/ynh_add_extra_apt_repos__3
 source /usr/share/yunohost/helpers
 
 #=================================================
 # MANAGE SCRIPT FAILURE
 #=================================================
 
-ynh_clean_setup () {
-	#### Remove this function if there's nothing to clean before calling the remove script.
-	true
-}
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_print_info "Loading settings..."
+ynh_print_info --message="Loading settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get $app domain)
-path_url=$(ynh_app_setting_get $app path)
-final_path=$(ynh_app_setting_get $app final_path)
-db_name=$(ynh_app_setting_get $app db_name)
-db_pwd=$(ynh_app_setting_get $app db_pwd)
-port=$(ynh_app_setting_get $app port)
-nextclouddomain=$(ynh_app_setting_get $app nextclouddomain)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+db_user=$db_name
+db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
+port=$(ynh_app_setting_get --app=$app --key=port)
+nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
 #=================================================
-ynh_print_info "Validating restoration parameters..."
+ynh_print_info --message="Validating restoration parameters..."
 
-ynh_webpath_available $domain $path_url \
-	|| ynh_die "Path not available: ${domain}${path_url}"
-test ! -d $final_path \
-	|| ynh_die "There is already a directory: $final_path "
+ynh_webpath_available --domain=$domain --path_url=$path_url \
+	|| ynh_die --message="Path not available: ${domain}${path_url}"
 
 #=================================================
 # STANDARD RESTORATION STEPS
@@ -51,105 +47,93 @@ test ! -d $final_path \
 # RESTORE THE NGINX CONFIGURATION
 #=================================================
 
-ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
 # Fix main domain X-Frame-Options
-ynh_replace_string "X-Frame-Options : SAMEORIGIN" "X-Frame-Options : ALLOW-FROM https://$nextclouddomain" "/etc/nginx/conf.d/$domain.conf"
-
-#=================================================
-# RESTORE THE APP MAIN DIR
-#=================================================
-ynh_print_info "Restoring the app main directory..."
-
-ynh_restore_file "$final_path"
+ynh_replace_string --match_string="X-Frame-Options : SAMEORIGIN" --replace_string="X-Frame-Options : ALLOW-FROM https://$nextclouddomain" --target_file="/etc/nginx/conf.d/$domain.conf"
 
 #=================================================
 # RECREATE THE DEDICATED USER
 #=================================================
-ynh_print_info "Recreating the dedicated system user..."
+ynh_print_info --message="Recreating the dedicated system user..."
 
 # Create the dedicated user (if not existing)
-ynh_system_user_create $app $final_path
-
-#=================================================
-# RESTORE USER RIGHTS
-#=================================================
-
-# Restore permissions on app files
-chown -R $app: $final_path
+ynh_system_user_create --username=$app
 
 #=================================================
 # SPECIFIC RESTORATION
 #=================================================
-# RESTORE THE CONFIGURATION
-#=================================================
-ynh_print_info "Restoring the configuration..."
-
-ynh_restore_file "/etc/onlyoffice"
-
-#=================================================
 # ADD NODEJS REPOSITORY
 #=================================================
-ynh_print_info "Add nodejs repository..."
+ynh_print_info --message="Add nodejs repository..."
 
-curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
+ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_8.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
-ynh_print_info "Add OnlyOffice repository..."
+ynh_print_info --message="Add OnlyOffice repository..."
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-echo "deb http://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
 
 #=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
-ynh_print_info "Reinstalling dependencies..."
+ynh_print_info --message="Reinstalling dependencies..."
 
 # Define and install dependencies
-ynh_install_app_dependencies postgresql libstdc++6 redis-server rabbitmq-server
+ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # RESTORE THE POSTGRESQL DATABASE
 #=================================================
-ynh_print_info "Restoring the PostgreSQL database..."
+ynh_print_info --message="Restoring the PostgreSQL database..."
 
 ynh_psql_test_if_first_run
-ynh_psql_create_db $db_name $db_name $db_pwd
-ynh_psql_execute_file_as_root ./db.sql "$db_name"
+ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
+ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
 
 #=================================================
-# DEFINE PORT
+# CONFIGURE ONLYOFFICE
 #=================================================
-ynh_print_info "Define OnlyOffice server port..."
+ynh_print_info --message="Configuring Onlyoffice..."
 
-echo onlyoffice-documentserver onlyoffice/ds-port select ${port} | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/ds-port select $port | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-user string $db_user | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-name string $db_name | sudo debconf-set-selections
 
 #=================================================
 # REINSTALL ONLYOFFICE
 #=================================================
-ynh_print_info "Reinstalling OnlyOffice..."
+ynh_print_info --message="Reinstalling OnlyOffice..."
 
-wget $source
-apt install -y ./onlyoffice-documentserver_amd64.deb
+ynh_add_app_dependencies --package="onlyoffice-documentserver"
+
+#=================================================
+# RESTORE THE CONFIGURATION
+#=================================================
+ynh_print_info --message="Restoring the configuration..."
+
+ynh_restore_file --origin_path="/etc/onlyoffice"
 
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_print_info "Reloading nginx web server..."
+ynh_print_info --message="Reloading nginx web server..."
 
-systemctl reload nginx
+ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # RELOAD ONLYOFFICE
 #=================================================
-ynh_print_info "Reloading OnlyOffice..."
+ynh_print_info --message="Reloading OnlyOffice..."
 
-supervisorctl stop all
-supervisorctl start all
+supervisorctl restart all
 
 sleep 30
 
@@ -157,4 +141,4 @@ sleep 30
 # END OF SCRIPT
 #=================================================
 
-ynh_print_info "Restoration completed for $app"
+ynh_print_info --message="Restoration completed for $app"

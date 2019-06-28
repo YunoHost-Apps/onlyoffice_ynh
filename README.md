@@ -1,7 +1,7 @@
 # OnlyOffice for YunoHost
 
 [![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice)  
-[![Install onlyoffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=onlyoffice)
+[![Install OnlyOffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=onlyoffice)
 
 > *This package allow you to install OnlyOffice quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
@@ -15,9 +15,9 @@ OnlyOffice Document Server
 
 #### Supported architectures
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/onlyoffice/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/onlyoffice%20%28Community%29.svg)](https://ci-stretch.nohost.me/ci/apps/onlyoffice/)
+* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/onlyoffice%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/onlyoffice%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/onlyoffice/)
+* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/onlyoffice%20%28Apps%29.svg)](https://ci-stretch.nohost.me/ci/apps/onlyoffice/)
 
 ## Links
 
