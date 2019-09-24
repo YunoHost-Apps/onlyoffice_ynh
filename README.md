@@ -23,7 +23,7 @@ OnlyOffice Document Server
 
  * Report a bug: https://github.com/YunoHost-Apps/onlyoffice_ynh/issues
  * App website: https://www.onlyoffice.com
- * Github App website: https://github.com/ONLYOFFICE/CommunityServer
+ * Github App website: https://github.com/ONLYOFFICE/DocumentServer
  * YunoHost website: https://yunohost.org/
 
 ---
