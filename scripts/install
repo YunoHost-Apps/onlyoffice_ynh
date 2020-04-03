@@ -160,6 +160,14 @@ supervisorctl restart all
 sleep 30
 
 #=================================================
+# REGENERATE FONTS
+#=================================================
+ynh_print_info --message="Generating fonts..."
+
+/usr/bin/documentserver-generate-allfonts.sh
+
+
+#=================================================
 # GENERIC FINALIZATION
 #=================================================
 # SETUP SSOWAT
