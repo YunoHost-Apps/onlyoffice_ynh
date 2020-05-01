@@ -55,10 +55,14 @@
                 "name": "is_public",
                 "type": "boolean",
                 "ask": {
-                    "en": "Is it a public application?",
-                    "fr": "Est-ce une application publique ?"
+                    "en": "Is it a public application? Check the box if you want to use it with Nextcloud.",
+                    "fr": "Est-ce une application publique ? Cocher la case si vous voulez l'intégrer dans Nextcloud."
                 },
-                "default": true
+                "default": true,
+                "help": {
+                    "en": "You will only be able to integrate OnlyOffice in Nextcloud if both apps are public.",
+                    "fr": "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les intégrer."
+                }
             }
         ]
     }
