@@ -37,7 +37,7 @@ You should not install ``onlyoffice`` on your main YunoHost domain, especially i
   * you have configured ``office.yunohost.domain`` for OnlyOffice, see Prerequisite above
   * you have Nextcloud installed on ``yunohost.domain/nextcloud`` or ``nextcloud.yunohost.domain``
 * Install ``onlyoffice`` using CLI or web admin
-  * Choose a domain name for OnlyOffice that is different from your Nextcloud domain, e.g. ``office.yunohost.domain`` (or ``office.domain.nohost.me`` previously created)
+  * Choose a domain name for OnlyOffice that is different from your Nextcloud domain, e.g. ``office.yunohost.domain`` (or ``office.domain.nohost.me``, see previous section)
   * Choose a path for OnlyOffice, e.g. ``/`` if you install on ``office.yunohost.domain`` (do not install any further app on this domain)
   * The domain of your Nextcloud instance, e.g. ``yunohost.domain/nextcloud`` or ``nextcloud.yunohost.domain``
   * Is it a public application? **If you want to connect it to Nextcloud, OnlyOffice should be public**: then select ``Yes`` or ``tick the box``
@@ -53,7 +53,7 @@ Prerequisite: **OnlyOffice should be public**, see previous section.
 ### Desktop Edition on PC
 * Download and install a [ONLYOFFICE Desktop Editor](https://www.onlyoffice.com/fr/download-desktop.aspx)
 * Start the Editor and Go to ``Connect to cloud``>``Add cloud``
-  * Select ``ONLYOFFICE`` and give the installation domain of your ``onlyoffice``, e.g. ``office.domain.nohost.me``
+  * Select ``ONLYOFFICE`` and give the installation domain of your ``onlyoffice``, e.g. ``office.yunohost.domain``
   * or (only if you connected ``onlyoffice`` to Nextcloud, see previous section)
   * Select ``Nextcloud`` and give your nextcloud installation domain, e.g. ``yunohost.domain/nextcloud``
 * Create a new document and enjoy!
