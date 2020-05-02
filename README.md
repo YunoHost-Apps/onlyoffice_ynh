@@ -3,11 +3,19 @@
 [![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice)  
 [![Install OnlyOffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=onlyoffice)
 
-> *This package allows you to install OnlyOffice quickly and simply on a YunoHost server.  
+> *This package allows you to install OnlyOffice Document Server quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
 ## Overview
-This package installs a Document Server application supporting collaborative edition of OnlyOffice documents. Edition of documents requires a Client application such as the [OnlyOffice connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice) or the [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx)
+Online collaborative edition of OnlyOffice documents requires: 
+1) a server part, with two installation options:
+  a) **This package installs an OnlyOffice Document Server**. 
+  b) The [Community Document Server for Nextcloud](https://apps.nextcloud.com/apps/documentserver_community) 
+2) a client part, such as: 
+  a) The [ONLYOFFICE connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice) 
+  b) The [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx)
+
+The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) to install 1)a) and 2)a) on one Nextcloud instance. However, performance and architecture are limited.
 
 **Shipped version:** 5.2.8
 
