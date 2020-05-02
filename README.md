@@ -15,7 +15,7 @@ Online collaborative edition of OnlyOffice documents requires:
   a) The [ONLYOFFICE connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice) 
   b) The [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx)
 
-The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) to install 1)a) and 2)a) on one Nextcloud instance. However, performance and architecture are limited.
+The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) to install 1)b) and 2)a) on one Nextcloud instance. However, performance and architecture are limited.
 
 **Shipped version:** 5.2.8
 
