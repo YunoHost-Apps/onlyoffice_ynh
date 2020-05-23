@@ -7,7 +7,6 @@
 #=================================================
 
 source ../settings/scripts/_common.sh
-source ../settings/scripts/ynh_add_extra_apt_repos__3
 source /usr/share/yunohost/helpers
 
 #=================================================
