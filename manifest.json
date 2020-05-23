@@ -3,8 +3,8 @@
     "id": "onlyoffice",
     "packaging_format": 1,
     "description": {
-        "en": "OnlyOffice Document Server.",
-        "fr": "Serveur de documents OnlyOffice."
+        "en": "Create and edit documents collaboratively",
+        "fr": "Créez et éditer des documents collaborativement"
     },
     "version": "5.2.8~ynh1",
     "url": "https://www.onlyoffice.com",
