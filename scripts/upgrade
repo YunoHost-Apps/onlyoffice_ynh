@@ -20,6 +20,8 @@ domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+db_user=$db_name
+db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
 port=$(ynh_app_setting_get --app=$app --key=port)
 nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 
