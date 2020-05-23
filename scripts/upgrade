@@ -153,6 +153,13 @@ ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_strin
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 
 #=================================================
+# REGENERATE FONTS
+#=================================================
+ynh_print_info --message="Generating fonts..."
+
+/usr/bin/documentserver-generate-allfonts.sh
+
+#=================================================
 # GENERIC FINALIZATION
 #=================================================
 # SETUP SSOWAT

@@ -120,6 +120,13 @@ ynh_print_info --message="Restoring the configuration..."
 ynh_restore_file --origin_path="/etc/onlyoffice"
 
 #=================================================
+# REGENERATE FONTS
+#=================================================
+ynh_print_info --message="Generating fonts..."
+
+/usr/bin/documentserver-generate-allfonts.sh
+
+#=================================================
 # GENERIC FINALIZATION
 #=================================================
 # RELOAD NGINX
