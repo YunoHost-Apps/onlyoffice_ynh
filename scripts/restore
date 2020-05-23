@@ -99,11 +99,11 @@ ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
 #=================================================
 ynh_print_info --message="Configuring Onlyoffice..."
 
-echo onlyoffice-documentserver onlyoffice/ds-port select $port | sudo debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | sudo debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-user string $db_user | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-name string $db_name | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
 
 #=================================================
 # REINSTALL ONLYOFFICE
