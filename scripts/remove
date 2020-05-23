@@ -36,7 +36,16 @@ supervisorctl stop all
 ynh_print_info --message="Removing OnlyOffice..."
 
 ynh_secure_remove --file=/var/lib/dpkg/info/onlyoffice-documentserver.prerm
+
+# Here you will wonder what the fuck this is, and the answer is : this is a
+# fucking stupid hack because onlyoffice's dev deviced to put a "supervisorctl
+# update" inside their postrm, but when their postrm is ran, supervisorctl is
+# already removed ... so their removal fails which breaks dpkg.
+# So instead, we trick it with this stupid link to /bin/true which is removed
+# right after.
+ln -s /bin/true /usr/local/bin/supervisorctl
 ynh_package_autopurge onlyoffice-documentserver
+ynh_secure_remove /usr/local/bin/supervisorctl
 
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
