@@ -14,7 +14,7 @@
         "email": "liberodark@gmail.com"
     },
     "requirements": {
-        "yunohost": ">= 3.8"
+        "yunohost": ">= 3.8.4"
     },
     "multi_instance": false,
     "services": [
