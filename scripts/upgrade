@@ -7,7 +7,6 @@
 #=================================================
 
 source _common.sh
-source ynh_add_extra_apt_repos__3
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -21,6 +20,8 @@ domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+db_user=$db_name
+db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
 port=$(ynh_app_setting_get --app=$app --key=port)
 nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 
@@ -126,11 +127,11 @@ ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian sq
 ynh_print_info --message="Configuring Onlyoffice..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
-echo onlyoffice-documentserver onlyoffice/ds-port select $port | sudo debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | sudo debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-user string $db_user | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-name string $db_name | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
 
 #=================================================
 # UPGRADE ONLYOFFICE
@@ -151,6 +152,13 @@ ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_strin
 
 # Recalculate and store the checksum of the file for the next upgrade.
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
+
+#=================================================
+# REGENERATE FONTS
+#=================================================
+ynh_print_info --message="Generating fonts..."
+
+/usr/bin/documentserver-generate-allfonts.sh
 
 #=================================================
 # GENERIC FINALIZATION

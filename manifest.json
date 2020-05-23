@@ -3,10 +3,10 @@
     "id": "onlyoffice",
     "packaging_format": 1,
     "description": {
-        "en": "OnlyOffice Document Server.",
-        "fr": "Serveur de documents OnlyOffice."
+        "en": "Create and edit documents collaboratively",
+        "fr": "Créez et éditer des documents collaborativement"
     },
-    "version": "5.2.8~ynh1",
+    "version": "5.5.3~ynh1",
     "url": "https://www.onlyoffice.com",
     "license": "GPL-3.0-or-later",
     "maintainer": {
@@ -14,7 +14,7 @@
         "email": "liberodark@gmail.com"
     },
     "requirements": {
-        "yunohost": ">= 3.5"
+        "yunohost": ">= 3.8.4"
     },
     "multi_instance": false,
     "services": [
@@ -29,7 +29,11 @@
                     "en": "Choose a domain name for OnlyOffice",
                     "fr": "Choisissez un nom de domaine pour OnlyOffice"
                 },
-                "example": "example.com"
+                "example": "office.yunohost.domain",
+                "help": {
+                    "en": "You should not install OnlyOffice on your main YunoHost domain, especially if you want to use it with a nextcloud installed on the same domain.",
+                    "fr": "Evitez d'installer OnlyOffice sur votre domaine Yunohost principal, surtout si vous voulez l'utiliser avec une instance Nextcloud installée sur le même domaine."
+                }
             },   
             {
                 "name": "path",
@@ -38,25 +42,37 @@
                     "en": "Choose a path for OnlyOffice",
                     "fr": "Choisissez un chemin pour OnlyOffice"
                 },
-                "example": "/onlyoffice",
+                "example": "/onlyoffice or /",
+                "help": {
+                    "en": "Root path / if you chose a subdomain, e.g. office.yunohost.domain.",
+                    "fr": "Choisissez le chemin racine / si vous avez choisi un sous-domaine, ex. office.yunohost.domain."
+                },
                 "default": "/onlyoffice"
             },         
             {
                 "name": "nextclouddomain",
                 "type": "string",
                 "ask": {
-                    "en": "The domain of your Nextcloud instance",
-                    "fr": "Le domain de votre instance Nextcloud"
+                    "en": "The domain of the Nextcloud to connect to OnlyOffice",
+                    "fr": "Le domaine du Nextcloud à connecter à OnlyOffice"
                 },
-                "example": "example.com",
-                "default": "example.com"
+                "example": "yunohost.domain/nextcloud or nextcloud.yunohost.domain",
+                "help": {
+                    "en": "Install the OnlyOffice connector to edit documents from Nextcloud.",
+                    "fr": "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
+                },
+                "default": "yunohost.domain/nextcloud"
             },            
             {
                 "name": "is_public",
                 "type": "boolean",
                 "ask": {
-                    "en": "Is it a public application?",
-                    "fr": "Est-ce une application publique ?"
+                    "en": "Is it a public application? If you want to connect the app to Nextcloud: check/true!",
+                    "fr": "Est-ce une application publique ? Si vous voulez connecter l'app à Nextcloud : cochez/true!"
+                },
+                "help": {
+                    "en": "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!",
+                    "fr": "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter!"
                 },
                 "default": true
             }

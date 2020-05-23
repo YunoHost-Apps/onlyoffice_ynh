@@ -7,7 +7,6 @@
 #=================================================
 
 source _common.sh
-source ynh_add_extra_apt_repos__3
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -124,17 +123,21 @@ ynh_system_user_create --username=$app
 #=================================================
 ynh_print_info --message="Configuring Onlyoffice..."
 
-echo onlyoffice-documentserver onlyoffice/ds-port select $port | sudo debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | sudo debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-user string $db_user | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-name string $db_name | sudo debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
 
 #=================================================
 # INSTALL ONLYOFFICE
 #=================================================
 ynh_print_info --message="Install OnlyOffice..."
 
+# The onlyoffice dev had the magnificent idea to add a "nginx restart" during
+# the install/configure of their package, which is awful since that will
+# restart nginx and the whole webadmin and maybe even the yunohost command
+# running the install ...
 ynh_add_app_dependencies --package="onlyoffice-documentserver"
 
 #=================================================
@@ -158,6 +161,14 @@ ynh_print_info --message="Reloading OnlyOffice..."
 supervisorctl restart all
 
 sleep 30
+
+#=================================================
+# REGENERATE FONTS
+#=================================================
+ynh_print_info --message="Generating fonts..."
+
+/usr/bin/documentserver-generate-allfonts.sh
+
 
 #=================================================
 # GENERIC FINALIZATION
