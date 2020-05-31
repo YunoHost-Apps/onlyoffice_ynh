@@ -24,7 +24,7 @@ app=$YNH_APP_INSTANCE_NAME
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_print_info --message="Loading installation settings..."
+ynh_script_progression --message="Loading installation settings..."
 
 # Needed for helper "ynh_add_nginx_config"
 port=$(ynh_app_setting_get --app=$app --key=port)
@@ -32,6 +32,7 @@ nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 
 # Add settings here as needed by your application
 #db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+#db_user=$db_name
 #db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
 
 #=================================================
@@ -55,7 +56,7 @@ fi
 #=================================================
 # MODIFY URL IN NGINX CONF
 #=================================================
-ynh_print_info --message="Updating nginx web server configuration..."
+ynh_script_progression --message="Updating nginx web server configuration..."
 
 nginx_conf_path=/etc/nginx/conf.d/$old_domain.d/$app.conf
 
@@ -69,9 +70,9 @@ then
 	path_url="$new_path"
 	
 	if [ $new_path = "/" ]; then
-   		ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
+		ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
 	else
-  		ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$new_path" --target_file="../conf/nginx.conf"
+		ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$new_path" --target_file="../conf/nginx.conf"
 	fi
 
 	# Create a dedicated nginx config
@@ -95,7 +96,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_print_info --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading nginx web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 
@@ -103,4 +104,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_print_info --message="Change of URL completed for $app"
+ynh_script_progression --message="Change of URL completed for $app"

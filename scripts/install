@@ -30,7 +30,7 @@ app=$YNH_APP_INSTANCE_NAME
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
-ynh_print_info --message="Validating installation parameters..."
+ynh_script_progression --message="Validating installation parameters..."
 
 # Register (book) web path
 ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
@@ -38,7 +38,7 @@ ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
-ynh_print_info --message="Storing installation settings..."
+ynh_script_progression --message="Storing installation settings..."
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
@@ -50,7 +50,7 @@ ynh_app_setting_set --app=$app --key=nextclouddomain --value=$nextclouddomain
 #=================================================
 # FIND AND OPEN A PORT
 #=================================================
-ynh_print_info --message="Configuring firewall..."
+ynh_script_progression --message="Configuring firewall..."
 
 # Find a free port
 port=$(ynh_find_port --port=8095)
@@ -59,14 +59,14 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 # ADD NODEJS REPOSITORY
 #=================================================
-ynh_print_info --message="Add nodejs repository..."
+ynh_script_progression --message="Add nodejs repository..."
 
 ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_8.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
-ynh_print_info --message="Add OnlyOffice repository..."
+ynh_script_progression --message="Add OnlyOffice repository..."
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
@@ -74,14 +74,14 @@ ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian sq
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_print_info --message="Installing dependencies..."
+ynh_script_progression --message="Installing dependencies..."
 
 ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
 #=================================================
-ynh_print_info --message="Creating a PostgreSQL database..."
+ynh_script_progression --message="Creating a PostgreSQL database..."
 
 db_name=$(ynh_sanitize_dbid --db_name=$app)
 db_user=$db_name
@@ -94,7 +94,7 @@ ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_print_info --message="Configuring nginx web server..."
+ynh_script_progression --message="Configuring nginx web server..."
 
 if [ $path_url = "/" ]; then
    ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
@@ -111,7 +111,7 @@ ynh_replace_string --match_string="X-Frame-Options : SAMEORIGIN" --replace_strin
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_print_info --message="Configuring system user..."
+ynh_script_progression --message="Configuring system user..."
 
 # Create a system user
 ynh_system_user_create --username=$app
@@ -121,7 +121,7 @@ ynh_system_user_create --username=$app
 #=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
-ynh_print_info --message="Configuring Onlyoffice..."
+ynh_script_progression --message="Configuring Onlyoffice..."
 
 echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
@@ -132,7 +132,7 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 # INSTALL ONLYOFFICE
 #=================================================
-ynh_print_info --message="Install OnlyOffice..."
+ynh_script_progression --message="Install OnlyOffice..."
 
 # The onlyoffice dev had the magnificent idea to add a "nginx restart" during
 # the install/configure of their package, which is awful since that will
@@ -143,12 +143,14 @@ ynh_add_app_dependencies --package="onlyoffice-documentserver"
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
+ynh_script_progression --message="Modifying a config file..."
 
 ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
 #=================================================
+ynh_script_progression --message="Storing the config file checksum..."
 
 # Calculate and store the config file checksum into the app settings
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
@@ -156,7 +158,7 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 #=================================================
 # RELOAD ONLYOFFICE
 #=================================================
-ynh_print_info --message="Reloading OnlyOffice..."
+ynh_script_progression --message="Reloading OnlyOffice..."
 
 supervisorctl restart all
 
@@ -165,7 +167,7 @@ sleep 30
 #=================================================
 # REGENERATE FONTS
 #=================================================
-ynh_print_info --message="Generating fonts..."
+ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh
 
@@ -175,7 +177,7 @@ ynh_print_info --message="Generating fonts..."
 #=================================================
 # SETUP SSOWAT
 #=================================================
-ynh_print_info --message="Configuring SSOwat..."
+ynh_script_progression --message="Configuring SSOwat..."
 
 # Make app public if necessary
 if [ $is_public -eq 1 ]
@@ -187,7 +189,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_print_info --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading nginx web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 
@@ -195,4 +197,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_print_info --message="Installation of $app completed"
+ynh_script_progression --message="Installation of $app completed"
