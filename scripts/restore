@@ -131,6 +131,8 @@ ynh_script_progression --message="Reloading OnlyOffice..."
 
 supervisorctl reload
 
+sleep 30
+
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
