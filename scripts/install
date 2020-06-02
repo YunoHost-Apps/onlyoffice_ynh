@@ -32,6 +32,9 @@ app=$YNH_APP_INSTANCE_NAME
 #=================================================
 ynh_script_progression --message="Validating installation parameters..."
 
+final_path=/var/www/$app
+test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
+
 # Register (book) web path
 ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 
@@ -52,7 +55,7 @@ ynh_app_setting_set --app=$app --key=nextclouddomain --value=$nextclouddomain
 #=================================================
 ynh_script_progression --message="Configuring firewall..."
 
-# Find a free port
+# Find an available port
 port=$(ynh_find_port --port=8095)
 ynh_app_setting_set --app=$app --key=port --value=$port
 
@@ -61,7 +64,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 ynh_script_progression --message="Add nodejs repository..."
 
-ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_8.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_10.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
@@ -92,6 +95,15 @@ ynh_psql_test_if_first_run
 ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
 
 #=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression --message="Setting up source files..."
+
+ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+# Download, check integrity, uncompress and patch the source from app.src
+#ynh_setup_source --dest_dir="$final_path"
+
+#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Configuring nginx web server..."
@@ -104,9 +116,6 @@ fi
 
 # Create a dedicated nginx config
 ynh_add_nginx_config "nextclouddomain"
-
-# Fix main domain X-Frame-Options
-ynh_replace_string --match_string="X-Frame-Options : SAMEORIGIN" --replace_string="X-Frame-Options : ALLOW-FROM https://$nextclouddomain" --target_file="/etc/nginx/conf.d/$domain.conf"
 
 #=================================================
 # CREATE DEDICATED USER
@@ -160,9 +169,7 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 #=================================================
 ynh_script_progression --message="Reloading OnlyOffice..."
 
-supervisorctl restart all
-
-sleep 30
+supervisorctl reload
 
 #=================================================
 # REGENERATE FONTS
@@ -170,7 +177,6 @@ sleep 30
 ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh
-
 
 #=================================================
 # GENERIC FINALIZATION

@@ -45,6 +45,12 @@ if [ -z "$db_name" ]; then
 	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 fi
 
+# If final_path doesn't exist, create it
+if [ -z "$final_path" ]; then
+	final_path=/var/www/$app
+	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+fi
+
 ynh_secure_remove --file="/etc/apt/sources.list.d/onlyoffice.list"
 ynh_secure_remove --file="/etc/apt/sources.list.d/nodesource.list"
 
@@ -86,9 +92,6 @@ fi
 # Create a dedicated nginx config
 ynh_add_nginx_config "nextclouddomain"
 
-# Fix main domain X-Frame-Options
-ynh_replace_string --match_string="X-Frame-Options : SAMEORIGIN" --replace_string="X-Frame-Options : ALLOW-FROM https://$nextclouddomain" --target_file="/etc/nginx/conf.d/$domain.conf"
-
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
@@ -111,7 +114,7 @@ ynh_system_user_create --username=$app
 #=================================================
 ynh_script_progression --message="Add nodejs repository..."
 
-ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_8.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_10.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
@@ -178,9 +181,7 @@ fi
 #=================================================
 ynh_script_progression --message="Reloading OnlyOffice..."
 
-supervisorctl restart all
-
-sleep 30
+supervisorctl reload
 
 #=================================================
 # RELOAD NGINX
