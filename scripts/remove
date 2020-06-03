@@ -46,7 +46,7 @@ ynh_package_autopurge onlyoffice-documentserver
 ynh_script_progression --message="Removing the PostgreSQL database..."
 
 # Remove a database if it exists, along with the associated user
-ynh_psql_remove_db --db_user=$db_user --db_name=$db_name
+ynh_psql_remove_db --db_user="$db_user" --db_name="$db_name"
 
 #=================================================
 # REMOVE DEPENDENCIES
