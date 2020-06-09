@@ -6,7 +6,7 @@
         "en": "Create and edit documents collaboratively",
         "fr": "Créez et éditer des documents collaborativement"
     },
-    "version": "5.5.3~ynh1",
+    "version": "5.5.3~ynh2",
     "url": "https://www.onlyoffice.com",
     "license": "GPL-3.0-or-later",
     "maintainer": {
