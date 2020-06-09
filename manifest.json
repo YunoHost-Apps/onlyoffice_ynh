@@ -34,7 +34,7 @@
                     "en": "You should not install OnlyOffice on your main YunoHost domain, especially if you want to use it with a nextcloud installed on the same domain.",
                     "fr": "Evitez d'installer OnlyOffice sur votre domaine Yunohost principal, surtout si vous voulez l'utiliser avec une instance Nextcloud installée sur le même domaine."
                 }
-            },   
+            },
             {
                 "name": "path",
                 "type": "path",
@@ -48,7 +48,7 @@
                     "fr": "Choisissez le chemin racine / si vous avez choisi un sous-domaine, ex. office.yunohost.domain."
                 },
                 "default": "/onlyoffice"
-            },         
+            },
             {
                 "name": "nextclouddomain",
                 "type": "string",
@@ -62,7 +62,7 @@
                     "fr": "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
                 },
                 "default": "yunohost.domain/nextcloud"
-            },            
+            },
             {
                 "name": "is_public",
                 "type": "boolean",
