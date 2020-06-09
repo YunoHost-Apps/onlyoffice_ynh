@@ -6,6 +6,7 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
+#Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
@@ -19,7 +20,7 @@ ynh_abort_if_errors
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_print_info --message="Loading settings..."
+ynh_script_progression --message="Loading settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -35,7 +36,7 @@ nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
 #=================================================
-ynh_print_info --message="Validating restoration parameters..."
+ynh_script_progression --message="Validating restoration parameters..."
 
 ynh_webpath_available --domain=$domain --path_url=$path_url \
 	|| ynh_die --message="Path not available: ${domain}${path_url}"
@@ -45,16 +46,14 @@ ynh_webpath_available --domain=$domain --path_url=$path_url \
 #=================================================
 # RESTORE THE NGINX CONFIGURATION
 #=================================================
+ynh_script_progression --message="Restoring the nginx configuration..."
 
 ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
-
-# Fix main domain X-Frame-Options
-ynh_replace_string --match_string="X-Frame-Options : SAMEORIGIN" --replace_string="X-Frame-Options : ALLOW-FROM https://$nextclouddomain" --target_file="/etc/nginx/conf.d/$domain.conf"
 
 #=================================================
 # RECREATE THE DEDICATED USER
 #=================================================
-ynh_print_info --message="Recreating the dedicated system user..."
+ynh_script_progression --message="Recreating the dedicated system user..."
 
 # Create the dedicated user (if not existing)
 ynh_system_user_create --username=$app
@@ -64,14 +63,14 @@ ynh_system_user_create --username=$app
 #=================================================
 # ADD NODEJS REPOSITORY
 #=================================================
-ynh_print_info --message="Add nodejs repository..."
+ynh_script_progression --message="Add nodejs repository..."
 
-ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_8.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_10.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
-ynh_print_info --message="Add OnlyOffice repository..."
+ynh_script_progression --message="Add OnlyOffice repository..."
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
@@ -79,7 +78,7 @@ ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian sq
 #=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
-ynh_print_info --message="Reinstalling dependencies..."
+ynh_script_progression --message="Reinstalling dependencies..."
 
 # Define and install dependencies
 ynh_install_app_dependencies $pkg_dependencies
@@ -87,7 +86,7 @@ ynh_install_app_dependencies $pkg_dependencies
 #=================================================
 # RESTORE THE POSTGRESQL DATABASE
 #=================================================
-ynh_print_info --message="Restoring the PostgreSQL database..."
+ynh_script_progression --message="Restoring the PostgreSQL database..."
 
 ynh_psql_test_if_first_run
 ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
@@ -96,7 +95,7 @@ ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
 #=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
-ynh_print_info --message="Configuring Onlyoffice..."
+ynh_script_progression --message="Configuring Onlyoffice..."
 
 echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
@@ -107,44 +106,44 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 # REINSTALL ONLYOFFICE
 #=================================================
-ynh_print_info --message="Reinstalling OnlyOffice..."
+ynh_script_progression --message="Reinstalling OnlyOffice..."
 
 ynh_add_app_dependencies --package="onlyoffice-documentserver"
 
 #=================================================
 # RESTORE THE CONFIGURATION
 #=================================================
-ynh_print_info --message="Restoring the configuration..."
+ynh_script_progression --message="Restoring the configuration..."
 
 ynh_restore_file --origin_path="/etc/onlyoffice"
 
 #=================================================
 # REGENERATE FONTS
 #=================================================
-ynh_print_info --message="Generating fonts..."
+ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh
+
+#=================================================
+# RELOAD ONLYOFFICE
+#=================================================
+ynh_script_progression --message="Reloading OnlyOffice..."
+
+supervisorctl reload
+
+sleep 30
 
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_print_info --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading nginx web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
-
-#=================================================
-# RELOAD ONLYOFFICE
-#=================================================
-ynh_print_info --message="Reloading OnlyOffice..."
-
-supervisorctl restart all
-
-sleep 30
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_print_info --message="Restoration completed for $app"
+ynh_script_progression --message="Restoration completed for $app"

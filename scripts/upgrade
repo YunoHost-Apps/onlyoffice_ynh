@@ -12,7 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_print_info --message="Loading installation settings..."
+ynh_script_progression --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -28,7 +28,7 @@ nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-ynh_print_info --message="Ensuring downward compatibility..."
+ynh_script_progression --message="Ensuring downward compatibility..."
 
 # Fix is_public as a boolean value
 if [ "$is_public" = "Yes" ]; then
@@ -45,13 +45,19 @@ if [ -z "$db_name" ]; then
 	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 fi
 
+# If final_path doesn't exist, create it
+if [ -z "$final_path" ]; then
+	final_path=/var/www/$app
+	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+fi
+
 ynh_secure_remove --file="/etc/apt/sources.list.d/onlyoffice.list"
 ynh_secure_remove --file="/etc/apt/sources.list.d/nodesource.list"
 
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-ynh_print_info --message="Backing up the app before upgrading (may take a while)..."
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
@@ -75,7 +81,7 @@ path_url=$(ynh_normalize_url_path --path_url=$path_url)
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_print_info --message="Configuring nginx web server..."
+ynh_script_progression --message="Configuring nginx web server..."
 
 if [ "$path_url" = "/" ]; then
    ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
@@ -86,20 +92,17 @@ fi
 # Create a dedicated nginx config
 ynh_add_nginx_config "nextclouddomain"
 
-# Fix main domain X-Frame-Options
-ynh_replace_string --match_string="X-Frame-Options : SAMEORIGIN" --replace_string="X-Frame-Options : ALLOW-FROM https://$nextclouddomain" --target_file="/etc/nginx/conf.d/$domain.conf"
-
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_print_info --message="Upgrading dependencies..."
+ynh_script_progression --message="Upgrading dependencies..."
 
 ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_print_info --message="Making sure dedicated system user exists..."
+ynh_script_progression --message="Making sure dedicated system user exists..."
 
 # Create a dedicated user (if not existing)
 ynh_system_user_create --username=$app
@@ -109,14 +112,14 @@ ynh_system_user_create --username=$app
 #=================================================
 # ADD NODEJS REPOSITORY
 #=================================================
-ynh_print_info --message="Add nodejs repository..."
+ynh_script_progression --message="Add nodejs repository..."
 
-ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_8.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_10.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
-ynh_print_info --message="Add OnlyOffice repository..."
+ynh_script_progression --message="Add OnlyOffice repository..."
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
@@ -124,7 +127,7 @@ ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian sq
 #=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
-ynh_print_info --message="Configuring Onlyoffice..."
+ynh_script_progression --message="Configuring Onlyoffice..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
@@ -136,19 +139,18 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 # UPGRADE ONLYOFFICE
 #=================================================
-ynh_print_info --message="Upgrading OnlyOffice..."
+ynh_script_progression --message="Upgrading OnlyOffice..."
 
 ynh_add_app_dependencies --package="onlyoffice-documentserver"
 
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
+ynh_script_progression --message="Modifying a config file..."
+
+ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 
 ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
-
-#=================================================
-# STORE THE CONFIG FILE CHECKSUM
-#=================================================
 
 # Recalculate and store the checksum of the file for the next upgrade.
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
@@ -156,7 +158,7 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 #=================================================
 # REGENERATE FONTS
 #=================================================
-ynh_print_info --message="Generating fonts..."
+ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh
 
@@ -165,7 +167,7 @@ ynh_print_info --message="Generating fonts..."
 #=================================================
 # SETUP SSOWAT
 #=================================================
-ynh_print_info --message="Upgrading SSOwat configuration..."
+ynh_script_progression --message="Upgrading SSOwat configuration..."
 
 # Make app public if necessary
 if [ $is_public -eq 1 ]
@@ -175,23 +177,23 @@ then
 fi
 
 #=================================================
-# RELOAD NGINX
-#=================================================
-ynh_print_info --message="Reloading nginx web server..."
-
-ynh_systemd_action --service_name=nginx --action=reload
-
-#=================================================
 # RELOAD ONLYOFFICE
 #=================================================
-ynh_print_info --message="Reloading OnlyOffice..."
+ynh_script_progression --message="Reloading OnlyOffice..."
 
-supervisorctl restart all
+supervisorctl reload
 
 sleep 30
+
+#=================================================
+# RELOAD NGINX
+#=================================================
+ynh_script_progression --message="Reloading nginx web server..."
+
+ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_print_info --message="Upgrade of $app completed"
+ynh_script_progression --message="Upgrade of $app completed"
