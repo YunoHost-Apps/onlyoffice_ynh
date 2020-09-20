@@ -60,13 +60,6 @@ port=$(ynh_find_port --port=8095)
 ynh_app_setting_set --app=$app --key=port --value=$port
 
 #=================================================
-# ADD NODEJS REPOSITORY
-#=================================================
-ynh_script_progression --message="Add nodejs repository..."
-
-ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_10.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-
-#=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
 ynh_script_progression --message="Add OnlyOffice repository..."
@@ -106,7 +99,7 @@ ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring nginx web server..."
+ynh_script_progression --message="Configuring NGINX web server..."
 
 if [ $path_url = "/" ]; then
    ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
@@ -114,7 +107,7 @@ else
   ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$path_url" --target_file="../conf/nginx.conf"
 fi
 
-# Create a dedicated nginx config
+# Create a dedicated NGINX config
 ynh_add_nginx_config "nextclouddomain"
 
 #=================================================
@@ -130,7 +123,7 @@ ynh_system_user_create --username=$app
 #=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Configuring Onlyoffice..."
+ynh_script_progression --message="Configuring OnlyOffice..."
 
 echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
@@ -197,7 +190,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 
