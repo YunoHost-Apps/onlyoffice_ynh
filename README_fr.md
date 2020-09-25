@@ -10,6 +10,8 @@ Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install
 
 ## Vue d'ensemble
 
+OnlyOffice Document Server est une suite bureautique en ligne comprenant des visualiseurs et des éditeurs de textes, feuilles de calcul et présentations, entièrement compatible avec les formats Office Open XML: .docx, .xlsx, .pptx et permettant l'édition collaborative en temps réel.
+
 L'édition collaborative en ligne des documents OnlyOffice nécessite :
 1. une partie serveur, avec deux options d'installation :
     1. OnlyOffice Document Server packagé pour YunoHost.
