@@ -79,6 +79,9 @@ Prerequisite: **OnlyOffice should be public**, see previous section.
 
 ## Documentation
 
+ * Official documentation: Link to the official documentation of this app
+ * YunoHost documentation: https://yunohost.org/#/app_onlyoffice
+
 ## YunoHost specific features
 
 #### Multi-user support
