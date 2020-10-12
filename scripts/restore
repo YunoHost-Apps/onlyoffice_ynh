@@ -61,13 +61,6 @@ ynh_system_user_create --username=$app
 #=================================================
 # SPECIFIC RESTORATION
 #=================================================
-# ADD NODEJS REPOSITORY
-#=================================================
-ynh_script_progression --message="Add nodejs repository..."
-
-ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_10.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-
-#=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
 ynh_script_progression --message="Add OnlyOffice repository..."
@@ -138,7 +131,7 @@ sleep 30
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 

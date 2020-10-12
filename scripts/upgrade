@@ -110,13 +110,6 @@ ynh_system_user_create --username=$app
 #=================================================
 # SPECIFIC UPGRADE
 #=================================================
-# ADD NODEJS REPOSITORY
-#=================================================
-ynh_script_progression --message="Add nodejs repository..."
-
-ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_10.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-
-#=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
 ynh_script_progression --message="Add OnlyOffice repository..."
@@ -127,7 +120,7 @@ ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian sq
 #=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Configuring Onlyoffice..."
+ynh_script_progression --message="Configuring OnlyOffice..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
@@ -188,7 +181,7 @@ sleep 30
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 
