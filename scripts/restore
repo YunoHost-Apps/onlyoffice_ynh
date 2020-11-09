@@ -46,7 +46,7 @@ ynh_webpath_available --domain=$domain --path_url=$path_url \
 #=================================================
 # RESTORE THE NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Restoring the nginx configuration..."
+ynh_script_progression --message="Restoring the NGINX configuration..."
 
 ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
@@ -60,13 +60,6 @@ ynh_system_user_create --username=$app
 
 #=================================================
 # SPECIFIC RESTORATION
-#=================================================
-# ADD NODEJS REPOSITORY
-#=================================================
-ynh_script_progression --message="Add nodejs repository..."
-
-ynh_install_extra_repo --repo="deb https://deb.nodesource.com/node_10.x stretch main" --key="https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-
 #=================================================
 # ADD ONLYOFFICE REPOSITORY
 #=================================================
@@ -95,7 +88,7 @@ ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
 #=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Configuring Onlyoffice..."
+ynh_script_progression --message="Configuring OnlyOffice..."
 
 echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
@@ -138,7 +131,7 @@ sleep 30
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 
@@ -146,4 +139,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Restoration completed for $app"
+ynh_script_progression --message="Restoration completed for OnlyOffice"

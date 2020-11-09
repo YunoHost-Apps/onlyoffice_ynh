@@ -6,7 +6,7 @@
         "en": "Create and edit documents collaboratively",
         "fr": "Créez et éditer des documents collaborativement"
     },
-    "version": "5.5.3~ynh2",
+    "version": "6.0.1~ynh1",
     "url": "https://www.onlyoffice.com",
     "license": "GPL-3.0-or-later",
     "maintainer": {
@@ -31,8 +31,8 @@
                 },
                 "example": "office.yunohost.domain",
                 "help": {
-                    "en": "You should not install OnlyOffice on your main YunoHost domain, especially if you want to use it with a nextcloud installed on the same domain.",
-                    "fr": "Evitez d'installer OnlyOffice sur votre domaine Yunohost principal, surtout si vous voulez l'utiliser avec une instance Nextcloud installée sur le même domaine."
+                    "en": "You should not install OnlyOffice on your main YunoHost domain, especially if you want to use it with a Nextcloud installed on the same domain.",
+                    "fr": "Évitez d'installer OnlyOffice sur votre domaine YunoHost principal, surtout si vous voulez l'utiliser avec une instance Nextcloud installée sur le même domaine."
                 }
             },
             {
@@ -72,7 +72,7 @@
                 },
                 "help": {
                     "en": "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!",
-                    "fr": "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter!"
+                    "fr": "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
                 },
                 "default": true
             }
