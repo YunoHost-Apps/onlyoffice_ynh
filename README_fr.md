@@ -107,6 +107,6 @@ Merci de faire vos pull request sur la [testing branch](https://github.com/YunoH
 Pour essayer la branche testing, procédez comme suit.
 ```
 sudo yunohost app install https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
-or
+ou
 sudo yunohost app upgrade onlyoffice -u https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
 ```
