@@ -72,7 +72,7 @@ ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian sq
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
 
-ynh_install_app_dependencies $pkg_dependencies
+ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
@@ -183,8 +183,9 @@ ynh_script_progression --message="Configuring SSOwat..."
 # Make app public if necessary
 if [ $is_public -eq 1 ]
 then
-	# unprotected_uris allows SSO credentials to be passed anyway.
-	ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
+	# Everyone can access the app.
+	# The "main" permission is automatically created before the install script.
+	ynh_permission_update --permission="main" --add="visitors"
 fi
 
 #=================================================

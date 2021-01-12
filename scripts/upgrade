@@ -89,7 +89,7 @@ ynh_add_nginx_config "nextclouddomain"
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..."
 
-ynh_install_app_dependencies $pkg_dependencies
+ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE DEDICATED USER
@@ -149,18 +149,6 @@ ynh_script_progression --message="Generating fonts..."
 
 #=================================================
 # GENERIC FINALIZATION
-#=================================================
-# SETUP SSOWAT
-#=================================================
-ynh_script_progression --message="Upgrading SSOwat configuration..."
-
-# Make app public if necessary
-if [ $is_public -eq 1 ]
-then
-	# unprotected_uris allows SSO credentials to be passed anyway
-	ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
-fi
-
 #=================================================
 # RELOAD ONLYOFFICE
 #=================================================
