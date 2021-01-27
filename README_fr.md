@@ -1,7 +1,7 @@
 # OnlyOffice Server pour YunoHost
 
 [![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)  
-[![Installer OnlyOffice avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=onlyoffice)
+[![Installer OnlyOffice avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=onlyoffice)
 
 *[Read this readme in english.](./README.md)* 
 
@@ -23,7 +23,7 @@ L'édition collaborative en ligne des documents OnlyOffice nécessite :
 
 Les utilisateurs de Nextcloud peuvent suivre [ce tutoriel](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) pour installer le Community Document Server (1.ii) et ONLYOFFICE connector (2.i) sur une instance Nextcloud. Cependant, les performances et l'architecture sont limitées.
 
-**Version incluse :** 6.0.1
+**Version incluse :** 6.1.0
 
 ## Captures d'écran
 
@@ -107,6 +107,6 @@ Merci de faire vos pull request sur la [testing branch](https://github.com/YunoH
 Pour essayer la branche testing, procédez comme suit.
 ```
 sudo yunohost app install https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
-or
+ou
 sudo yunohost app upgrade onlyoffice -u https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
 ```
