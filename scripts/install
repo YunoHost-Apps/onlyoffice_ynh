@@ -47,6 +47,7 @@ ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 ynh_app_setting_set --app=$app --key=nextclouddomain --value=$nextclouddomain
+ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -81,20 +82,9 @@ ynh_script_progression --message="Creating a PostgreSQL database..."
 
 db_name=$(ynh_sanitize_dbid --db_name=$app)
 db_user=$db_name
-db_pwd=$(ynh_string_random --length=32)
 ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-ynh_app_setting_set --app=$app --key=db_pwd --value=$db_pwd
 ynh_psql_test_if_first_run
-ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
-
-#=================================================
-# DOWNLOAD, CHECK AND UNPACK SOURCE
-#=================================================
-ynh_script_progression --message="Setting up source files..."
-
-ynh_app_setting_set --app=$app --key=final_path --value=$final_path
-# Download, check integrity, uncompress and patch the source from app.src
-#ynh_setup_source --dest_dir="$final_path"
+ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
 
 #=================================================
 # NGINX CONFIGURATION
