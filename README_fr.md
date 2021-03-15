@@ -21,7 +21,7 @@ L'édition collaborative en ligne des documents OnlyOffice nécessite :
     1. [ONLYOFFICE connector pour Nextcloud](https://apps.nextcloud.com/apps/onlyoffice)
     2. [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx)
 
-Les utilisateurs de Nextcloud peuvent suivre [ce tutoriel](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) pour installer le Community Document Server (1.ii) et ONLYOFFICE connector (2.i) sur une instance Nextcloud. Cependant, les performances et l'architecture sont limitées.
+Les utilisateurs de Nextcloud peuvent suivre [ce tutoriel](https://github.com/YunoHost-Apps/nextcloud_ynh/blob/testing/README_fr.md#configurer-lint%C3%A9gration-donlyoffice) pour installer le Community Document Server (1.ii) et ONLYOFFICE connector (2.i) sur une instance Nextcloud. Cependant, les performances et l'architecture sont limitées.
 
 **Version incluse :** 6.1.0
 
@@ -80,7 +80,7 @@ Prérequis : **OnlyOffice doit être public**, voir la section précédente.
 ## Documentation
 
  * Documentation officielle : Lien vers la documentation officielle de cette application.
- * Documentation YunoHost : https://yunohost.org/#/app_onlyoffice_fr
+ * Documentation YunoHost : https://yunohost.org/fr/app_onlyoffice
 
 ## Caractéristiques spécifiques YunoHost
 
