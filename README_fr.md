@@ -88,8 +88,8 @@ Prérequis : **OnlyOffice doit être public**, voir la section précédente.
 
 #### Architectures supportées
 
-* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/onlyoffice%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/onlyoffice%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/onlyoffice/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/onlyoffice.svg)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/onlyoffice.svg)](https://ci-apps-arm.yunohost.org/ci/apps/onlyoffice/)
 
 ## Liens
 

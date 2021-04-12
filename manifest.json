@@ -6,7 +6,7 @@
         "en": "Create and edit documents collaboratively",
         "fr": "Créez et éditer des documents collaborativement"
     },
-    "version": "6.1.0~ynh1",
+    "version": "6.1.0~ynh2",
     "url": "https://www.onlyoffice.com",
     "license": "GPL-3.0-or-later",
     "maintainer": {
@@ -14,7 +14,7 @@
         "email": "liberodark@gmail.com"
     },
     "requirements": {
-        "yunohost": ">= 3.8.4"
+        "yunohost": ">= 4.1.7"
     },
     "multi_instance": false,
     "services": [
@@ -25,10 +25,6 @@
             {
                 "name": "domain",
                 "type": "domain",
-                "ask": {
-                    "en": "Choose a domain name for OnlyOffice",
-                    "fr": "Choisissez un nom de domaine pour OnlyOffice"
-                },
                 "example": "office.yunohost.domain",
                 "help": {
                     "en": "You should not install OnlyOffice on your main YunoHost domain, especially if you want to use it with a Nextcloud installed on the same domain.",
@@ -38,10 +34,6 @@
             {
                 "name": "path",
                 "type": "path",
-                "ask": {
-                    "en": "Choose a path for OnlyOffice",
-                    "fr": "Choisissez un chemin pour OnlyOffice"
-                },
                 "example": "/onlyoffice or /",
                 "help": {
                     "en": "Root path / if you chose a subdomain, e.g. office.yunohost.domain.",
@@ -66,10 +58,6 @@
             {
                 "name": "is_public",
                 "type": "boolean",
-                "ask": {
-                    "en": "Is it a public application? If you want to connect the app to Nextcloud: check/true!",
-                    "fr": "Est-ce une application publique ? Si vous voulez connecter l'app à Nextcloud : cochez/true!"
-                },
                 "help": {
                     "en": "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!",
                     "fr": "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
