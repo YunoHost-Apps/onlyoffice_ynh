@@ -129,7 +129,7 @@ ynh_script_progression --message="Install OnlyOffice..."
 # the install/configure of their package, which is awful since that will
 # restart nginx and the whole webadmin and maybe even the yunohost command
 # running the install ...
-ynh_add_app_dependencies --package="onlyoffice-documentserver"
+ynh_exec_warn_less ynh_add_app_dependencies --package="onlyoffice-documentserver"
 
 #=================================================
 # MODIFY A CONFIG FILE

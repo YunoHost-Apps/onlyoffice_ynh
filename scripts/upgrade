@@ -123,7 +123,7 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Upgrading OnlyOffice..."
 
-ynh_add_app_dependencies --package="onlyoffice-documentserver"
+ynh_exec_warn_less ynh_add_app_dependencies --package="onlyoffice-documentserver"
 
 #=================================================
 # MODIFY A CONFIG FILE
