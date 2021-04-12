@@ -87,7 +87,7 @@ ynh_script_progression --message="Removing file..."
 # Remove a directory securely
 ynh_secure_remove --file="/etc/onlyoffice"
 ynh_secure_remove --file="/var/lib/onlyoffice"
-ynh_secure_remove --file="/var/cache/nginx/onlyoffice"
+#ynh_secure_remove --file="/var/cache/nginx/onlyoffice"
 
 # Remove the log files
 ynh_secure_remove --file="/var/log/$app"
@@ -100,7 +100,7 @@ ynh_secure_remove --file="/var/log/$app"
 ynh_script_progression --message="Removing the dedicated system user..."
 
 # Delete a system user
-gpasswd -d www-data onlyoffice
+#gpasswd -d www-data onlyoffice
 ynh_system_user_delete --username=$app
 
 #=================================================
