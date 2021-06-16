@@ -8,6 +8,13 @@
     },
     "version": "6.1.0~ynh2",
     "url": "https://www.onlyoffice.com",
+    "upstream": {
+        "license": "GPL-3.0-or-later",
+        "website": "https://www.onlyoffice.com",
+        "demo": "https://www.onlyoffice.com/fr/download-desktop.aspx",
+        "userdoc": "https://yunohost.org/#/app_onlyoffice",
+        "code": "https://github.com/ONLYOFFICE/DocumentServer"
+    },
     "license": "GPL-3.0-or-later",
     "maintainer": {
         "name": "liberodark",
