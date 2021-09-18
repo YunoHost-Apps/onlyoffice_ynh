@@ -154,7 +154,7 @@ systemctl enable rabbitmq-server
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --time --weight=1
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
 yunohost service add rabbitmq-server --description="A short description of the app" --log="/var/log/$app/$app.log"
 
