@@ -12,7 +12,6 @@
         "license": "GPL-3.0-or-later",
         "website": "https://www.onlyoffice.com",
         "demo": "https://www.onlyoffice.com/fr/download-desktop.aspx",
-        "userdoc": "https://yunohost.org/#/app_onlyoffice",
         "code": "https://github.com/ONLYOFFICE/DocumentServer"
     },
     "license": "GPL-3.0-or-later",
