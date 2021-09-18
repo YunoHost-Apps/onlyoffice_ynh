@@ -22,7 +22,6 @@ ynh_abort_if_errors
 
 domain=$YNH_APP_ARG_DOMAIN
 path_url=$YNH_APP_ARG_PATH
-is_public=$YNH_APP_ARG_IS_PUBLIC
 nextclouddomain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
 
 app=$YNH_APP_INSTANCE_NAME
@@ -177,19 +176,6 @@ sleep 30
 ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# SETUP SSOWAT
-#=================================================
-ynh_script_progression --message="Configuring permissions..."
-
-# Make app public if necessary
-if [ $is_public -eq 1 ]
-then
-	ynh_permission_update --permission="main" --add="visitors"
-fi
 
 #=================================================
 # RELOAD NGINX
