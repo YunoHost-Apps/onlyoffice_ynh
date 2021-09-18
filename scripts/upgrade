@@ -25,6 +25,20 @@ port=$(ynh_app_setting_get --app=$app --key=port)
 nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 
 #=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
+ynh_script_progression --message="Backing up OnlyOffice before upgrading (may take a while)..."
+
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..."
@@ -58,20 +72,6 @@ ynh_secure_remove --file="/etc/apt/sources.list.d/onlyoffice.list"
 ynh_secure_remove --file="/etc/apt/sources.list.d/nodesource.list"
 
 #=================================================
-# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
-#=================================================
-ynh_script_progression --message="Backing up OnlyOffice before upgrading (may take a while)..."
-
-# Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
-	# restore it if the upgrade fails
-	ynh_restore_upgradebackup
-}
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
 # CREATE DEDICATED USER
 #=================================================
 ynh_script_progression --message="Making sure dedicated system user exists..."
@@ -86,14 +86,8 @@ ynh_system_user_create --username=$app
 #=================================================
 ynh_script_progression --message="Configuring NGINX web server..."
 
-if [ "$path_url" = "/" ]; then
-   ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
-else
-  ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$path_url" --target_file="../conf/nginx.conf"
-fi
-
 # Create a dedicated nginx config
-ynh_add_nginx_config "nextclouddomain"
+ynh_add_nginx_config
 
 #=================================================
 # UPGRADE DEPENDENCIES

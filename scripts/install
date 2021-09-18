@@ -103,14 +103,8 @@ ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
 #=================================================
 ynh_script_progression --message="Configuring NGINX web server..."
 
-if [ $path_url = "/" ]; then
-   ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
-else
-  ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$path_url" --target_file="../conf/nginx.conf"
-fi
-
 # Create a dedicated NGINX config
-ynh_add_nginx_config "nextclouddomain"
+ynh_add_nginx_config
 
 #=================================================
 # SPECIFIC SETUP
