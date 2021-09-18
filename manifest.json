@@ -21,7 +21,7 @@
         "email": "liberodark@gmail.com"
     },
     "requirements": {
-        "yunohost": ">= 4.2.0"
+        "yunohost": ">= 4.2.4"
     },
     "multi_instance": false,
     "services": [
@@ -46,8 +46,8 @@
                 },
                 "example": "yunohost.domain/nextcloud or nextcloud.yunohost.domain",
                 "help": {
-                    "en": "Install the OnlyOffice connector to edit documents from Nextcloud.",
-                    "fr": "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
+                    "en": "Install in Nextcloud the ONLYOFFICE connector to edit documents.",
+                    "fr": "Installez dans Nextcloud le connecteur ONLYOFFICE pour éditer des documents."
                 },
                 "default": "yunohost.domain/nextcloud"
             }
