@@ -75,7 +75,6 @@ Prérequis : **OnlyOffice doit être public**, voir la section précédente.
 ## Documentations et ressources
 
 * Site officiel de l'app : https://www.onlyoffice.com
-* Documentation officielle utilisateur : https://yunohost.org/#/app_onlyoffice
 * Dépôt de code officiel de l'app : https://github.com/ONLYOFFICE/DocumentServer
 * Documentation YunoHost pour cette app : https://yunohost.org/app_onlyoffice
 * Signaler un bug : https://github.com/YunoHost-Apps/onlyoffice_ynh/issues
