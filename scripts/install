@@ -21,7 +21,7 @@ ynh_abort_if_errors
 #=================================================
 
 domain=$YNH_APP_ARG_DOMAIN
-path_url=$YNH_APP_ARG_PATH
+path_url="/"
 nextclouddomain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
 
 app=$YNH_APP_INSTANCE_NAME
@@ -147,7 +147,7 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 #=================================================
 # RELOAD ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Reloading RabbitMQ..."
+ynh_script_progression --message="Enable RabbitMQ..."
 
 systemctl enable rabbitmq-server
 
@@ -156,7 +156,7 @@ systemctl enable rabbitmq-server
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
-yunohost service add rabbitmq-server --description="A short description of the app" --log="/var/log/$app/$app.log"
+yunohost service add rabbitmq-server --description="Multi-protocol messaging broker" --log="/var/log/$app/$app.log"
 
 # Start a systemd service
 ynh_systemd_action --service_name=rabbitmq-server --action="start" --log_path="systemd"

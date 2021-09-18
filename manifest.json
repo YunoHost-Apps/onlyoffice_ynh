@@ -38,16 +38,6 @@
                 }
             },
             {
-                "name": "path",
-                "type": "path",
-                "example": "/onlyoffice or /",
-                "help": {
-                    "en": "Root path / if you chose a subdomain, e.g. office.yunohost.domain.",
-                    "fr": "Choisissez le chemin racine / si vous avez choisi un sous-domaine, ex. office.yunohost.domain."
-                },
-                "default": "/onlyoffice"
-            },
-            {
                 "name": "nextclouddomain",
                 "type": "string",
                 "ask": {
