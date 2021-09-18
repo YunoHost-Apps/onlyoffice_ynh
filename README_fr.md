@@ -13,7 +13,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 Créez et éditer des documents collaborativement
 
-**Version incluse :** 6.1.0~ynh2
+**Version incluse :** 6.4.0~ynh2
 
 **Démo :** https://www.onlyoffice.com/fr/download-desktop.aspx
 
