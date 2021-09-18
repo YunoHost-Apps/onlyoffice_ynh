@@ -128,7 +128,7 @@ ynh_script_progression --message="Install OnlyOffice..."
 # the install/configure of their package, which is awful since that will
 # restart nginx and the whole webadmin and maybe even the yunohost command
 # running the install ...
-ynh_exec_warn_less ynh_add_app_dependencies --package="onlyoffice-documentserver"
+ynh_exec_warn_less ynh_add_app_dependencies --package="onlyoffice-documentserver ttf-mscorefonts-installer"
 
 #=================================================
 # MODIFY A CONFIG FILE
@@ -144,6 +144,23 @@ ynh_script_progression --message="Storing the config file checksum..."
 
 # Calculate and store the config file checksum into the app settings
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
+
+#=================================================
+# RELOAD ONLYOFFICE
+#=================================================
+ynh_script_progression --message="Reloading RabbitMQ..."
+
+systemctl enable rabbitmq-server
+
+#=================================================
+# INTEGRATE SERVICE IN YUNOHOST
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --time --weight=1
+
+yunohost service add rabbitmq-server --description="A short description of the app" --log="/var/log/$app/$app.log"
+
+# Start a systemd service
+ynh_systemd_action --service_name=rabbitmq-server --action="start" --log_path="systemd"
 
 #=================================================
 # RELOAD ONLYOFFICE
