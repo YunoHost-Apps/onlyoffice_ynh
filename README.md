@@ -17,7 +17,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Create and edit documents collaboratively
 
-**Shipped version:** 6.1.0~ynh2
+**Shipped version:** 6.4.0~ynh2
 
 **Demo:** https://www.onlyoffice.com/fr/download-desktop.aspx
 
@@ -79,7 +79,6 @@ Prerequisite: **OnlyOffice should be public**, see previous section.
 ## Documentation and resources
 
 * Official app website: https://www.onlyoffice.com
-* Official user documentation: https://yunohost.org/#/app_onlyoffice
 * Upstream app code repository: https://github.com/ONLYOFFICE/DocumentServer
 * YunoHost documentation for this app: https://yunohost.org/app_onlyoffice
 * Report a bug: https://github.com/YunoHost-Apps/onlyoffice_ynh/issues
