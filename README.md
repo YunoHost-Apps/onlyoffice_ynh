@@ -17,7 +17,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Create and edit documents collaboratively
 
-**Shipped version:** 6.4.0~ynh2
+**Shipped version:** 6.4.2~ynh1
 
 **Demo:** https://www.onlyoffice.com/fr/download-desktop.aspx
 
