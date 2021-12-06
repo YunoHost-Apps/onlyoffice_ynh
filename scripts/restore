@@ -111,6 +111,11 @@ ynh_script_progression --message="Restoring the configuration..."
 ynh_restore_file --origin_path="/etc/onlyoffice"
 
 #=================================================
+# RESTORE THE CACHE
+#=================================================
+ynh_restore_file --origin_path="/var/lib/onlyoffice/cache/files"
+
+#=================================================
 # REGENERATE FONTS
 #=================================================
 ynh_script_progression --message="Generating fonts..."
