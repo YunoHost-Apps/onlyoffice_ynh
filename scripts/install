@@ -81,11 +81,24 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
 
 #=================================================
+# INSTALL ONLYOFFICE
+#=================================================
+ynh_script_progression --message="Install OnlyOffice..."
+
+# The onlyoffice dev had the magnificent idea to add a "nginx restart" during
+# the install/configure of their package, which is awful since that will
+# restart nginx and the whole webadmin and maybe even the yunohost command
+# running the install ...
+ynh_exec_warn_less ynh_add_app_dependencies --package=$extra_dependencies
+
+#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
+
+# ynh_install_extra_app_dependencies --repo="https://updates.signald.org unstable main" --package="$extra_dependencies" --key="https://updates.signald.org/apt-signing-key.asc"
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
@@ -124,17 +137,6 @@ echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set
 echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
-
-#=================================================
-# INSTALL ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Install OnlyOffice..."
-
-# The onlyoffice dev had the magnificent idea to add a "nginx restart" during
-# the install/configure of their package, which is awful since that will
-# restart nginx and the whole webadmin and maybe even the yunohost command
-# running the install ...
-ynh_exec_warn_less ynh_add_app_dependencies --package="onlyoffice-documentserver"
 
 #=================================================
 # MODIFY A CONFIG FILE
@@ -178,8 +180,6 @@ ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh
 
-#=================================================
-# GENERIC FINALIZATION
 #=================================================
 # SETUP SSOWAT
 #=================================================
