@@ -89,14 +89,14 @@ ynh_script_progression --message="Install OnlyOffice..."
 # the install/configure of their package, which is awful since that will
 # restart nginx and the whole webadmin and maybe even the yunohost command
 # running the install ...
-ynh_exec_warn_less ynh_add_app_dependencies --package=$extra_dependencies
+#ynh_exec_warn_less ynh_add_app_dependencies --package=$extra_dependencies
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
 
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
+ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies $extra_dependencies"
 
 # ynh_install_extra_app_dependencies --repo="https://updates.signald.org unstable main" --package="$extra_dependencies" --key="https://updates.signald.org/apt-signing-key.asc"
 
