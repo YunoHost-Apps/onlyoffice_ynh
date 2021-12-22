@@ -78,7 +78,7 @@ ynh_system_user_create --username=$app
 ynh_script_progression --message="Add OnlyOffice repository..."
 
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
+#ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
 
 #=================================================
 # INSTALL ONLYOFFICE
@@ -96,9 +96,9 @@ ynh_script_progression --message="Install OnlyOffice..."
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
 
-ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies $extra_dependencies"
+ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
 
-# ynh_install_extra_app_dependencies --repo="https://updates.signald.org unstable main" --package="$extra_dependencies" --key="https://updates.signald.org/apt-signing-key.asc"
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="$extra_dependencies" 
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
