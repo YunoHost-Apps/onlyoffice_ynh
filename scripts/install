@@ -96,9 +96,9 @@ ynh_script_progression --message="Install OnlyOffice..."
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
 
-ynh_exec_warn_less ynh_install_app_dependencies "$pkg_dependencies"
+ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="$extra_dependencies" 
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
