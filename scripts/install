@@ -73,32 +73,11 @@ ynh_script_progression --message="Configuring system user..."
 ynh_system_user_create --username=$app
 
 #=================================================
-# ADD ONLYOFFICE REPOSITORY
-#=================================================
-ynh_script_progression --message="Add OnlyOffice repository..."
-
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-#ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
-
-#=================================================
-# INSTALL ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Install OnlyOffice..."
-
-# The onlyoffice dev had the magnificent idea to add a "nginx restart" during
-# the install/configure of their package, which is awful since that will
-# restart nginx and the whole webadmin and maybe even the yunohost command
-# running the install ...
-#ynh_exec_warn_less ynh_add_app_dependencies --package=$extra_dependencies
-
-#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies
 
 #=================================================
 # CREATE A POSTGRESQL DATABASE
@@ -110,6 +89,20 @@ db_user=$db_name
 ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 ynh_psql_test_if_first_run
 ynh_psql_setup_db --db_user=$db_name --db_name=$db_name
+
+#=================================================
+# INSTALL ONLYOFFICE
+#=================================================
+ynh_script_progression --message="Install OnlyOffice..."
+
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+
+# The onlyoffice dev had the magnificent idea to add a "nginx restart" during
+# the install/configure of their package, which is awful since that will
+# restart nginx and the whole webadmin and maybe even the yunohost command
+# running the install ...
+
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies
 
 #=================================================
 # NGINX CONFIGURATION
