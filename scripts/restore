@@ -59,23 +59,6 @@ ynh_script_progression --message="Recreating the dedicated system user..."
 ynh_system_user_create --username=$app
 
 #=================================================
-# SPECIFIC RESTORATION
-#=================================================
-# ADD ONLYOFFICE REPOSITORY
-#=================================================
-ynh_script_progression --message="Add OnlyOffice repository..."
-
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
-
-#=================================================
-# REINSTALL ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Reinstalling OnlyOffice..."
-
-ynh_exec_warn_less ynh_add_app_dependencies --package=$extra_dependencies
-
-#=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Reinstalling dependencies..."
@@ -83,6 +66,8 @@ ynh_script_progression --message="Reinstalling dependencies..."
 # Define and install dependencies
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
+#=================================================
+# SPECIFIC RESTORATION
 #=================================================
 # RESTORE THE POSTGRESQL DATABASE
 #=================================================
@@ -102,6 +87,15 @@ echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set
 echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
+
+#=================================================
+# REINSTALL ONLYOFFICE
+#=================================================
+ynh_script_progression --message="Reinstalling OnlyOffice..."
+
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies 
 
 #=================================================
 # RESTORE THE CONFIGURATION
