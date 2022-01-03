@@ -81,6 +81,13 @@ ynh_script_progression --message="Making sure dedicated system user exists..."
 ynh_system_user_create --username=$app
 
 #=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading dependencies..."
+
+ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
+
+#=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
 # NGINX CONFIGURATION
@@ -97,31 +104,7 @@ fi
 ynh_add_nginx_config "nextclouddomain"
 
 #=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..."
-
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-
-#=================================================
 # SPECIFIC UPGRADE
-#=================================================
-# ADD ONLYOFFICE REPOSITORY
-#=================================================
-ynh_script_progression --message="Add OnlyOffice repository..."
-
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-#ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
-
-#=================================================
-# UPGRADE ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Upgrading OnlyOffice..."
-
-# ynh_remove_app_dependencies
-ynh_package_remove $extra_dependencies
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies 
-
 #=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
@@ -133,6 +116,18 @@ echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set
 echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
+
+#=================================================
+# UPGRADE ONLYOFFICE
+#=================================================
+ynh_script_progression --message="Upgrading OnlyOffice..."
+
+ynh_remove_extra_repo # backward compat
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+
+# ynh_remove_app_dependencies
+ynh_package_remove $extra_dependencies
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies 
 
 #=================================================
 # MODIFY A CONFIG FILE
