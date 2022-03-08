@@ -52,7 +52,7 @@ ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 #=================================================
 
 ynh_backup --src_path="/etc/onlyoffice"
-ynh_backup --src_path="/var/lib/onlyoffice/cache/files"
+ynh_backup --src_path="/var/lib/onlyoffice/documentserver/App_Data/cache/files"
 
 #=================================================
 # BACKUP THE POSTGRESQL DATABASE
