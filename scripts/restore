@@ -113,7 +113,7 @@ ynh_restore_file --origin_path="/etc/onlyoffice"
 #=================================================
 # RESTORE THE CACHE
 #=================================================
-ynh_restore_file --origin_path="/var/lib/onlyoffice/cache/files"
+ynh_restore_file --origin_path="/var/lib/onlyoffice/documentserver/App_Data/cache/files"
 
 #=================================================
 # REGENERATE FONTS
