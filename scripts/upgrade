@@ -81,6 +81,13 @@ ynh_script_progression --message="Making sure dedicated system user exists..."
 ynh_system_user_create --username=$app
 
 #=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading dependencies..."
+
+ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
+
+#=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
 # NGINX CONFIGURATION
@@ -97,22 +104,7 @@ fi
 ynh_add_nginx_config "nextclouddomain"
 
 #=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..."
-
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-
-#=================================================
 # SPECIFIC UPGRADE
-#=================================================
-# ADD ONLYOFFICE REPOSITORY
-#=================================================
-ynh_script_progression --message="Add OnlyOffice repository..."
-
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
-
 #=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
@@ -130,7 +122,11 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Upgrading OnlyOffice..."
 
-ynh_exec_warn_less ynh_add_app_dependencies --package="onlyoffice-documentserver"
+ynh_remove_extra_repo --name="$app" # backward compat
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+
+# ynh_remove_app_dependencies
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies 
 
 #=================================================
 # MODIFY A CONFIG FILE
@@ -153,6 +149,15 @@ ynh_script_progression --message="Generating fonts..."
 
 #=================================================
 # GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+# Set permissions to app files
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:www-data "$final_path"
+
 #=================================================
 # RELOAD ONLYOFFICE
 #=================================================

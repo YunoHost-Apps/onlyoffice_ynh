@@ -73,14 +73,6 @@ ynh_script_progression --message="Configuring system user..."
 ynh_system_user_create --username=$app
 
 #=================================================
-# ADD ONLYOFFICE REPOSITORY
-#=================================================
-ynh_script_progression --message="Add OnlyOffice repository..."
-
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
-
-#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..."
@@ -130,11 +122,14 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Install OnlyOffice..."
 
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+
 # The onlyoffice dev had the magnificent idea to add a "nginx restart" during
 # the install/configure of their package, which is awful since that will
 # restart nginx and the whole webadmin and maybe even the yunohost command
 # running the install ...
-ynh_exec_warn_less ynh_add_app_dependencies --package="onlyoffice-documentserver"
+
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies
 
 #=================================================
 # MODIFY A CONFIG FILE
@@ -152,6 +147,17 @@ ynh_script_progression --message="Storing the config file checksum..."
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 
 #=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+# Set permissions to app files
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:www-data "$final_path"
+
+#=================================================
 # RELOAD ONLYOFFICE
 #=================================================
 ynh_script_progression --message="Reloading OnlyOffice..."
@@ -167,8 +173,6 @@ ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh
 
-#=================================================
-# GENERIC FINALIZATION
 #=================================================
 # SETUP SSOWAT
 #=================================================
