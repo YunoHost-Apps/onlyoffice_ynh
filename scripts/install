@@ -155,7 +155,7 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 # Set permissions to app files
 chmod 750 "$final_path"
 chmod -R o-rwx "$final_path"
-chown -R $app:www-data "$final_path"
+chown -R ds:ds "$final_path"
 
 #=================================================
 # RELOAD ONLYOFFICE
