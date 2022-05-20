@@ -114,4 +114,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Change of URL completed for OnlyOffice"
+ynh_script_progression --message="Change of URL completed for $app"

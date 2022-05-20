@@ -6,7 +6,7 @@
         "en": "Create and edit documents collaboratively",
         "fr": "Créez et éditer des documents collaborativement"
     },
-    "version": "6.4.2~ynh1",
+    "version": "7.1.0~ynh1",
     "url": "https://www.onlyoffice.com",
     "upstream": {
         "license": "GPL-3.0-or-later",
@@ -20,7 +20,7 @@
         "email": "liberodark@gmail.com"
     },
     "requirements": {
-        "yunohost": ">= 4.2.0"
+        "yunohost": ">= 4.3.0"
     },
     "multi_instance": false,
     "services": [
