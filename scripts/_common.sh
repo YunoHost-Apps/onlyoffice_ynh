@@ -6,7 +6,7 @@
 
 # dependencies used by the app
 pkg_dependencies="postgresql postgresql-contrib libstdc++6 rabbitmq-server libcurl4-dev"
-extra_dependencies="onlyoffice-documentserver ttf-mscorefonts-installer"
+extra_dependencies="onlyoffice-documentserver"
 
 #=================================================
 # PERSONAL HELPERS
