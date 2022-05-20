@@ -58,7 +58,7 @@ ynh_remove_app_dependencies
 
 dpkg --configure -a
 
-apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5"
+apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5" 2>/dev/null
 
 #=================================================
 # REMOVE APP MAIN DIR
