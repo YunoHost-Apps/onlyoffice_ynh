@@ -38,7 +38,7 @@ ynh_secure_remove --file=/var/lib/dpkg/info/onlyoffice-documentserver.prerm
 # So instead, we trick it with this stupid link to /bin/true which is removed
 # right after.
 #ln -s /bin/true /usr/local/bin/supervisorctl
-ynh_package_autopurge "onlyoffice-documentserver"
+ynh_package_autopurge onlyoffice-documentserver
 
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
@@ -86,7 +86,6 @@ ynh_script_progression --message="Removing file..."
 # Remove a directory securely
 ynh_secure_remove --file="/etc/onlyoffice"
 ynh_secure_remove --file="/var/lib/onlyoffice"
-#ynh_secure_remove --file="/var/cache/nginx/onlyoffice"
 
 # Remove the log files
 ynh_secure_remove --file="/var/log/$app"
