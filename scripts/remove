@@ -37,8 +37,8 @@ ynh_secure_remove --file=/var/lib/dpkg/info/onlyoffice-documentserver.prerm
 # already removed ... so their removal fails which breaks dpkg.
 # So instead, we trick it with this stupid link to /bin/true which is removed
 # right after.
-ln -s /bin/true /usr/local/bin/supervisorctl
-ynh_package_autopurge onlyoffice-documentserver
+#ln -s /bin/true /usr/local/bin/supervisorctl
+ynh_package_autopurge "onlyoffice-documentserver ttf-mscorefonts-installer"
 
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
