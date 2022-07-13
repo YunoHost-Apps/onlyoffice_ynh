@@ -59,16 +59,6 @@ ynh_script_progression --message="Recreating the dedicated system user..."
 ynh_system_user_create --username=$app
 
 #=================================================
-# SPECIFIC RESTORATION
-#=================================================
-# ADD ONLYOFFICE REPOSITORY
-#=================================================
-ynh_script_progression --message="Add OnlyOffice repository..."
-
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-ynh_install_extra_repo --repo="deb http://download.onlyoffice.com/repo/debian squeeze main" --append
-
-#=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Reinstalling dependencies..."
@@ -76,6 +66,8 @@ ynh_script_progression --message="Reinstalling dependencies..."
 # Define and install dependencies
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
 
+#=================================================
+# SPECIFIC RESTORATION
 #=================================================
 # RESTORE THE POSTGRESQL DATABASE
 #=================================================
@@ -101,7 +93,9 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Reinstalling OnlyOffice..."
 
-ynh_exec_warn_less ynh_add_app_dependencies --package="onlyoffice-documentserver"
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies 
 
 #=================================================
 # RESTORE THE CONFIGURATION
@@ -111,11 +105,27 @@ ynh_script_progression --message="Restoring the configuration..."
 ynh_restore_file --origin_path="/etc/onlyoffice"
 
 #=================================================
+# RESTORE THE CACHE
+#=================================================
+ynh_restore_file --origin_path="/var/lib/onlyoffice/documentserver/App_Data/cache/files"
+
+#=================================================
 # REGENERATE FONTS
 #=================================================
 ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+# Set permissions to app files
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R ds:ds "$final_path"
 
 #=================================================
 # RELOAD ONLYOFFICE
@@ -139,4 +149,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Restoration completed for OnlyOffice"
+ynh_script_progression --message="Restoration completed for $app"

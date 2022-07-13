@@ -37,7 +37,7 @@ ynh_secure_remove --file=/var/lib/dpkg/info/onlyoffice-documentserver.prerm
 # already removed ... so their removal fails which breaks dpkg.
 # So instead, we trick it with this stupid link to /bin/true which is removed
 # right after.
-ln -s /bin/true /usr/local/bin/supervisorctl
+#ln -s /bin/true /usr/local/bin/supervisorctl
 ynh_package_autopurge onlyoffice-documentserver
 
 #=================================================
@@ -55,11 +55,10 @@ ynh_script_progression --message="Removing dependencies..."
 
 # Remove metapackage and its dependencies
 ynh_remove_app_dependencies
-ynh_remove_extra_repo
 
 dpkg --configure -a
 
-apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5"
+apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5" 2>/dev/null
 
 #=================================================
 # REMOVE APP MAIN DIR
@@ -87,7 +86,6 @@ ynh_script_progression --message="Removing file..."
 # Remove a directory securely
 ynh_secure_remove --file="/etc/onlyoffice"
 ynh_secure_remove --file="/var/lib/onlyoffice"
-#ynh_secure_remove --file="/var/cache/nginx/onlyoffice"
 
 # Remove the log files
 ynh_secure_remove --file="/var/log/$app"
@@ -107,4 +105,4 @@ ynh_system_user_delete --username=$app
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Removal of OnlyOffice completed"
+ynh_script_progression --message="Removal of $app completed"
