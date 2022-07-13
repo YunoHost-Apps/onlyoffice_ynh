@@ -16,8 +16,8 @@
     },
     "license": "GPL-3.0-or-later",
     "maintainer": {
-        "name": "liberodark",
-        "email": "liberodark@gmail.com"
+        "name": "",
+        "email": ""
     },
     "requirements": {
         "yunohost": ">= 4.3.0"
@@ -27,7 +27,7 @@
         "nginx"
     ],
     "arguments": {
-        "install" : [
+        "install": [
             {
                 "name": "domain",
                 "type": "domain",
@@ -48,6 +48,15 @@
                 "default": "/onlyoffice"
             },
             {
+                "name": "is_public",
+                "type": "boolean",
+                "help": {
+                    "en": "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!",
+                    "fr": "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
+                },
+                "default": true
+            },
+            {
                 "name": "nextclouddomain",
                 "type": "string",
                 "ask": {
@@ -60,15 +69,6 @@
                     "fr": "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
                 },
                 "default": "yunohost.domain/nextcloud"
-            },
-            {
-                "name": "is_public",
-                "type": "boolean",
-                "help": {
-                    "en": "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!",
-                    "fr": "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
-                },
-                "default": true
             }
         ]
     }

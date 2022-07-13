@@ -26,19 +26,28 @@ port=$(ynh_app_setting_get --app=$app --key=port)
 nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
 
 #=================================================
+# CHECK VERSION
+#=================================================
+ynh_script_progression --message="Checking version..."
+
+upgrade_type=$(ynh_check_app_version_changed)
+
+#=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-ynh_script_progression --message="Backing up OnlyOffice before upgrading (may take a while)..."
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
 ynh_clean_setup () {
-	# restore it if the upgrade fails
+	# Restore it if the upgrade fails
 	ynh_restore_upgradebackup
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
+#=================================================
+# STANDARD UPGRADE STEPS
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
@@ -78,7 +87,7 @@ ynh_secure_remove --file="/etc/apt/sources.list.d/nodesource.list"
 ynh_script_progression --message="Making sure dedicated system user exists..."
 
 # Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app
+ynh_system_user_create --username=$app --home_dir="$final_path"
 
 #=================================================
 # UPGRADE DEPENDENCIES
@@ -86,13 +95,12 @@ ynh_system_user_create --username=$app
 ynh_script_progression --message="Upgrading dependencies..."
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
+ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ buster main contrib" --package=$contrib_dependencies
 
-#=================================================
-# STANDARD UPGRADE STEPS
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring NGINX web server..."
+ynh_script_progression --message="Upgrading NGINX web server configuration..."
 
 if [ "$path_url" = "/" ]; then
    ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
@@ -129,9 +137,9 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies 
 
 #=================================================
-# MODIFY A CONFIG FILE
+# UPDATE A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Modifying a config file..."
+ynh_script_progression --message="Updating a configuration file..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 
@@ -148,8 +156,6 @@ ynh_script_progression --message="Generating fonts..."
 /usr/bin/documentserver-generate-allfonts.sh
 
 #=================================================
-# GENERIC FINALIZATION
-#=================================================
 # SECURE FILES AND DIRECTORIES
 #=================================================
 
@@ -159,9 +165,11 @@ chmod -R o-rwx "$final_path"
 chown -R ds:ds "$final_path"
 
 #=================================================
-# RELOAD ONLYOFFICE
+# GENERIC FINALIZATION
 #=================================================
-ynh_script_progression --message="Reloading OnlyOffice..."
+# START SYSTEMD SERVICE
+#=================================================
+ynh_script_progression --message="Starting a systemd service..."
 
 supervisorctl reload
 

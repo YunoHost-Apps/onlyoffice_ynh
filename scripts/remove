@@ -63,7 +63,7 @@ apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5" 2>/dev/null
 #=================================================
 # REMOVE APP MAIN DIR
 #=================================================
-ynh_script_progression --message="Removing OnlyOffice main directory..."
+ynh_script_progression --message="Removing app main directory..."
 
 # Remove the app directory securely
 ynh_secure_remove --file="$final_path"
@@ -79,9 +79,9 @@ ynh_remove_nginx_config
 #=================================================
 # SPECIFIC REMOVE
 #=================================================
-# REMOVE FILE
+# REMOVE VARIOUS FILES
 #=================================================
-ynh_script_progression --message="Removing file..."
+ynh_script_progression --message="Removing various files..."
 
 # Remove a directory securely
 ynh_secure_remove --file="/etc/onlyoffice"
