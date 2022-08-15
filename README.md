@@ -31,6 +31,7 @@ The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-App
 
 **Shipped version:** 7.1.0~ynh1
 
+
 **Demo:** https://www.onlyoffice.com/fr/download-desktop.aspx
 
 ## Screenshots
