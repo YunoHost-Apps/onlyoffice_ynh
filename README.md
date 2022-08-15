@@ -5,7 +5,7 @@ It shall NOT be edited by hand.
 
 # OnlyOffice for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![Working status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)  
 [![Install OnlyOffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=onlyoffice)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -15,16 +15,28 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-Create and edit documents collaboratively
+OnlyOffice Document Server is an online office suite comprising viewers and editors for texts, spreadsheets and presentations, fully compatible with Office Open XML formats: .docx, .xlsx, .pptx and enabling collaborative editing in real time.
 
-**Shipped version:** 6.4.0~ynh2
+Online collaborative edition of OnlyOffice documents requires: 
+1. a server part, with two installation options:
+   1. OnlyOffice Document Server packaged for YunoHost. 
+   2. The [Community Document Server for Nextcloud](https://apps.nextcloud.com/apps/documentserver_community) 
+
+2. a client part, such as: 
+   1. The [ONLYOFFICE connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice) 
+   2. The [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx)
+
+The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) to install (1.ii) and (2.i) on one Nextcloud instance. However, performance and architecture are limited.
+
+
+**Shipped version:** 7.1.0~ynh1
 
 **Demo:** https://www.onlyoffice.com/fr/download-desktop.aspx
 
 ## Screenshots
 
-![](./doc/screenshots/.DS_Store)
-![](./doc/screenshots/document-short.png)
+![Screenshot of OnlyOffice](./doc/screenshots/.DS_Store)
+![Screenshot of OnlyOffice](./doc/screenshots/document-short.png)
 
 ## Disclaimers / important information
 
@@ -78,20 +90,21 @@ Prerequisite: **OnlyOffice should be public**, see previous section.
 
 ## Documentation and resources
 
-* Official app website: https://www.onlyoffice.com
-* Upstream app code repository: https://github.com/ONLYOFFICE/DocumentServer
-* YunoHost documentation for this app: https://yunohost.org/app_onlyoffice
-* Report a bug: https://github.com/YunoHost-Apps/onlyoffice_ynh/issues
+* Official app website: <https://www.onlyoffice.com>
+* Upstream app code repository: <https://github.com/ONLYOFFICE/DocumentServer>
+* YunoHost documentation for this app: <https://yunohost.org/app_onlyoffice>
+* Report a bug: <https://github.com/YunoHost-Apps/onlyoffice_ynh/issues>
 
 ## Developer info
 
 Please send your pull request to the [testing branch](https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing).
 
 To try the testing branch, please proceed like that.
-```
+
+``` bash
 sudo yunohost app install https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
 or
 sudo yunohost app upgrade onlyoffice -u https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
 ```
 
-**More info regarding app packaging:** https://yunohost.org/packaging_apps
+**More info regarding app packaging:** <https://yunohost.org/packaging_apps>
