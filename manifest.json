@@ -69,6 +69,10 @@
                     "fr": "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
                 },
                 "default": "yunohost.domain/nextcloud"
+            },
+            {
+                "name": "admin",
+                "type": "user"
             }
         ]
     }
