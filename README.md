@@ -5,7 +5,8 @@ It shall NOT be edited by hand.
 
 # OnlyOffice for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![Working status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![Working status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)
+
 [![Install OnlyOffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=onlyoffice)
 
 *[Lire ce readme en français.](./README_fr.md)*
