@@ -5,15 +5,16 @@ It shall NOT be edited by hand.
 
 # OnlyOffice pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)
+
 [![Installer OnlyOffice avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=onlyoffice)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer OnlyOffice rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer OnlyOffice rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 ONLYOFFICE Document Server est une suite bureautique en ligne comprenant des visualiseurs et des éditeurs de textes, feuilles de calcul et présentations, entièrement compatible avec les formats Office Open XML: .docx, .xlsx, .pptx et permettant l'édition collaborative en temps réel.
 
@@ -29,14 +30,14 @@ L'édition collaborative en ligne des documents ONLYOFFICE nécessite :
 Une solution rendue facile par YunoHost est d'installer (1.i) et (2.i), voir [ci-dessous](https://github.com/YunoHost-Apps/onlyoffice_ynh/blob/master/README_fr.md#configuration-de-onlyoffice-server). Les utilisateurs qui aiment le tout Nextcloud peuvent suivre [ce tutoriel](https://github.com/YunoHost-Apps/nextcloud_ynh/blob/master/README_fr.md#configurer-lint%C3%A9gration-donlyoffice) pour installer le Community Document Server (1.ii) et ONLYOFFICE connector (2.i) sur une instance Nextcloud. Cependant, les performances et l'architecture sont limitées.
 
 
-**Version incluse :** 7.2.2~ynh1
+**Version incluse :** 7.3.3~ynh1
 
 **Démo :** https://www.onlyoffice.com/fr/download-desktop.aspx
 
-## Captures d'écran
+## Captures d’écran
 
-![Capture d'écran de OnlyOffice](./doc/screenshots/.DS_Store)
-![Capture d'écran de OnlyOffice](./doc/screenshots/document-short.png)
+![Capture d’écran de OnlyOffice](./doc/screenshots/.DS_Store)
+![Capture d’écran de OnlyOffice](./doc/screenshots/document-short.png)
 
 ## Avertissements / informations importantes
 
@@ -90,8 +91,8 @@ Prérequis : **ONLYOFFICE doit être public**, voir la section précédente.
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://www.onlyoffice.com>
-* Dépôt de code officiel de l'app : <https://github.com/ONLYOFFICE/DocumentServer>
+* Site officiel de l’app : <https://www.onlyoffice.com>
+* Dépôt de code officiel de l’app : <https://github.com/ONLYOFFICE/DocumentServer>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_onlyoffice>
 * Signaler un bug : <https://github.com/YunoHost-Apps/onlyoffice_ynh/issues>
 
@@ -107,4 +108,4 @@ ou
 sudo yunohost app upgrade onlyoffice -u https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
