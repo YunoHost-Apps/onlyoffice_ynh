@@ -136,15 +136,15 @@ echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyof
 # restart nginx and the whole webadmin and maybe even the yunohost command
 # running the install ...
 
-#ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
 
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
 ynh_script_progression --message="Adding a configuration file..."
 
-#ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
-#ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
+ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
+ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
