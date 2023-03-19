@@ -123,12 +123,12 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Install OnlyOffice..."
 
-ynh_install_extra_repo repo=https://download.onlyoffice.com key=https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE priority=995
-#mkdir -p -m 700 ~/.gnupg
-#curl -fsSL https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE | gpg --no-default-keyring --keyring gnupg-ring:/tmp/onlyoffice.gpg --import
-#chmod 644 /tmp/onlyoffice.gpg
-#sudo chown root:root /tmp/onlyoffice.gpg
-#sudo mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
+#ynh_install_extra_repo repo=https://download.onlyoffice.com key=https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE priority=995
+mkdir -p -m 700 ~/.gnupg
+curl -fsSL https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE | gpg --no-default-keyring --keyring gnupg-ring:/tmp/onlyoffice.gpg --import
+chmod 644 /tmp/onlyoffice.gpg
+chown root:root /tmp/onlyoffice.gpg
+mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
 
 #echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 
@@ -138,7 +138,7 @@ ynh_install_extra_repo repo=https://download.onlyoffice.com key=https://download
 # running the install ...
 
 #apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8320CA65CB2DE8E5 2>/dev/null
-ynh_install_extra_app_dependencies --package=$extra_dependencies
+ynh_install_extra_app_dependencies repo="deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies
 
 #=================================================
 # ADD A CONFIGURATION
