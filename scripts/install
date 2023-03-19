@@ -129,6 +129,8 @@ chmod 644 /tmp/onlyoffice.gpg
 sudo chown root:root /tmp/onlyoffice.gpg
 sudo mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
 
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8320CA65CB2DE8E5 2>/dev/null
+
 echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 
 # The onlyoffice dev had the magnificent idea to add a "nginx restart" during
