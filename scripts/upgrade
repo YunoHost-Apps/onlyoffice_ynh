@@ -142,6 +142,7 @@ echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyof
 
 # ynh_remove_app_dependencies
 #ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_install_app_dependencies onlyoffice-documentserver
 
 #=================================================
 # UPDATE A CONFIG FILE
