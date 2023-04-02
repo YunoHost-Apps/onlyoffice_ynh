@@ -125,21 +125,22 @@ ynh_script_progression --message="Install OnlyOffice..."
 
 #ynh_install_extra_repo repo=https://download.onlyoffice.com key=https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE priority=995
 #mkdir -p -m 700 ~/.gnupg
-#curl -fsSL https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE | gpg --no-default-keyring --keyring gnupg-ring:/tmp/onlyoffice.gpg --import
-#chmod 644 /tmp/onlyoffice.gpg
-#chown root:root /tmp/onlyoffice.gpg
-#mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
+curl -fsSL https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE | gpg --no-default-keyring --keyring gnupg-ring:/tmp/onlyoffice.gpg --import
+chmod 644 /tmp/onlyoffice.gpg
+chown root:root /tmp/onlyoffice.gpg
+mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
 
-#echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 
 # The onlyoffice dev had the magnificent idea to add a "nginx restart" during
 # the install/configure of their package, which is awful since that will
 # restart nginx and the whole webadmin and maybe even the yunohost command
 # running the install ...
 
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5 2>/dev/null
-ynh_install_extra_app_dependencies repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5 2>/dev/null
+#ynh_install_extra_app_dependencies repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
 
+ynh_install_app onlyoffice-documentserver
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
