@@ -94,9 +94,10 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Reinstalling OnlyOffice..."
 
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+# apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+# ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
 #=================================================
 # RESTORE THE CONFIGURATION
