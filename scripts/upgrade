@@ -169,11 +169,11 @@ chown -R ds:ds "$final_path"
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
+# ynh_script_progression --message="Starting a systemd service..."
 
-supervisorctl reload
+# supervisorctl reload
 
-sleep 30
+# sleep 30
 
 #=================================================
 # RELOAD NGINX
