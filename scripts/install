@@ -70,7 +70,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 ynh_script_progression --message="Installing dependencies..."
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ buster main contrib" --package=$contrib_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ $(lsb_release --codename --short) main contrib" --package=$contrib_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
 
 #=================================================
 # CREATE DEDICATED USER
@@ -130,7 +130,7 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5 2>/de
 # restart nginx and the whole webadmin and maybe even the yunohost command
 # running the install ...
 
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
 #=================================================
 # ADD A CONFIGURATION
@@ -154,11 +154,11 @@ chown -R ds:ds "$final_path"
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
+# ynh_script_progression --message="Starting a systemd service..."
 
-supervisorctl reload
+# supervisorctl reload
 
-sleep 30
+# sleep 30
 
 #=================================================
 # REGENERATE FONTS
