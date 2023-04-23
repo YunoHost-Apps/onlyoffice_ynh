@@ -140,9 +140,8 @@ sudo mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
 
 echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
 
-# ynh_remove_app_dependencies
-#ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
-ynh_install_app_dependencies onlyoffice-documentserver
+ynh_package_update
+ynh_package_install onlyoffice-documentserver
 
 #=================================================
 # UPDATE A CONFIG FILE
@@ -179,7 +178,7 @@ chown -R ds:ds "$final_path"
 #=================================================
 ynh_script_progression --message="Starting a systemd service..."
 
-supervisorctl reload
+ynh_systemd_action --service_name=ds-* --action=reload
 
 sleep 30
 
