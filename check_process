@@ -23,4 +23,4 @@ Notification=none
 ;;; Upgrade options
 	; commit=2be500cb4251cc1209ae36c7f0668aa17be230aa
 		;name=Merge pull request #72 from YunoHost-Apps/testing 
-		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr&is_public=1&password=pass&port=666&
+		;manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr&is_public=1&password=pass&port=666&
