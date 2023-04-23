@@ -143,10 +143,6 @@ echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyof
 ynh_package_update
 ynh_package_install onlyoffice-documentserver
 
-supervisorctl reload
-
-sleep 30
-
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
@@ -171,7 +167,8 @@ chown -R ds:ds "$final_path"
 #=================================================
 ynh_script_progression --message="Starting a systemd service..."
 
-supervisorctl reload
+ynh_systemd_action --service_name=ds-* --action=reload
+#ynh_systemd_action --service_name=ds-* --action=restart
 
 sleep 30
 
