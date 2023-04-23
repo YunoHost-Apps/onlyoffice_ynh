@@ -63,7 +63,9 @@ dpkg --configure -a
 ynh_secure_remove --file="/usr/share/keyrings/onlyoffice.gpg"
 ynh_secure_remove --file="/etc/apt/sources.list.d/onlyoffice.list"
 
-ynh_remove_systemd_config --service=ds-*
+ynh_remove_systemd_config --service=ds-metrics
+ynh_remove_systemd_config --service=ds-converter
+ynh_remove_systemd_config --service=ds-docservice
 
 #=================================================
 # REMOVE APP MAIN DIR
