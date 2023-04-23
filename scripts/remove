@@ -58,7 +58,12 @@ ynh_remove_app_dependencies
 
 dpkg --configure -a
 
-apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5" 2>/dev/null
+#apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5" 2>/dev/null
+
+ynh_secure_remove --file="/usr/share/keyrings/onlyoffice.gpg"
+ynh_secure_remove --file="/etc/apt/sources.list.d/onlyoffice.list"
+
+ynh_remove_systemd_config --service=ds-*
 
 #=================================================
 # REMOVE APP MAIN DIR
