@@ -142,15 +142,7 @@ echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyof
 
 ynh_package_update
 ynh_package_install onlyoffice-documentserver
-chown -R ds:ds /var/www/onlyoffice/
 
-#=================================================
-# ADD A CONFIGURATION
-#=================================================
-ynh_script_progression --message="Adding a configuration file..."
-
-ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
-ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
@@ -160,6 +152,14 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 chmod 750 "$final_path"
 chmod -R o-rwx "$final_path"
 chown -R ds:ds "$final_path"
+
+#=================================================
+# ADD A CONFIGURATION
+#=================================================
+ynh_script_progression --message="Adding a configuration file..."
+
+ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
+ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 
 #=================================================
 # GENERIC FINALIZATION
