@@ -142,6 +142,7 @@ echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyof
 
 ynh_package_update
 ynh_package_install onlyoffice-documentserver
+chown -R ds:ds /var/www/onlyoffice/
 
 #=================================================
 # ADD A CONFIGURATION
