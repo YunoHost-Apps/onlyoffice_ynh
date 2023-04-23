@@ -143,6 +143,10 @@ echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyof
 ynh_package_update
 ynh_package_install onlyoffice-documentserver
 
+supervisorctl reload
+
+sleep 30
+
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
