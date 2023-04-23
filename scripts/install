@@ -132,16 +132,7 @@ ynh_script_progression --message="Install OnlyOffice..."
 
 #ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
 
-mkdir -p -m 700 ~/.gnupg
-curl -fsSL https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE | gpg --no-default-keyring --keyring gnupg-ring:/tmp/onlyoffice.gpg --import
-chmod 644 /tmp/onlyoffice.gpg
-chown root:root /tmp/onlyoffice.gpg
-mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
-
-echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
-
-ynh_package_update
-ynh_package_install onlyoffice-documentserver
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
 #=================================================
 # ADD A CONFIGURATION
