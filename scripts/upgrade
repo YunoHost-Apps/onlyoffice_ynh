@@ -132,7 +132,7 @@ ynh_script_progression --message="Upgrading OnlyOffice..."
 
 ynh_remove_extra_repo --name="$app" # backward compat
 
-apt-key del CB2DE8E5 2>/dev/null
+apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5" 2>/dev/null
 
 ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
