@@ -123,14 +123,25 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Install OnlyOffice..."
 
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8320CA65CB2DE8E5 2>/dev/null
+#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8320CA65CB2DE8E5 2>/dev/null
 
 # The onlyoffice dev had the magnificent idea to add a "nginx restart" during
 # the install/configure of their package, which is awful since that will
 # restart nginx and the whole webadmin and maybe even the yunohost command
 # running the install ...
 
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+#ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+
+mkdir -p -m 700 ~/.gnupg
+curl -fsSL https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE | gpg --no-default-keyring --keyring gnupg-ring:/tmp/onlyoffice.gpg --import
+chmod 644 /tmp/onlyoffice.gpg
+sudo chown root:root /tmp/onlyoffice.gpg
+sudo mv /tmp/onlyoffice.gpg /usr/share/keyrings/onlyoffice.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+
+ynh_package_update
+ynh_package_install onlyoffice-documentserver
 
 #=================================================
 # ADD A CONFIGURATION
