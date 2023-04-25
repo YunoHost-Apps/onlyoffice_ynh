@@ -126,9 +126,6 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Install OnlyOffice..."
 
-# keyserver.ubuntu.com response an error 500 regularly
-#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5 2>/dev/null
-
 # The OnlyOffice dev had the magnificent idea to add a "nginx restart" during
 # the install/configure of their package, which is awful since that will
 # restart NGINX and the whole webadmin and maybe even the YunoHost command
@@ -152,17 +149,6 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 chmod 750 "$final_path"
 chmod -R o-rwx "$final_path"
 chown -R ds:ds "$final_path"
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# START SYSTEMD SERVICE
-#=================================================
-# ynh_script_progression --message="Starting a systemd service..."
-
-# supervisorctl reload
-
-# sleep 30
 
 #=================================================
 # REGENERATE FONTS
