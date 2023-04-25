@@ -8,6 +8,7 @@
 
 source _common.sh
 source /usr/share/yunohost/helpers
+source ynh_send_readme_to_admin__2
 
 #=================================================
 # MANAGE SCRIPT FAILURE
@@ -26,6 +27,8 @@ is_public=$YNH_APP_ARG_IS_PUBLIC
 nextclouddomain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
 
 app=$YNH_APP_INSTANCE_NAME
+admin=$YNH_APP_ARG_ADMIN
+admin_mail=$(ynh_user_get_info --username=$admin --key="mail")
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
@@ -175,6 +178,15 @@ fi
 ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# SEND A README FOR THE ADMIN
+#=================================================
+ynh_script_progression --message="Sending a readme for the admin..."
+
+jwt_token=$(documentserver-jwt-status.sh | sed "3q;d" | cut -d "-" -f 2 | tr -d ' ')
+
+ynh_send_readme_to_admin --app_message="../conf/msg_install" --recipients=$admin_mail --type='install'
 
 #=================================================
 # END OF SCRIPT
