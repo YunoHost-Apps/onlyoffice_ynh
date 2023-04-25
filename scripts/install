@@ -73,7 +73,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 ynh_script_progression --message="Installing dependencies..."
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ buster main contrib" --package=$contrib_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ $(lsb_release --codename --short) main contrib" --package="ttf-mscorefonts-installer" --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
 
 #=================================================
 # CREATE DEDICATED USER
@@ -106,7 +106,7 @@ else
 fi
 
 # Create a dedicated NGINX config
-ynh_add_nginx_config "nextclouddomain"
+ynh_add_nginx_config
 
 #=================================================
 # SPECIFIC SETUP
@@ -126,14 +126,15 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #=================================================
 ynh_script_progression --message="Install OnlyOffice..."
 
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5 2>/dev/null
+# keyserver.ubuntu.com response an error 500 regularly
+#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5 2>/dev/null
 
-# The onlyoffice dev had the magnificent idea to add a "nginx restart" during
+# The OnlyOffice dev had the magnificent idea to add a "nginx restart" during
 # the install/configure of their package, which is awful since that will
-# restart nginx and the whole webadmin and maybe even the yunohost command
-# running the install ...
+# restart NGINX and the whole webadmin and maybe even the YunoHost command
+# running the install...
 
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
 #=================================================
 # ADD A CONFIGURATION
@@ -157,18 +158,18 @@ chown -R ds:ds "$final_path"
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
+# ynh_script_progression --message="Starting a systemd service..."
 
-supervisorctl reload
+# supervisorctl reload
 
-sleep 30
+# sleep 30
 
 #=================================================
 # REGENERATE FONTS
 #=================================================
 ynh_script_progression --message="Generating fonts..."
 
-/usr/bin/documentserver-generate-allfonts.sh
+/usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
 
 #=================================================
 # SETUP SSOWAT
