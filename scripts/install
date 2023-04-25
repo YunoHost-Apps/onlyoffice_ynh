@@ -118,6 +118,8 @@ echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
 
+echo onlyoffice-documentserver onlyoffice/jwt-enabled boolean false | debconf-set-selections
+
 #=================================================
 # INSTALL ONLYOFFICE
 #=================================================
