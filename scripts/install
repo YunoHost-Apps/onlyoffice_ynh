@@ -70,6 +70,14 @@ ynh_script_progression --message="Generating fonts..."
 /usr/bin/documentserver-generate-allfonts.sh
 
 #=================================================
+# SEND A README FOR THE ADMIN
+#=================================================
+ynh_script_progression --message="Sending a readme for the admin..."
+
+jwt_token=$(documentserver-jwt-status.sh | sed "3q;d" | cut -d "-" -f 2 | tr -d ' ')
+ynh_app_setting_set --app=$app --key=jwt_token --value=$jwt_token
+
+#=================================================
 # END OF SCRIPT
 #=================================================
 
