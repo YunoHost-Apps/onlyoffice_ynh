@@ -49,8 +49,8 @@ ram.runtime = "50M"
     help.en = "Install the OnlyOffice connector to edit documents from Nextcloud."
     help.fr = "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
     type = "string"
-    example = "__DOMAIN__/nextcloud or nextcloud.__DOMAIN__"
-    default = "__DOMAIN__/nextcloud"
+    example = "yunohost.domain/nextcloud or nextcloud.yunohost.domain"
+    default = "yunohost.domain/nextcloud"
 
 [resources]
 
