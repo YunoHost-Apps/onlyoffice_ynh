@@ -26,26 +26,12 @@ ynh_secure_remove --file="/etc/apt/sources.list.d/onlyoffice.list"
 ynh_secure_remove --file="/etc/apt/sources.list.d/nodesource.list"
 
 #=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-#REMOVEME? ynh_script_progression --message="Upgrading dependencies..."
-
-#REMOVEME? ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-#REMOVEME? ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ $(lsb_release --codename --short) main contrib" --package=$contrib_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
-
-#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Upgrading NGINX web server configuration..."
 
-if [ "$path" = "/" ]; then
-   ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
-else
-  ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$path" --target_file="../conf/nginx.conf"
-fi
-
 # Create a dedicated nginx config
-ynh_add_nginx_config "nextclouddomain"
+ynh_add_nginx_config
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -60,20 +46,6 @@ echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set
 echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
-
-#=================================================
-# UPGRADE ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Upgrading OnlyOffice..."
-
-ynh_remove_extra_repo --name="$app" # backward compat
-
-# keyserver.ubuntu.com response an error 500 regularly
-# apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-
-#REMOVEME? # ynh_remove_app_dependencies
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
-
 
 #=================================================
 # UPDATE A CONFIG FILE
