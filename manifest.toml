@@ -1,0 +1,68 @@
+packaging_format = 2
+
+id = "onlyoffice"
+name = "OnlyOffice"
+description.en = "Create and edit documents collaboratively"
+description.fr = "Créez et éditer des documents collaborativement"
+
+version = "7.3.3~ynh1"
+
+maintainers = []
+
+[upstream]
+license = "GPL-3.0-or-later"
+website = "https://www.onlyoffice.com"
+demo = "https://www.onlyoffice.com/fr/download-desktop.aspx"
+code = "https://github.com/ONLYOFFICE/DocumentServer"
+cpe = "???" # FIXME: optional but recommended if relevant, this is meant to contain the Common Platform Enumeration, which is sort of a standard id for applications defined by the NIST. In particular, Yunohost may use this is in the future to easily track CVE (=security reports) related to apps. The CPE may be obtained by searching here: https://nvd.nist.gov/products/cpe/search. For example, for Nextcloud, the CPE is 'cpe:2.3:a:nextcloud:nextcloud' (no need to include the version number)
+fund = "???" # FIXME: optional but recommended (or remove if irrelevant / not applicable). This is meant to be an URL where people can financially support this app, especially when its development is based on volunteers and/or financed by its community. YunoHost may later advertise it in the webadmin.
+
+[integration]
+yunohost = ">= 11.0.9"
+architectures = "all" # FIXME: can be replaced by a list of supported archs using the dpkg --print-architecture nomenclature (amd64/i386/armhf/arm64), for example: ["amd64", "i386"]
+multi_instance = false
+ldap = "?" # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "sso" key : the "ldap" key corresponds to wether or not a user *can* login on the app using its YunoHost credentials.
+sso = "?" # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "ldap" key : the "sso" key corresponds to wether or not a user is *automatically logged-in* on the app when logged-in on the YunoHost portal.
+disk = "50M" # FIXME: replace with an **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
+ram.build = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+
+[install]
+    [install.domain]
+    # this is a generic question - ask strings are automatically handled by Yunohost's core
+    help.en = "You should not install OnlyOffice on your main YunoHost domain, especially if you want to use it with a Nextcloud installed on the same domain."
+    help.fr = "Évitez d'installer OnlyOffice sur votre domaine YunoHost principal, surtout si vous voulez l'utiliser avec une instance Nextcloud installée sur le même domaine."
+    type = "domain"
+
+    [install.path]
+    # this is a generic question - ask strings are automatically handled by Yunohost's core
+    help.en = "Root path / if you chose a subdomain, e.g. office.yunohost.domain."
+    help.fr = "Choisissez le chemin racine / si vous avez choisi un sous-domaine, ex. office.yunohost.domain."
+    type = "path"
+    default = "/onlyoffice"
+
+    [install.init_main_permission]
+    help.en = "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!"
+    help.fr = "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
+    type = "group"
+    default = "visitors"
+
+    [install.nextclouddomain]
+    ask.en = "The domain of the Nextcloud to connect to OnlyOffice"
+    ask.fr = "Le domaine du Nextcloud à connecter à OnlyOffice"
+    help.en = "Install the OnlyOffice connector to edit documents from Nextcloud."
+    help.fr = "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
+    type = "string"
+    example = "yunohost.domain/nextcloud or nextcloud.yunohost.domain"
+    default = "yunohost.domain/nextcloud"
+
+[resources]
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.permissions]
+    main.url = "/"
+
+    [resources.database]
+    type = "postgresql"
