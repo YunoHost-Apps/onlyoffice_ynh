@@ -1,0 +1,12 @@
+__APP__ was successfully installed :)
+
+Please open your __APP__ domain: https://__DOMAIN____PATH_URL__
+
+To configure OnlyOffice with your Nextcloud, go to the settings:
+under "Administration > ONLYOFFICE > Server settings >
+- Address of the Document Server" enter: "https://__DOMAIN____PATH_URL__"
+- Secret key" enter "__JWT_TOKEN__"
+
+OnlyOffice should now work with your Nextcloud!
+
+If you are facing any problem or want to improve this app, please open a new issue here: https://github.com/YunoHost-Apps/onlyoffice_ynh
