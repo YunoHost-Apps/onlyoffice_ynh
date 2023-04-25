@@ -103,7 +103,7 @@ else
 fi
 
 # Create a dedicated NGINX config
-ynh_add_nginx_config "nextclouddomain"
+ynh_add_nginx_config
 
 #=================================================
 # SPECIFIC SETUP
