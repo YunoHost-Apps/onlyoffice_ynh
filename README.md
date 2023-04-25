@@ -5,7 +5,8 @@ It shall NOT be edited by hand.
 
 # OnlyOffice for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![Working status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/onlyoffice.svg)](https://dash.yunohost.org/appci/app/onlyoffice) ![Working status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)
+
 [![Install OnlyOffice with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=onlyoffice)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -15,35 +16,33 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-OnlyOffice Document Server is an online office suite comprising viewers and editors for texts, spreadsheets and presentations, fully compatible with Office Open XML formats: .docx, .xlsx, .pptx and enabling collaborative editing in real time.
+ONLYOFFICE Document Server is an online office suite comprising viewers and editors for texts, spreadsheets and presentations, fully compatible with Office Open XML formats: .docx, .xlsx, .pptx and enabling collaborative editing in real time.
 
-Online collaborative edition of OnlyOffice documents requires: 
+Online collaborative edition of ONLYOFFICE documents requires: 
 1. a server part, with two installation options:
-   1. OnlyOffice Document Server packaged for YunoHost. 
+   1. ONLYOFFICE Document Server packaged for YunoHost. 
    2. The [Community Document Server for Nextcloud](https://apps.nextcloud.com/apps/documentserver_community) 
 
 2. a client part, such as: 
    1. The [ONLYOFFICE connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice) 
    2. The [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx)
 
-The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) to install (1.ii) and (2.i) on one Nextcloud instance. However, performance and architecture are limited.
+A solution made easy by YunoHost is to install (1.i) and (2.i), see [section below](https://github.com/YunoHost-Apps/onlyoffice_ynh/#configuration-of-onlyoffice-server). The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) to install (1.ii) and (2.i) on one Nextcloud instance. However, performance and architecture are limited.
 
 
-**Shipped version:** 7.1.0~ynh1
-
+**Shipped version:** 7.3.3~ynh1
 
 **Demo:** https://www.onlyoffice.com/fr/download-desktop.aspx
 
 ## Screenshots
 
-![Screenshot of OnlyOffice](./doc/screenshots/.DS_Store)
 ![Screenshot of OnlyOffice](./doc/screenshots/document-short.png)
 
 ## Disclaimers / important information
 
 ## Demo
 
-* A free 30 days demo of Document Server is available from OnlyOffice connector for Nextcloud:
+* A free 30 days demo of Document Server is available from ONLYOFFICE connector for Nextcloud:
   * Install Nextcloud and the ONLYOFFICE app (connector).
   * Go in the Nextcloud administrator settings, section ONLYOFFICE.
   * Tick the box `Connection to demo ONLYOFFICE Document Server` in Server Parameters.
@@ -51,30 +50,30 @@ The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-App
 
 ## Prerequisite
 
-You should not install OnlyOffice on your main YunoHost domain, especially if you want to use it with a Nextcloud installed on the same domain.
-* Add a new domain for OnlyOffice in YunoHost.
+You should not install ONLYOFFICE on your main YunoHost domain, especially if you want to use it with a Nextcloud installed on the same domain.
+* Add a new domain for ONLYOFFICE in YunoHost.
   * If your main YunoHost domain was provided by YunoHost, e.g. `domain.nohost.me`, then you don't have to buy/register a new domain name.
   * Just click on `I already have a domain`.
   * Type e.g. `office.domain.nohost.me` and click on `Add`.
 * Add a Let's Encrypt certificate for this domain.
 
-## Configuration of OnlyOffice Server
+## Configuration of ONLYOFFICE Server
 
 * Assuming that:
   * `yunohost.domain` is your main YunoHost domain.
-  * You have configured `office.yunohost.domain` for OnlyOffice, see Prerequisite above.
+  * You have configured `office.yunohost.domain` for ONLYOFFICE, see Prerequisite above.
   * You have Nextcloud installed on `yunohost.domain/nextcloud` or `nextcloud.yunohost.domain`.
-* Install `onlyoffice` using CLI or webadmin.
-  * Choose a domain name for OnlyOffice that is different from your Nextcloud domain, e.g. `office.yunohost.domain` (or `office.domain.nohost.me`, see previous section).
-  * Choose a path for OnlyOffice, e.g. `/` if you install on `office.yunohost.domain` (do not install any other app on this domain).
+* Install `ONLYOFFICE` using CLI or webadmin.
+  * Choose a domain name for ONLYOFFICE that is different from your Nextcloud domain, e.g. `office.yunohost.domain` (or `office.domain.nohost.me`, see previous section).
+  * Choose a path for ONLYOFFICE, e.g. `/` if you install on `office.yunohost.domain` (do not install any other app on this domain).
   * The domain of your Nextcloud instance, e.g. `yunohost.domain/nextcloud` or `nextcloud.yunohost.domain`.
-  * Is it a public application? **If you want to connect it to Nextcloud, OnlyOffice should be public**: then select `Yes` or `tick the box`.
+  * Is it a public application? **If you want to connect it to Nextcloud, ONLYOFFICE should be public**: then select `Yes` or `tick the box`.
 
-## How to edit OnlyOffice documents?
+## How to edit ONLYOFFICE documents?
 
 ### Web Edition in Nextcloud
 
-Prerequisite: **OnlyOffice should be public**, see previous section.
+Prerequisite: **ONLYOFFICE should be public**, see previous section.
 * In Nextcloud apps store, install `ONLYOFFICE`, i.e. the [ONLYOFFICE connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice).
 * Go in the Nextcloud `settings` > `Administration` > `ONLYOFFICE` > `Server settings` > `Address of the Document Server`.
 * Give the installation domain of your `onlyoffice`, e.g. `https://office.yunohost.domain/` and click `Save`.
@@ -84,8 +83,8 @@ Prerequisite: **OnlyOffice should be public**, see previous section.
 
 * Download and install a [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx).
 * Start ONLYOFFICE and Go to `Connect to cloud` > `Add cloud`.
-  * Select `ONLYOFFICE` and give the installation domain of your `onlyoffice`, e.g. `office.yunohost.domain`
-  * or (only if you connected `onlyoffice` to Nextcloud, see previous section).
+  * Select `ONLYOFFICE` and give the installation domain of your `ONLYOFFICE`, e.g. `office.yunohost.domain`
+  * or (only if you connected `ONLYOFFICE` to Nextcloud, see previous section).
   * Select `Nextcloud` and give your Nextcloud installation domain, e.g. `yunohost.domain/nextcloud`.
 * Create a new document and enjoy!
 

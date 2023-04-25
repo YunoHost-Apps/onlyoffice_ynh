@@ -6,7 +6,7 @@
         "en": "Create and edit documents collaboratively",
         "fr": "Créez et éditer des documents collaborativement"
     },
-    "version": "7.1.0~ynh1",
+    "version": "7.3.3~ynh1",
     "url": "https://www.onlyoffice.com",
     "upstream": {
         "license": "GPL-3.0-or-later",
@@ -20,7 +20,7 @@
         "email": ""
     },
     "requirements": {
-        "yunohost": ">= 4.3.0"
+        "yunohost": ">= 11.0.9"
     },
     "multi_instance": false,
     "services": [
@@ -69,6 +69,10 @@
                     "fr": "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
                 },
                 "default": "yunohost.domain/nextcloud"
+            },
+            {
+                "name": "admin",
+                "type": "user"
             }
         ]
     }

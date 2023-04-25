@@ -95,7 +95,7 @@ ynh_system_user_create --username=$app --home_dir="$final_path"
 ynh_script_progression --message="Upgrading dependencies..."
 
 ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ buster main contrib" --package=$contrib_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ $(lsb_release --codename --short) main contrib" --package="ttf-mscorefonts-installer" --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
 
 #=================================================
 # NGINX CONFIGURATION
@@ -131,10 +131,13 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 ynh_script_progression --message="Upgrading OnlyOffice..."
 
 ynh_remove_extra_repo --name="$app" # backward compat
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+
+# keyserver.ubuntu.com response an error 500 regularly
+# apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
 
 # ynh_remove_app_dependencies
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
+ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
+
 
 #=================================================
 # UPDATE A CONFIG FILE
@@ -169,11 +172,11 @@ chown -R ds:ds "$final_path"
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
+# ynh_script_progression --message="Starting a systemd service..."
 
-supervisorctl reload
+# supervisorctl reload
 
-sleep 30
+# sleep 30
 
 #=================================================
 # RELOAD NGINX
