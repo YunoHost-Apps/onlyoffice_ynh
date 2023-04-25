@@ -166,7 +166,7 @@ chown -R ds:ds "$final_path"
 #=================================================
 ynh_script_progression --message="Generating fonts..."
 
-/usr/bin/documentserver-generate-allfonts.sh
+/usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
 
 #=================================================
 # SETUP SSOWAT
