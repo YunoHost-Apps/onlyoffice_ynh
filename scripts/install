@@ -63,15 +63,6 @@ jwt_token=$(documentserver-jwt-status.sh | sed "3q;d" | cut -d "-" -f 2 | tr -d 
 ynh_app_setting_set --app=$app --key=jwt_token --value=$jwt_token
 
 #=================================================
-# SEND A README FOR THE ADMIN
-#=================================================
-ynh_script_progression --message="Sending a readme for the admin..."
-
-jwt_token=$(documentserver-jwt-status.sh | sed "3q;d" | cut -d "-" -f 2 | tr -d ' ')
-
-ynh_send_readme_to_admin --app_message="../conf/msg_install" --recipients=$admin_mail --type='install'
-
-#=================================================
 # END OF SCRIPT
 #=================================================
 
