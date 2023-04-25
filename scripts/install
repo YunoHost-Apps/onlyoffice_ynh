@@ -31,21 +31,6 @@ echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
 
 #=================================================
-# INSTALL ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Install OnlyOffice..."
-
-# keyserver.ubuntu.com response an error 500 regularly
-#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5 2>/dev/null
-
-# The onlyoffice dev had the magnificent idea to add a "nginx restart" during
-# the install/configure of their package, which is awful since that will
-# restart nginx and the whole webadmin and maybe even the yunohost command
-# running the install ...
-
-#ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package=$extra_dependencies --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
-
-#=================================================
 # ADD A CONFIGURATION
 #=================================================
 ynh_script_progression --message="Adding a configuration file..."
