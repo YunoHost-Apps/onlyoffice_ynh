@@ -79,6 +79,13 @@ Prérequis : **ONLYOFFICE doit être public**, voir la section précédente.
 * Spécifiez le domaine d'installation de votre serveur `ONLYOFFICE`, par exemple `https://office.yunohost.domain/` et cliquez sur `Enregistrer`.
 * Créez un nouveau document !
 
+
+#### Paramètre JWT
+Sur la page de conficuration Nextcloud du connecteur "OnlyOffice", il faut indiquer un token. Celui-ci vous est envoyé par mail lors de l'installation ou de la mise à jour, il suffit de le copier-coller dans le champ du formulaire.
+
+Si vous n'avez pas reçu l'email, vous pouvez retrouver à tout moment la valeur du token en exécutant la commande suivante (sur le serveur Yunohost où OnlyOffice est installé)
+* `sudo documentserver-jwt-status.sh`
+
 ### Desktop Édition sur PC
 
 * Téléchargez et installez [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx)
