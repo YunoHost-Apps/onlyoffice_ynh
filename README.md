@@ -68,6 +68,12 @@ You should not install ONLYOFFICE on your main YunoHost domain, especially if yo
   * Choose a path for ONLYOFFICE, e.g. `/` if you install on `office.yunohost.domain` (do not install any other app on this domain).
   * The domain of your Nextcloud instance, e.g. `yunohost.domain/nextcloud` or `nextcloud.yunohost.domain`.
   * Is it a public application? **If you want to connect it to Nextcloud, ONLYOFFICE should be public**: then select `Yes` or `tick the box`.
+  * 
+#### JWT Safety setting
+In the Nextcloud' OnlyOffice connector setting page, a token is required. You receive it by mail at install time, copy-paste the token in the Nextcloud's setting page.
+
+If you missed the email, you can find the token by running this command anytime in your Yunohost server where Onlyoffice is installed : 
+* `sudo documentserver-jwt-status.sh`
 
 
 
@@ -80,12 +86,6 @@ Prerequisite: **ONLYOFFICE should be public**, see previous section.
 * Go in the Nextcloud `settings` > `Administration` > `ONLYOFFICE` > `Server settings` > `Address of the Document Server`.
 * Give the installation domain of your `onlyoffice`, e.g. `https://office.yunohost.domain/` and click `Save`.
 * Create a new document and enjoy!
-
-#### JWT Safety setting
-In the Nextcloud' OnlyOffice connector setting page, a token is required. You receive it by mail at install time, copy-paste the token in the Nextcloud's setting page.
-
-If you missed the email, you can find the token by running this command anytime in your Yunohost server where Onlyoffice is installed : 
-* `sudo documentserver-jwt-status.sh`
 
 ### Desktop Edition on PC
 
