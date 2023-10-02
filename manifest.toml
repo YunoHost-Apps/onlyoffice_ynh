@@ -16,7 +16,7 @@ demo = "https://www.onlyoffice.com/fr/download-desktop.aspx"
 code = "https://github.com/ONLYOFFICE/DocumentServer"
 
 [integration]
-yunohost = ">= 11.1.18"
+yunohost = ">= 11.2"
 architectures = ["arm64", "amd64"]
 multi_instance = false
 ldap = "not_relevant"
@@ -64,7 +64,7 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "postgresql postgresql-contrib libstdc++6 rabbitmq-server libcurl4-dev"
+    packages = "postgresql, postgresql-contrib, libstdc++6, rabbitmq-server, libcurl4-dev"
 
     extras.repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
     extras.key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
