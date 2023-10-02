@@ -83,9 +83,8 @@ Prerequisite: **ONLYOFFICE should be public**, see previous section.
 
 * Download and install a [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx).
 * Start ONLYOFFICE and Go to `Connect to cloud` > `Add cloud`.
+  * If you connected `ONLYOFFICE` to Nextcloud (see previous section), select `Nextcloud` and give your Nextcloud installation domain, e.g. `yunohost.domain/nextcloud`; otherwise:
   * Select `ONLYOFFICE` and give the installation domain of your `ONLYOFFICE`, e.g. `office.yunohost.domain`
-  * or (only if you connected `ONLYOFFICE` to Nextcloud, see previous section).
-  * Select `Nextcloud` and give your Nextcloud installation domain, e.g. `yunohost.domain/nextcloud`.
 * Create a new document and enjoy!
 
 ## Documentation and resources
