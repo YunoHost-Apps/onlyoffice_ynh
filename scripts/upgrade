@@ -24,7 +24,7 @@ db_user=$db_name
 db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 port=$(ynh_app_setting_get --app=$app --key=port)
 nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
-jwt_secret=$(ynh_app_setting_get --app=$app --key=jwt_secret)
+#jwt_secret=$(ynh_app_setting_get --app=$app --key=jwt_secret)
 
 #=================================================
 # CHECK VERSION

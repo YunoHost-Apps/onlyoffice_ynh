@@ -91,7 +91,7 @@ echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
 
 #JWT options
-echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
+#echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
 
 #=================================================
 # REINSTALL ONLYOFFICE
