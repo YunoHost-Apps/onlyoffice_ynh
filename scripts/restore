@@ -98,7 +98,7 @@ echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debc
 #=================================================
 ynh_script_progression --message="Reinstalling OnlyOffice..."
 
-ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
+ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
 #=================================================
 # RESTORE THE CONFIGURATION
