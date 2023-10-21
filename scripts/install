@@ -120,7 +120,9 @@ echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
 
-#echo onlyoffice-documentserver onlyoffice/jwt-enabled boolean false | debconf-set-selections
+#JWT options
+echo onlyoffice-documentserver onlyoffice/jwt-enabled boolean true | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
 
 #=================================================
 # INSTALL ONLYOFFICE
@@ -182,8 +184,6 @@ ynh_systemd_action --service_name=nginx --action=reload
 # SEND A README FOR THE ADMIN
 #=================================================
 ynh_script_progression --message="Sending a readme for the admin..."
-
-jwt_token=$(documentserver-jwt-status.sh | sed "3q;d" | cut -d "-" -f 2 | tr -d ' ')
 
 ynh_send_readme_to_admin --app_message="../conf/msg_install" --recipients=$admin_mail --type='install'
 
