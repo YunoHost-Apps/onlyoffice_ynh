@@ -59,7 +59,7 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "postgresql, postgresql-contrib, libstdc++6, rabbitmq-server, libcurl4-dev"
+    packages = "postgresql, postgresql-contrib, libstdc++6, rabbitmq-server"
 
     extras.ttf.repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
     extras.ttf.key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
