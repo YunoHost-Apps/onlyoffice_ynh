@@ -5,7 +5,7 @@ Please open your __APP__ domain: https://__DOMAIN____PATH_URL__
 To configure OnlyOffice with your Nextcloud, go to the settings:
 under "Administration > ONLYOFFICE > Server settings >
 - Address of the Document Server" enter: "https://__DOMAIN____PATH_URL__"
-- Secret key" enter "__JWT_TOKEN__"
+- Secret key" enter "__JWT_SECRET__"
 
 OnlyOffice should now work with your Nextcloud!
 
