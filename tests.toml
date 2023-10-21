@@ -7,4 +7,4 @@ test_format = 1.0
     # ------------
 
 
-    arg.nextclouddomain
+    arg.nextclouddomain = "dpmain.tld"

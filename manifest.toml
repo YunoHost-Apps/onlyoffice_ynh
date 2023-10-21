@@ -27,13 +27,9 @@ ram.runtime = "50M"
 
 [install]
     [install.domain]
-    help.en = "You should not install OnlyOffice on your main YunoHost domain, especially if you want to use it with a Nextcloud installed on the same domain."
-    help.fr = "Évitez d'installer OnlyOffice sur votre domaine YunoHost principal, surtout si vous voulez l'utiliser avec une instance Nextcloud installée sur le même domaine."
     type = "domain"
 
     [install.path]
-    help.en = "Root path / if you chose a subdomain, e.g. office.yunohost.domain."
-    help.fr = "Choisissez le chemin racine / si vous avez choisi un sous-domaine, ex. office.yunohost.domain."
     type = "path"
     default = "/onlyoffice"
 
