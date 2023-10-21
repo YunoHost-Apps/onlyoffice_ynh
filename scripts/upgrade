@@ -24,11 +24,11 @@ db_user=$db_name
 db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
 port=$(ynh_app_setting_get --app=$app --key=port)
 nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
+jwt_secret=$(ynh_app_setting_get --app=$app --key=jwt_secret)
 
 #=================================================
 # CHECK VERSION
 #=================================================
-ynh_script_progression --message="Checking version..."
 
 upgrade_type=$(ynh_check_app_version_changed)
 
@@ -125,6 +125,10 @@ echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
 
+#JWT options
+echo onlyoffice-documentserver onlyoffice/jwt-enabled boolean true | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
+
 #=================================================
 # UPGRADE ONLYOFFICE
 #=================================================
@@ -156,7 +160,7 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 #=================================================
 ynh_script_progression --message="Generating fonts..."
 
-/usr/bin/documentserver-generate-allfonts.sh
+/usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
