@@ -59,11 +59,11 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "postgresql, postgresql-contrib, libstdc++6, rabbitmq-server, libcurl4-dev, ttf-mscorefonts-installer"
+    packages = "postgresql, postgresql-contrib, libstdc++6, rabbitmq-server, libcurl4-dev"
 
-    #extras.ttf.repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
-    #extras.ttf.key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
-    #extras.ttf.packages = "ttf-mscorefonts-installer"
+    extras.ttf.repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
+    extras.ttf.key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
+    extras.ttf.packages = "ttf-mscorefonts-installer"
 
     extras.onlyoffice.repo = "https://download.onlyoffice.com/repo/debian squeeze main"
     extras.onlyoffice.key = "https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
