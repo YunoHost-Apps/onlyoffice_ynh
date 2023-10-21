@@ -76,7 +76,9 @@ Vous ne devez pas installer ONLYOFFICE sur votre domaine YunoHost principal, sur
 Prérequis : **ONLYOFFICE doit être public**, voir la section précédente.
 * dans le magasin d'applications Nextcloud, installez `ONLYOFFICE`, c'est-à-dire le [connecteur ONLYOFFICE pour Nextcloud](https://apps.nextcloud.com/apps/onlyoffice)
 * Allez dans Nextcloud `Paramètres` > `Administration` > `ONLYOFFICE` > `Paramètres du serveur` > `Adresse du service d'édition de document`.
-* Spécifiez le domaine d'installation de votre serveur `ONLYOFFICE`, par exemple `https://office.yunohost.domain/` et cliquez sur `Enregistrer`.
+* Spécifiez le domaine d'installation de votre serveur `ONLYOFFICE`, par exemple `https://office.yunohost.domain/`.
+* Renseignez la clé secrète qui vous a été envoyée par email lors de l'installation (vous pouvez aussi la retrouve avec la ligne de commande `sudo documentserver-jwt-status.sh`).
+* Cliquez sur `Enregistrer`.
 * Créez un nouveau document !
 
 ### Desktop Édition sur PC
