@@ -45,6 +45,7 @@ ynh_restore_file --origin_path="/etc/onlyoffice"
 #=================================================
 # RESTORE THE CACHE
 #=================================================
+
 ynh_restore_file --origin_path="/var/lib/onlyoffice/documentserver/App_Data/cache/files"
 
 #=================================================
@@ -52,7 +53,7 @@ ynh_restore_file --origin_path="/var/lib/onlyoffice/documentserver/App_Data/cach
 #=================================================
 ynh_script_progression --message="Generating fonts..."
 
-/usr/bin/documentserver-generate-allfonts.sh
+/usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
