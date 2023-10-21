@@ -142,7 +142,6 @@ ynh_remove_extra_repo --name="$app" # backward compat
 # ynh_remove_app_dependencies
 ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
-
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================
