@@ -52,6 +52,7 @@ ynh_script_progression --message="Removing various files..."
 
 # Remove a directory securely
 ynh_secure_remove --file="/etc/onlyoffice"
+
 ynh_secure_remove --file="/var/lib/onlyoffice"
 
 # Remove the log files
