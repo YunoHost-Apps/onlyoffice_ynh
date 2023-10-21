@@ -9,6 +9,10 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+
+
+jwt_secret=$(ynh_string_random --length=32)
+
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
@@ -29,6 +33,15 @@ echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set
 echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
+
+#RabbitMQ options
+#echo onlyoffice-documentserver onlyoffice/rabbitmq-host string <RABBITMQ_HOST> | debconf-set-selections
+#echo onlyoffice-documentserver onlyoffice/rabbitmq-user string <RABBITMQ_USER> | debconf-set-selections
+#echo onlyoffice-documentserver onlyoffice/rabbitmq-pwd password <RABBITMQ_PWD> | debconf-set-selections
+
+#JWT options
+echo onlyoffice-documentserver onlyoffice/jwt-enabled boolean true | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
 
 #=================================================
 # ADD A CONFIGURATION
