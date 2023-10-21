@@ -5,7 +5,7 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "7.3.3~ynh1"
+version = "7.5~ynh1"
 
 maintainers = []
 
@@ -46,7 +46,6 @@ ram.runtime = "50M"
     help.fr = "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
     type = "string"
     example = "yunohost.domain/nextcloud or nextcloud.yunohost.domain"
-    default = "yunohost.domain/nextcloud"
 
 [resources]
 
@@ -62,9 +61,9 @@ ram.runtime = "50M"
     [resources.apt]
     packages = "postgresql, postgresql-contrib, libstdc++6, rabbitmq-server, libcurl4-dev"
 
-    extras.repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
-    extras.key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
-    extras.packages = "ttf-mscorefonts-installer"
+    extras.ttf.repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
+    extras.ttf.key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
+    extras.ttf.packages = "ttf-mscorefonts-installer"
 
     extras.onlyoffice.repo = "https://download.onlyoffice.com/repo/debian squeeze main"
     extras.onlyoffice.key = "https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
