@@ -30,7 +30,7 @@ L'édition collaborative en ligne des documents ONLYOFFICE nécessite :
 Une solution rendue facile par YunoHost est d'installer (1.i) et (2.i), voir [ci-dessous](https://github.com/YunoHost-Apps/onlyoffice_ynh/blob/master/README_fr.md#configuration-de-onlyoffice-server). Les utilisateurs qui aiment le tout Nextcloud peuvent suivre [ce tutoriel](https://github.com/YunoHost-Apps/nextcloud_ynh/blob/master/README_fr.md#configurer-lint%C3%A9gration-donlyoffice) pour installer le Community Document Server (1.ii) et ONLYOFFICE connector (2.i) sur une instance Nextcloud. Cependant, les performances et l'architecture sont limitées.
 
 
-**Version incluse :** 7.3.3~ynh1
+**Version incluse :** 7.5~ynh1
 
 **Démo :** https://www.onlyoffice.com/fr/download-desktop.aspx
 
@@ -76,7 +76,9 @@ Vous ne devez pas installer ONLYOFFICE sur votre domaine YunoHost principal, sur
 Prérequis : **ONLYOFFICE doit être public**, voir la section précédente.
 * dans le magasin d'applications Nextcloud, installez `ONLYOFFICE`, c'est-à-dire le [connecteur ONLYOFFICE pour Nextcloud](https://apps.nextcloud.com/apps/onlyoffice)
 * Allez dans Nextcloud `Paramètres` > `Administration` > `ONLYOFFICE` > `Paramètres du serveur` > `Adresse du service d'édition de document`.
-* Spécifiez le domaine d'installation de votre serveur `ONLYOFFICE`, par exemple `https://office.yunohost.domain/` et cliquez sur `Enregistrer`.
+* Spécifiez le domaine d'installation de votre serveur `ONLYOFFICE`, par exemple `https://office.yunohost.domain/`.
+* Renseignez la clé secrète qui vous a été envoyée par email lors de l'installation (vous pouvez aussi la retrouve avec la ligne de commande `sudo documentserver-jwt-status.sh`).
+* Cliquez sur `Enregistrer`.
 * Créez un nouveau document !
 
 ### Desktop Édition sur PC
@@ -92,7 +94,6 @@ Prérequis : **ONLYOFFICE doit être public**, voir la section précédente.
 
 * Site officiel de l’app : <https://www.onlyoffice.com>
 * Dépôt de code officiel de l’app : <https://github.com/ONLYOFFICE/DocumentServer>
-* Documentation YunoHost pour cette app : <https://yunohost.org/app_onlyoffice>
 * Signaler un bug : <https://github.com/YunoHost-Apps/onlyoffice_ynh/issues>
 
 ## Informations pour les développeurs

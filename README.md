@@ -30,7 +30,7 @@ Online collaborative edition of ONLYOFFICE documents requires:
 A solution made easy by YunoHost is to install (1.i) and (2.i), see [section below](https://github.com/YunoHost-Apps/onlyoffice_ynh/#configuration-of-onlyoffice-server). The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) to install (1.ii) and (2.i) on one Nextcloud instance. However, performance and architecture are limited.
 
 
-**Shipped version:** 7.3.3~ynh1
+**Shipped version:** 7.5~ynh1
 
 **Demo:** https://www.onlyoffice.com/fr/download-desktop.aspx
 
@@ -76,7 +76,9 @@ You should not install ONLYOFFICE on your main YunoHost domain, especially if yo
 Prerequisite: **ONLYOFFICE should be public**, see previous section.
 * In Nextcloud apps store, install `ONLYOFFICE`, i.e. the [ONLYOFFICE connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice).
 * Go in the Nextcloud `settings` > `Administration` > `ONLYOFFICE` > `Server settings` > `Address of the Document Server`.
-* Give the installation domain of your `onlyoffice`, e.g. `https://office.yunohost.domain/` and click `Save`.
+* Give the installation domain of your `onlyoffice`, e.g. `https://office.yunohost.domain/`.
+* Give the secret key that was sent to you by email during the install (you can also retrieve it with the CLI command `sudo documentserver-jwt-status.sh`).
+* Click `Save`.
 * Create a new document and enjoy!
 
 ### Desktop Edition on PC
@@ -92,7 +94,6 @@ Prerequisite: **ONLYOFFICE should be public**, see previous section.
 
 * Official app website: <https://www.onlyoffice.com>
 * Upstream app code repository: <https://github.com/ONLYOFFICE/DocumentServer>
-* YunoHost documentation for this app: <https://yunohost.org/app_onlyoffice>
 * Report a bug: <https://github.com/YunoHost-Apps/onlyoffice_ynh/issues>
 
 ## Developer info
