@@ -61,7 +61,7 @@ ram.runtime = "50M"
     [resources.apt]
     packages = "postgresql, postgresql-contrib, libstdc++6"
 
-    extras.ttf.repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
+    extras.ttf.repo = "deb http://deb.debian.org/debian/ buster main contrib"
     extras.ttf.key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
     extras.ttf.packages = "ttf-mscorefonts-installer"
 
