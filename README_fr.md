@@ -42,6 +42,7 @@ Une solution rendue facile par YunoHost est d'installer (1.i) et (2.i), voir [ci
 
 * Site officiel de l’app : <https://www.onlyoffice.com>
 * Dépôt de code officiel de l’app : <https://github.com/ONLYOFFICE/DocumentServer>
+* YunoHost Store: <https://apps.yunohost.org/app/onlyoffice>
 * Signaler un bug : <https://github.com/YunoHost-Apps/onlyoffice_ynh/issues>
 
 ## Informations pour les développeurs
