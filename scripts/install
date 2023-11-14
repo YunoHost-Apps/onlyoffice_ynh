@@ -38,7 +38,6 @@ echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-
 #echo onlyoffice-documentserver onlyoffice/rabbitmq-pwd password <RABBITMQ_PWD> | debconf-set-selections
 
 #JWT options
-echo onlyoffice-documentserver onlyoffice/jwt-enabled boolean true | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
 
 #=================================================
