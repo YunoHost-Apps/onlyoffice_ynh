@@ -5,7 +5,7 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="postgresql postgresql-contrib libstdc++6 rabbitmq-server libcurl4-dev"
+#REMOVEME? pkg_dependencies="postgresql postgresql-contrib libstdc++6 rabbitmq-server libcurl4-dev"
 
 #=================================================
 # PERSONAL HELPERS
@@ -44,7 +44,7 @@ ynh_send_readme_to_admin() {
 	type="${type:-install}"
 
 	# Get the value of admin_mail_html
-	admin_mail_html=$(ynh_app_setting_get $app admin_mail_html)
+#REMOVEME? 	admin_mail_html=$(ynh_app_setting_get $app admin_mail_html)
 	admin_mail_html="${admin_mail_html:-0}"
 
 	# Retrieve the email of users

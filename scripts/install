@@ -10,100 +10,23 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE SCRIPT FAILURE
+# INITIALIZE AND STORE SETTINGS
 #=================================================
 
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
-
-domain=$YNH_APP_ARG_DOMAIN
-path_url=$YNH_APP_ARG_PATH
-is_public=$YNH_APP_ARG_IS_PUBLIC
-nextclouddomain=$YNH_APP_ARG_NEXTCLOUDDOMAIN
-
-app=$YNH_APP_INSTANCE_NAME
-admin=$YNH_APP_ARG_ADMIN
 admin_mail=$(ynh_user_get_info --username=$admin --key="mail")
+
 jwt_secret=$(ynh_string_random --length=32)
-
-#=================================================
-# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
-#=================================================
-ynh_script_progression --message="Validating installation parameters..."
-
-final_path=/var/www/$app
-test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
-
-if dpkg-architecture --is armhf
-then
-    ynh_die --message="Sorry, this app can not be installed on an ARM architecture"
-fi
-
-# Register (book) web path
-ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
-
-#=================================================
-# STORE SETTINGS FROM MANIFEST
-#=================================================
-ynh_script_progression --message="Storing installation settings..."
-
-ynh_app_setting_set --app=$app --key=domain --value=$domain
-ynh_app_setting_set --app=$app --key=path --value=$path_url
-ynh_app_setting_set --app=$app --key=nextclouddomain --value=$nextclouddomain
-ynh_app_setting_set --app=$app --key=final_path --value=$final_path
-ynh_app_setting_set --app=$app --key=jwt_secret --value=$jwt_secret
-
-#=================================================
-# STANDARD MODIFICATIONS
-#=================================================
-# FIND AND OPEN A PORT
-#=================================================
-ynh_script_progression --message="Finding an available port..."
-
-# Find an available port
-port=$(ynh_find_port --port=8095)
-ynh_app_setting_set --app=$app --key=port --value=$port
-
-#=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Installing dependencies..."
-
-ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ $(lsb_release --codename --short) main contrib" --package="ttf-mscorefonts-installer" --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Configuring system user..."
-
-# Create a system user
-ynh_system_user_create --username=$app --home_dir="$final_path"
-
-#=================================================
-# CREATE A POSTGRESQL DATABASE
-#=================================================
-ynh_script_progression --message="Creating a PostgreSQL database..."
-
-db_name=$(ynh_sanitize_dbid --db_name=$app)
-db_user=$db_name
-ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-ynh_psql_test_if_first_run
-ynh_psql_setup_db --db_user=$db_user --db_name=$db_name
+ynh_app_setting_set --app="$app" --key=jwt_secret --value="$jwt_secret"
 
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Configuring NGINX web server..."
 
-if [ $path_url = "/" ]; then
-   ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
+if [ $path = "/" ]; then
+    path_no_slash=""
 else
-  ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$path_url" --target_file="../conf/nginx.conf"
+    path_no_slash="$path"
 fi
 
 # Create a dedicated NGINX config
@@ -116,14 +39,12 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Configuring OnlyOffice..."
 
-echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/ds-port select "$port" | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
-
-#JWT options
-echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-user string "$db_user" | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-pwd password "$db_pwd" | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/db-name string "$db_name" | debconf-set-selections
+echo onlyoffice-documentserver onlyoffice/jwt-secret password "$jwt_secret" | debconf-set-selections
 
 #=================================================
 # INSTALL ONLYOFFICE
@@ -135,7 +56,7 @@ ynh_script_progression --message="Install OnlyOffice..."
 # restart NGINX and the whole webadmin and maybe even the YunoHost command
 # running the install...
 
-ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
+#REMOVEME? ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
 
 #=================================================
 # ADD A CONFIGURATION
@@ -150,9 +71,9 @@ ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 #=================================================
 
 # Set permissions to app files
-chmod 750 "$final_path"
-chmod -R o-rwx "$final_path"
-chown -R ds:ds "$final_path"
+chmod 750 "$install_dir"
+chmod -R o-rwx "$install_dir"
+chown -R ds:ds "$install_dir"
 
 #=================================================
 # REGENERATE FONTS
@@ -164,22 +85,22 @@ ynh_script_progression --message="Generating fonts..."
 #=================================================
 # SETUP SSOWAT
 #=================================================
-ynh_script_progression --message="Configuring permissions..."
+#REMOVEME? ynh_script_progression --message="Configuring permissions..."
 
 # Make app public if necessary
-if [ $is_public -eq 1 ]
+#REMOVEME? if [ $is_public -eq 1 ]
 then
 	# Everyone can access the app.
 	# The "main" permission is automatically created before the install script.
-	ynh_permission_update --permission="main" --add="visitors"
+#REMOVEME? 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading NGINX web server..."
+#REMOVEME? ynh_script_progression --message="Reloading NGINX web server..."
 
-ynh_systemd_action --service_name=nginx --action=reload
+#REMOVEME? ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # SEND A README FOR THE ADMIN

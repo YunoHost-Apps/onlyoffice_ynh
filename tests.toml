@@ -1,0 +1,11 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/tests.v1.schema.json
+
+test_format = 1.0
+
+[default]
+
+    args.nextcloud_domain = "nextcloud.tld"
+
+    exclude = ["change_url"]
+
+    test_upgrade_from.205cc12c26b46c57ba8459f449e835949be44096.name = "7.3.3~ynh1"
