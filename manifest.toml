@@ -70,14 +70,13 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
         "postgresql-contrib",
         "libstdc++6",
         "rabbitmq-server",
-        "libcurl4-dev",
-        "ttf-mscorefonts-installer"
+        "libcurl4-openssl-dev", # provides libcurl4-dev
     ]
 
-    # [resources.apt.extras.ttf]
-    # repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
-    # key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
-    # packages = "ttf-mscorefonts-installer"
+    [resources.apt.extras.ttf]
+    repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
+    key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
+    packages = ["ttf-mscorefonts-installer"]
 
     [resources.apt.extras.onlyoffice]
     repo = "https://download.onlyoffice.com/repo/debian squeeze main"
