@@ -9,6 +9,7 @@
 ## Prerequisite
 
 You should not install ONLYOFFICE on your main YunoHost domain, especially if you want to use it with a Nextcloud installed on the same domain.
+
 * Add a new domain for ONLYOFFICE in YunoHost.
   * If your main YunoHost domain was provided by YunoHost, e.g. `domain.nohost.me`, then you don't have to buy/register a new domain name.
   * Just click on `I already have a domain`.
@@ -32,6 +33,7 @@ You should not install ONLYOFFICE on your main YunoHost domain, especially if yo
 ### Web Edition in Nextcloud
 
 Prerequisite: **ONLYOFFICE should be public**, see previous section.
+
 * In Nextcloud apps store, install `ONLYOFFICE`, i.e. the [ONLYOFFICE connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice).
 * Go in the Nextcloud `settings` > `Administration` > `ONLYOFFICE` > `Server settings` > `Address of the Document Server`.
 * Give the installation domain of your `onlyoffice`, e.g. `https://office.yunohost.domain/`.
