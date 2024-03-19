@@ -4,7 +4,7 @@ test_format = 1.0
 
 [default]
 
-    args.nextcloud_domain = "nextcloud.tld"
+    args.nextclouddomain = "nextcloud.tld"
 
     exclude = ["change_url"]
 
