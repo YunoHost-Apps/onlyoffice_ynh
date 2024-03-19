@@ -32,9 +32,10 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
     [install.domain]
     type = "domain"
 
-    [install.path]
-    type = "path"
-    default = "/onlyoffice"
+    # FIXME: subpath doesn't work anymore?
+    # [install.path]
+    # type = "path"
+    # default = "/onlyoffice"
 
     [install.init_main_permission]
     help.en = "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!"
@@ -70,7 +71,7 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
         "postgresql-contrib",
         "libstdc++6",
         "rabbitmq-server",
-        "libcurl4-openssl-dev", # provides libcurl4-dev
+        "libcurl4-openssl-dev",
     ]
 
     [resources.apt.extras.ttf]
