@@ -74,10 +74,11 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
         "libcurl4-openssl-dev",
     ]
 
-    [resources.apt.extras.ttf]
-    repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
-    key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
-    packages = ["ttf-mscorefonts-installer"]
+    # Manual install in scripts
+    # [resources.apt.extras.ttf]
+    # repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
+    # key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
+    # packages = ["ttf-mscorefonts-installer"]
 
     # Manual install in scripts
     # [resources.apt.extras.onlyoffice]

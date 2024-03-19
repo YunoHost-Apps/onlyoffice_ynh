@@ -21,24 +21,9 @@ ynh_secure_remove --file="/etc/apt/sources.list.d/nodesource.list"
 ynh_script_progression --message="Upgrading OnlyOffice..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
-echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
-echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
-# JWT options
-# echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
 
-# The OnlyOffice dev had the magnificent idea to add a "nginx restart" during
-# the install/configure of their package, which is awful since that will
-# restart NGINX and the whole webadmin and maybe even the YunoHost command
-# running the install...
-
-# Can't do that in the manifest because we need the debconf-set-selections and postgresql already configured
-ynh_exec_warn_less ynh_install_extra_app_dependencies \
-    --repo="https://download.onlyoffice.com/repo/debian squeeze main" \
-    --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE" \
-    --package="onlyoffice-documentserver"
+_install_msfonts_deb
+_install_onlyoffice_deb
 
 #=================================================
 # UPDATE A CONFIG FILE
@@ -48,8 +33,8 @@ ynh_script_progression --message="Updating a configuration file..."
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 
 ynh_replace_string --target_file="/etc/onlyoffice/documentserver/default.json" \
-	--match_string="\"rejectUnauthorized\": true" \
-	--replace_string="\"rejectUnauthorized\": false" 
+    --match_string="\"rejectUnauthorized\": true" \
+    --replace_string="\"rejectUnauthorized\": false" 
 
 # Recalculate and store the checksum of the file for the next upgrade.
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
