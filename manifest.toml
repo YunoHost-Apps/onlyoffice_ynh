@@ -1,0 +1,90 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
+packaging_format = 2
+
+id = "onlyoffice"
+name = "OnlyOffice"
+description.en = "Create and edit documents collaboratively"
+description.fr = "Créez et éditer des documents collaborativement"
+
+version = "7.5~ynh1"
+
+maintainers = []
+
+[upstream]
+license = "GPL-3.0-or-later"
+website = "https://www.onlyoffice.com"
+demo = "https://www.onlyoffice.com/fr/download-desktop.aspx"
+code = "https://github.com/ONLYOFFICE/DocumentServer"
+cpe = "cpe:2.3:a:onlyoffice:document_server"
+
+[integration]
+yunohost = ">= 11.2"
+architectures = ["amd64"]
+multi_instance = false
+ldap = "not_relevant"
+sso = "not_relevant"
+disk = "2000M"
+ram.build = "800M"
+ram.runtime = "800M"
+
+[install]
+    [install.domain]
+    type = "domain"
+
+    # FIXME: subpath doesn't work anymore?
+    # [install.path]
+    # type = "path"
+    # default = "/onlyoffice"
+
+    [install.init_main_permission]
+    help.en = "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!"
+    help.fr = "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
+    type = "group"
+    default = "visitors"
+
+    [install.nextclouddomain]
+    ask.en = "The domain of the Nextcloud to connect to OnlyOffice"
+    ask.fr = "Le domaine du Nextcloud à connecter à OnlyOffice"
+    help.en = "Install the OnlyOffice connector to edit documents from Nextcloud."
+    help.fr = "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
+    type = "string"
+    example = "yunohost.domain/nextcloud or nextcloud.yunohost.domain"
+
+    [install.admin]
+    type = "user"
+
+[resources]
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.permissions]
+    main.url = "/"
+
+    [resources.ports]
+    main.default = 8095
+
+    [resources.apt]
+    packages = [
+        "postgresql",
+        "postgresql-contrib",
+        "libstdc++6",
+        "rabbitmq-server",
+        "libcurl4-openssl-dev",
+    ]
+
+    # Manual install in scripts
+    # [resources.apt.extras.ttf]
+    # repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
+    # key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
+    # packages = ["ttf-mscorefonts-installer"]
+
+    # Manual install in scripts
+    # [resources.apt.extras.onlyoffice]
+    # repo = "https://download.onlyoffice.com/repo/debian squeeze main"
+    # key = "https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
+    # packages = "onlyoffice-documentserver"
+
+    [resources.database]
+    type = "postgresql"
