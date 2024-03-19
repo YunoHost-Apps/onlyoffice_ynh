@@ -1,29 +1,12 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
 source _common.sh
 source /usr/share/yunohost/helpers
 
-#=================================================
-# LOAD SETTINGS
-#=================================================
-#REMOVEME? ynh_script_progression --message="Loading installation settings..."
-
-#REMOVEME? app=$YNH_APP_INSTANCE_NAME
-
-#REMOVEME? domain=$(ynh_app_setting_get --app=$app --key=domain)
-#REMOVEME? port=$(ynh_app_setting_get --app=$app --key=port)
-#REMOVEME? db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-#REMOVEME? db_user=$db_name
-#REMOVEME? #REMOVEME? install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
-
-#=================================================
-# STANDARD REMOVE
 #=================================================
 # REMOVE ONLYOFFICE
 #=================================================
@@ -40,48 +23,21 @@ ynh_secure_remove --file=/var/lib/dpkg/info/onlyoffice-documentserver.prerm
 #ln -s /bin/true /usr/local/bin/supervisorctl
 ynh_package_autopurge onlyoffice-documentserver
 
-#=================================================
-# REMOVE THE POSTGRESQL DATABASE
-#=================================================
-#REMOVEME? ynh_script_progression --message="Removing the PostgreSQL database..."
-
-# Remove a database if it exists, along with the associated user
-#REMOVEME? ynh_psql_remove_db --db_user="$db_user" --db_name="$db_name"
-
-#=================================================
-# REMOVE DEPENDENCIES
-#=================================================
-#REMOVEME? ynh_script_progression --message="Removing dependencies..."
-
-# Remove metapackage and its dependencies
-#REMOVEME? ynh_remove_app_dependencies
-
 dpkg --configure -a
 
 apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5" 2>/dev/null
 
 #=================================================
-# REMOVE APP MAIN DIR
+# REMOVE SYSTEM CONFIGURATIONS
 #=================================================
-#REMOVEME? ynh_script_progression --message="Removing app main directory..."
-
-# Remove the app directory securely
-#REMOVEME? ynh_secure_remove --file="$install_dir"
-
-#=================================================
-# REMOVE NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Removing NGINX web server configuration..."
+ynh_script_progression --message="Removing system configurations related to $app..." --weight=1
 
 # Remove the dedicated NGINX config
 ynh_remove_nginx_config
 
 #=================================================
-# SPECIFIC REMOVE
-#=================================================
 # REMOVE VARIOUS FILES
 #=================================================
-ynh_script_progression --message="Removing various files..."
 
 # Remove a directory securely
 ynh_secure_remove --file="/etc/onlyoffice"
@@ -89,17 +45,6 @@ ynh_secure_remove --file="/var/lib/onlyoffice"
 
 # Remove the log files
 ynh_secure_remove --file="/var/log/$app"
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# REMOVE DEDICATED USER
-#=================================================
-#REMOVEME? ynh_script_progression --message="Removing the dedicated system user..."
-
-# Delete a system user
-#gpasswd -d www-data onlyoffice
-#REMOVEME? ynh_system_user_delete --username=$app
 
 #=================================================
 # END OF SCRIPT

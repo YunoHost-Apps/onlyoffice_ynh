@@ -17,23 +17,9 @@ jwt_secret=$(ynh_string_random --length=32)
 ynh_app_setting_set --app="$app" --key=jwt_secret --value="$jwt_secret"
 
 #=================================================
-# NGINX CONFIGURATION
+# INSTALL ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Configuring NGINX web server..."
-
-if [ $path = "/" ]; then
-    path_no_slash=""
-else
-    path_no_slash="$path"
-fi
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
-
-#=================================================
-# CONFIGURE ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Configuring OnlyOffice..."
+ynh_script_progression --message="Install OnlyOffice..."
 
 echo onlyoffice-documentserver onlyoffice/ds-port select "$port" | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set-selections
@@ -41,11 +27,6 @@ echo onlyoffice-documentserver onlyoffice/db-user string "$db_user" | debconf-se
 echo onlyoffice-documentserver onlyoffice/db-pwd password "$db_pwd" | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string "$db_name" | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/jwt-secret password "$jwt_secret" | debconf-set-selections
-
-#=================================================
-# INSTALL ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Install OnlyOffice..."
 
 # The OnlyOffice dev had the magnificent idea to add a "nginx restart" during
 # the install/configure of their package, which is awful since that will
@@ -63,8 +44,17 @@ ynh_exec_warn_less ynh_install_extra_app_dependencies \
 #=================================================
 ynh_script_progression --message="Adding $app's configuration file..."
 
-ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
+ynh_replace_string --target_file="/etc/onlyoffice/documentserver/default.json" \
+    --match_string="\"rejectUnauthorized\": true" \
+    --replace_string="\"rejectUnauthorized\": false" 
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
+
+#=================================================
+# REGENERATE FONTS
+#=================================================
+ynh_script_progression --message="Generating fonts..."
+
+/usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
 
 #=================================================
 # SECURE FILES AND DIRECTORIES
@@ -76,11 +66,18 @@ chmod -R o-rwx "$install_dir"
 chown -R ds:ds "$install_dir"
 
 #=================================================
-# REGENERATE FONTS
+# NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Generating fonts..."
+ynh_script_progression --message="Configuring NGINX web server..."
 
-/usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
+if [ $path = "/" ]; then
+    path_no_slash=""
+else
+    path_no_slash="$path"
+fi
+
+# Create a dedicated NGINX config
+ynh_add_nginx_config
 
 #=================================================
 # END OF SCRIPT

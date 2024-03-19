@@ -1,8 +1,6 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
@@ -10,113 +8,17 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# LOAD SETTINGS
-#=================================================
-#REMOVEME? ynh_script_progression --message="Loading installation settings..."
-
-#REMOVEME? app=$YNH_APP_INSTANCE_NAME
-
-#REMOVEME? domain=$(ynh_app_setting_get --app=$app --key=domain)
-#REMOVEME? path=$(ynh_app_setting_get --app=$app --key=path)
-#REMOVEME? #REMOVEME? install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
-#REMOVEME? db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-#REMOVEME? db_user=$db_name
-#REMOVEME? db_pwd=$(ynh_app_setting_get --app=$app --key=psqlpwd)
-#REMOVEME? port=$(ynh_app_setting_get --app=$app --key=port)
-#REMOVEME? nextclouddomain=$(ynh_app_setting_get --app=$app --key=nextclouddomain)
-#REMOVEME? #jwt_secret=$(ynh_app_setting_get --app=$app --key=jwt_secret)
-
-#=================================================
-# CHECK VERSION
-#=================================================
-
-upgrade_type=$(ynh_check_app_version_changed)
-
-#=================================================
-# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
-#=================================================
-#REMOVEME? ynh_script_progression --message="Backing up the app before upgrading (may take a while)..."
-
-# Backup the current version of the app
-#REMOVEME? ynh_backup_before_upgrade
-#REMOVEME? ynh_clean_setup () {
-	# Restore it if the upgrade fails
-#REMOVEME? 	ynh_restore_upgradebackup
-}
-# Exit if an error occurs during the execution of the script
-#REMOVEME? ynh_abort_if_errors
-
-#=================================================
-# STANDARD UPGRADE STEPS
-#=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..."
-
-# If db_name doesn't exist, create it
-if [ -z "$db_name" ]; then
-	db_name=$(ynh_sanitize_dbid --db_name=$app)
-#REMOVEME? 	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-fi
-
-# If install_dir doesn't exist, create it
-if [ -z "$install_dir" ]; then
-#REMOVEME? 	install_dir=/var/www/$app
-#REMOVEME? 	ynh_app_setting_set --app=$app --key=install_dir --value=$install_dir
-fi
-
-if [ -z "$db_pwd" ]; then
-#REMOVEME?     db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
-#REMOVEME?     ynh_app_setting_set --app=$app --key=db_pwd
-#REMOVEME?     ynh_app_setting_set --app=$app --key=psqlpwd --value=$db_pwd
-fi
-
-# Cleaning legacy permissions
-#REMOVEME? if ynh_legacy_permissions_exists; then
-#REMOVEME? 	ynh_legacy_permissions_delete_all
-
-	ynh_app_setting_delete --app=$app --key=is_public
-fi
 
 ynh_secure_remove --file="/etc/apt/sources.list.d/onlyoffice.list"
 ynh_secure_remove --file="/etc/apt/sources.list.d/nodesource.list"
 
 #=================================================
-# CREATE DEDICATED USER
-#=================================================
-#REMOVEME? ynh_script_progression --message="Making sure dedicated system user exists..."
-
-# Create a dedicated user (if not existing)
-#REMOVEME? ynh_system_user_create --username=$app --home_dir="$install_dir"
-
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-#REMOVEME? ynh_script_progression --message="Upgrading dependencies..."
-
-#REMOVEME? ynh_exec_warn_less ynh_install_app_dependencies $pkg_dependencies
-#REMOVEME? ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="deb http://deb.debian.org/debian/ $(lsb_release --codename --short) main contrib" --package="ttf-mscorefonts-installer" --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc"
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Upgrading NGINX web server configuration..."
-
-if [ "$path" = "/" ]; then
-   ynh_replace_string --match_string="__SUB_PATH__" --replace_string="" --target_file="../conf/nginx.conf"
-else
-  ynh_replace_string --match_string="__SUB_PATH__" --replace_string="$path" --target_file="../conf/nginx.conf"
-fi
-
-# Create a dedicated nginx config
-ynh_add_nginx_config "nextclouddomain"
-
-#=================================================
-# SPECIFIC UPGRADE
-#=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Configuring OnlyOffice..."
+ynh_script_progression --message="Upgrading OnlyOffice..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 echo onlyoffice-documentserver onlyoffice/ds-port select $port | debconf-set-selections
@@ -124,22 +26,19 @@ echo onlyoffice-documentserver onlyoffice/db-host string 127.0.0.1 | debconf-set
 echo onlyoffice-documentserver onlyoffice/db-user string $db_user | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-pwd password $db_pwd | debconf-set-selections
 echo onlyoffice-documentserver onlyoffice/db-name string $db_name | debconf-set-selections
+# JWT options
+# echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
 
-#JWT options
-#echo onlyoffice-documentserver onlyoffice/jwt-secret password $jwt_secret | debconf-set-selections
+# The OnlyOffice dev had the magnificent idea to add a "nginx restart" during
+# the install/configure of their package, which is awful since that will
+# restart NGINX and the whole webadmin and maybe even the YunoHost command
+# running the install...
 
-#=================================================
-# UPGRADE ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Upgrading OnlyOffice..."
-
-ynh_remove_extra_repo --name="$app" # backward compat
-
-# keyserver.ubuntu.com response an error 500 regularly
-# apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-
-#REMOVEME? # ynh_remove_app_dependencies
-#REMOVEME? ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
+# Can't do that in the manifest because we need the debconf-set-selections and postgresql already configured
+ynh_exec_warn_less ynh_install_extra_app_dependencies \
+    --repo="https://download.onlyoffice.com/repo/debian squeeze main" \
+    --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE" \
+    --package="onlyoffice-documentserver"
 
 #=================================================
 # UPDATE A CONFIG FILE
@@ -148,7 +47,9 @@ ynh_script_progression --message="Updating a configuration file..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 
-ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
+ynh_replace_string --target_file="/etc/onlyoffice/documentserver/default.json" \
+	--match_string="\"rejectUnauthorized\": true" \
+	--replace_string="\"rejectUnauthorized\": false" 
 
 # Recalculate and store the checksum of the file for the next upgrade.
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
@@ -170,22 +71,18 @@ chmod -R o-rwx "$install_dir"
 chown -R ds:ds "$install_dir"
 
 #=================================================
-# GENERIC FINALIZATION
+# REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-# START SYSTEMD SERVICE
-#=================================================
-# ynh_script_progression --message="Starting a systemd service..."
+ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
 
-# supervisorctl reload
+if [ $path = "/" ]; then
+    path_no_slash=""
+else
+    path_no_slash="$path"
+fi
 
-# sleep 30
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-#REMOVEME? ynh_script_progression --message="Reloading NGINX web server..."
-
-#REMOVEME? ynh_systemd_action --service_name=nginx --action=reload
+# Create a dedicated NGINX config
+ynh_add_nginx_config
 
 #=================================================
 # END OF SCRIPT
