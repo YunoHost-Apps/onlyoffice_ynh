@@ -1,8 +1,6 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
@@ -33,8 +31,6 @@ fi
 ynh_add_nginx_config
 
 #=================================================
-# SPECIFIC SETUP
-#=================================================
 # CONFIGURE ONLYOFFICE
 #=================================================
 ynh_script_progression --message="Configuring OnlyOffice..."
@@ -56,12 +52,16 @@ ynh_script_progression --message="Install OnlyOffice..."
 # restart NGINX and the whole webadmin and maybe even the YunoHost command
 # running the install...
 
-#REMOVEME? ynh_exec_warn_less ynh_install_extra_app_dependencies --repo="https://download.onlyoffice.com/repo/debian squeeze main" --package="onlyoffice-documentserver" --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
+# Can't do that in the manifest because we need the debconf-set-selections and postgresql already configured
+ynh_exec_warn_less ynh_install_extra_app_dependencies \
+    --repo="https://download.onlyoffice.com/repo/debian squeeze main" \
+    --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE" \
+    --package="onlyoffice-documentserver"
 
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding a configuration file..."
+ynh_script_progression --message="Adding $app's configuration file..."
 
 ynh_replace_string --match_string="\"rejectUnauthorized\": true" --replace_string="\"rejectUnauthorized\": false" --target_file="/etc/onlyoffice/documentserver/default.json"
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
@@ -81,33 +81,6 @@ chown -R ds:ds "$install_dir"
 ynh_script_progression --message="Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
-
-#=================================================
-# SETUP SSOWAT
-#=================================================
-#REMOVEME? ynh_script_progression --message="Configuring permissions..."
-
-# Make app public if necessary
-#REMOVEME? if [ $is_public -eq 1 ]
-then
-	# Everyone can access the app.
-	# The "main" permission is automatically created before the install script.
-#REMOVEME? 	ynh_permission_update --permission="main" --add="visitors"
-fi
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-#REMOVEME? ynh_script_progression --message="Reloading NGINX web server..."
-
-#REMOVEME? ynh_systemd_action --service_name=nginx --action=reload
-
-#=================================================
-# SEND A README FOR THE ADMIN
-#=================================================
-ynh_script_progression --message="Sending a readme for the admin..."
-
-ynh_send_readme_to_admin --app_message="../conf/msg_install" --recipients=$admin_mail --type='install'
 
 #=================================================
 # END OF SCRIPT

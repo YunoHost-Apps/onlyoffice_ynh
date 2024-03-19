@@ -78,10 +78,11 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
     key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
     packages = ["ttf-mscorefonts-installer"]
 
-    [resources.apt.extras.onlyoffice]
-    repo = "https://download.onlyoffice.com/repo/debian squeeze main"
-    key = "https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
-    packages = "onlyoffice-documentserver"
+    # Manual install in scripts
+    # [resources.apt.extras.onlyoffice]
+    # repo = "https://download.onlyoffice.com/repo/debian squeeze main"
+    # key = "https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
+    # packages = "onlyoffice-documentserver"
 
     [resources.database]
     type = "postgresql"
