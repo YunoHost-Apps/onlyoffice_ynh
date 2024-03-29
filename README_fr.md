@@ -36,8 +36,8 @@ Une solution rendue facile par YunoHost est d'installer (1.i) et (2.i), voir [ci
 
 ## Captures d’écran
 
-![Capture d’écran de OnlyOffice](./doc/screenshots/02-document-short.png)
 ![Capture d’écran de OnlyOffice](./doc/screenshots/01-presentation.jpg)
+![Capture d’écran de OnlyOffice](./doc/screenshots/02-document-short.png)
 
 ## Documentations et ressources
 

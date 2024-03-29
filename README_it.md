@@ -36,8 +36,8 @@ A solution made easy by YunoHost is to install (1.i) and (2.i), see [section bel
 
 ## Screenshot
 
-![Screenshot di OnlyOffice](./doc/screenshots/02-document-short.png)
 ![Screenshot di OnlyOffice](./doc/screenshots/01-presentation.jpg)
+![Screenshot di OnlyOffice](./doc/screenshots/02-document-short.png)
 
 ## Documentazione e risorse
 
