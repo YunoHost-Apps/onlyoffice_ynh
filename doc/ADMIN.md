@@ -26,7 +26,7 @@ You should not install ONLYOFFICE on your main YunoHost domain, especially if yo
   * Choose a domain name for ONLYOFFICE that is different from your Nextcloud domain, e.g. `office.yunohost.domain` (or `office.domain.nohost.me`, see previous section).
   * Choose a path for ONLYOFFICE, e.g. `/` if you install on `office.yunohost.domain` (do not install any other app on this domain).
   * The domain of your Nextcloud instance, e.g. `yunohost.domain/nextcloud` or `nextcloud.yunohost.domain`.
-  * Is it a public application? **If you want to connect it to Nextcloud, ONLYOFFICE should be public**: then select `Yes` or `tick the box`.
+  * Is it a public application? **If you want to connect it to Nextcloud, ONLYOFFICE should be public**: then select `visitors``.
 
 ## How to edit ONLYOFFICE documents?
 
