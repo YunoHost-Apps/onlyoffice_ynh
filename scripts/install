@@ -21,6 +21,7 @@ ynh_app_setting_set --app="$app" --key=jwt_secret --value="$jwt_secret"
 #=================================================
 ynh_script_progression --message="Install OnlyOffice..."
 
+_install_msfonts_deb
 _install_onlyoffice_deb
 
 #=================================================

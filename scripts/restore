@@ -20,6 +20,7 @@ ynh_psql_connect_as --user="$db_user" --password="$db_pwd" --database="$db_name"
 #=================================================
 ynh_script_progression --message="Install OnlyOffice..."
 
+_install_msfonts_deb
 _install_onlyoffice_deb
 
 #=================================================
