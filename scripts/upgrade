@@ -22,7 +22,6 @@ ynh_script_progression --message="Upgrading OnlyOffice..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 
-_install_msfonts_deb
 _install_onlyoffice_deb
 
 #=================================================
