@@ -9,6 +9,10 @@
 #=================================================
 
 _install_msfonts_deb() {
+    
+    # Do not replace app dependencies
+    YNH_INSTALL_APP_DEPENDENCIES_REPLACE="false"
+
     # Run this here because it's less verbose for some reason
     ynh_exec_warn_less ynh_install_extra_app_dependencies \
         --repo="deb http://deb.debian.org/debian/ $(lsb_release --codename --short) main contrib" \
@@ -28,6 +32,9 @@ _install_onlyoffice_deb() {
     # the install/configure of their package, which is awful since that will
     # restart NGINX and the whole webadmin and maybe even the YunoHost command
     # running the install...
+
+    # Do not replace app dependencies
+    YNH_INSTALL_APP_DEPENDENCIES_REPLACE="false"
 
     # Can't do that in the manifest because we need the debconf-set-selections and postgresql already configured
     ynh_exec_warn_less ynh_install_extra_app_dependencies \
