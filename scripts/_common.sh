@@ -32,15 +32,9 @@ _install_onlyoffice_deb() {
     # the install/configure of their package, which is awful since that will
     # restart NGINX and the whole webadmin and maybe even the YunoHost command
     # running the install...
-
-    # Do not replace app dependencies
-    YNH_INSTALL_APP_DEPENDENCIES_REPLACE="false"
-
-    # Can't do that in the manifest because we need the debconf-set-selections and postgresql already configured
-    ynh_exec_warn_less ynh_install_extra_app_dependencies \
-        --repo="https://download.onlyoffice.com/repo/debian squeeze main" \
-        --key="https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE" \
-        --package="onlyoffice-documentserver"
+    
+    ynh_setup_source --dest_dir="$install_dir"
+    ynh_package_install $install_dir/onlyoffice-documentserver.deb
 }
 
 #=================================================

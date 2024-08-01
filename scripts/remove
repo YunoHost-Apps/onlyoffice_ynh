@@ -8,6 +8,17 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
+# REMOVE SERVICE FROM ADMIN PANEL
+#=================================================
+
+for service in "ds-converter" "ds-docservice" "ds-metrics"; do
+    if yunohost service status "$service" >/dev/null 2>&1
+    then
+        yunohost service remove "$service"
+    fi
+done
+
+#=================================================
 # REMOVE ONLYOFFICE
 #=================================================
 ynh_script_progression --message="Removing OnlyOffice..."
@@ -24,8 +35,6 @@ ynh_secure_remove --file=/var/lib/dpkg/info/onlyoffice-documentserver.prerm
 ynh_package_autopurge onlyoffice-documentserver
 
 dpkg --configure -a
-
-apt-key del "E09C A29F 6E17 8040 EF22  B409 8320 CA65 CB2D E8E5" 2>/dev/null
 
 #=================================================
 # REMOVE SYSTEM CONFIGURATIONS
