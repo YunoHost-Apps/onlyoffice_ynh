@@ -34,7 +34,7 @@ _install_onlyoffice_deb() {
     # running the install...
     
     ynh_setup_source --dest_dir="$install_dir"
-    dpkg -i $install_dir/onlyoffice-documentserver.deb
+    ynh_package_install $install_dir/onlyoffice-documentserver.deb
 }
 
 #=================================================
