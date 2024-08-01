@@ -74,17 +74,15 @@ ram.runtime = "800M"
         "libcurl4-openssl-dev",
     ]
 
-    # Manual install in scripts
-    # [resources.apt.extras.ttf]
-    # repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
-    # key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
-    # packages = ["ttf-mscorefonts-installer"]
-
-    # Manual install in scripts
-    # [resources.apt.extras.onlyoffice]
-    # repo = "https://download.onlyoffice.com/repo/debian squeeze main"
-    # key = "https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE"
-    # packages = "onlyoffice-documentserver"
+    [resources.sources.main]
+    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v8.0.1/onlyoffice-documentserver_amd64.deb"
+    amd64.sha256 = "82b2e59ff7d3064a2d35614be7669bec88735f0837dac786762f7ba6a595cff3"
+    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v8.0.1/onlyoffice-documentserver_arm64.deb"
+    arm64.sha256 = "3fe98049dc483b04f9deeaa935795c49ff6086649d7d51a4a8e67e2f1a7c6093"
+    rename = "onlyoffice-documentserver.deb"
+    autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
+    autoupdate.asset.arm64 = "^onlyoffice-documentserver_arm64.deb$"
+    autoupdate.strategy = "latest_github_release"
 
     [resources.database]
     type = "postgresql"
