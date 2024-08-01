@@ -60,6 +60,22 @@ ynh_script_progression --message="Restoring system configurations related to $ap
 ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
 #=================================================
+# ADVERTISE SERVICE IN ADMIN PANEL
+#=================================================
+
+for service in "ds-converter" "ds-docservice" "ds-metrics"; do
+    yunohost service add "$service"
+done
+
+#=================================================
+# START SERVICES
+#=================================================
+
+for service in "ds-converter" "ds-docservice" "ds-metrics"; do
+    ynh_systemd_action --action=restart --service_name="$service"
+done
+
+#=================================================
 # RELOAD NGINX
 #=================================================
 ynh_script_progression --message="Reloading NGINX web server..."
