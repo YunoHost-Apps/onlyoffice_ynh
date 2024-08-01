@@ -33,7 +33,8 @@ _install_onlyoffice_deb() {
     # restart NGINX and the whole webadmin and maybe even the YunoHost command
     # running the install...
     
-    dpkg -i onlyoffice-documentserver.deb
+    ynh_setup_source --dest_dir="$install_dir"
+    dpkg -i $install_dir/onlyoffice-documentserver.deb
 }
 
 #=================================================
