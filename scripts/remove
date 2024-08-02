@@ -52,8 +52,6 @@ ynh_remove_nginx_config
 ynh_secure_remove --file="/etc/onlyoffice"
 ynh_secure_remove --file="/var/lib/onlyoffice"
 
-# Remove the log files
-
 #=================================================
 # END OF SCRIPT
 #=================================================
