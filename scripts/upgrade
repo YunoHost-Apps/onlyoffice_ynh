@@ -76,11 +76,11 @@ done
 #=================================================
 ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
 
-if [ $path = "/" ]; then
-    path_no_slash=""
-else
-    path_no_slash="$path"
-fi
+# if [ $path = "/" ]; then
+#     path_no_slash=""
+# else
+#     path_no_slash="$path"
+# fi
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
