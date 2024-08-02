@@ -32,11 +32,6 @@ ram.runtime = "800M"
     [install.domain]
     type = "domain"
 
-    # Subpath doesn't work anymore?
-    # [install.path]
-    # type = "path"
-    # default = "/onlyoffice"
-
     [install.init_main_permission]
     help.en = "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!"
     help.fr = "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
