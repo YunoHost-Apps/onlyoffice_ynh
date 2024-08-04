@@ -14,21 +14,13 @@ source /usr/share/yunohost/helpers
 ynh_print_info --message="Declaring files to be backed up..."
 
 #=================================================
-# BACKUP THE SYSTEM CONFIGURATION
+# SYSTEM CONFIGURATION
 #=================================================
 
 ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
-#=================================================
-# SPECIFIC BACKUP
-#=================================================
-
 ynh_backup --src_path="/etc/onlyoffice"
 ynh_backup --src_path="/var/lib/onlyoffice/documentserver/App_Data/cache/files" --not_mandatory
-
-#=================================================
-# BACKUP VARIOUS FILES
-#=================================================
 
 ynh_backup --src_path="/var/log/$app/"
 
