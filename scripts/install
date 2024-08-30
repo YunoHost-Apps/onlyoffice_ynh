@@ -14,12 +14,12 @@ source /usr/share/yunohost/helpers
 admin_mail=$(ynh_user_get_info --username=$admin --key="mail")
 
 jwt_secret=$(ynh_string_random --length=32)
-ynh_app_setting_set --app="$app" --key=jwt_secret --value="$jwt_secret"
+ynh_app_setting_set --key=jwt_secret --value="$jwt_secret"
 
 #=================================================
 # INSTALL ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Install OnlyOffice..."
+ynh_script_progression "Install OnlyOffice..."
 
 _install_msfonts_deb
 _install_onlyoffice_deb
@@ -27,17 +27,18 @@ _install_onlyoffice_deb
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding $app's configuration file..."
+ynh_script_progression "Adding $app's configuration file..."
 
-ynh_replace_string --target_file="/etc/onlyoffice/documentserver/default.json" \
-    --match_string="\"rejectUnauthorized\": true" \
-    --replace_string="\"rejectUnauthorized\": false" 
-ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
+ynh_replace --file="/etc/onlyoffice/documentserver/default.json" \
+    --match="\"rejectUnauthorized\": true" \
+    --replace="\"rejectUnauthorized\": false"
+
+ynh_store_file_checksum "/etc/onlyoffice/documentserver/default.json"
 
 #=================================================
 # REGENERATE FONTS
 #=================================================
-ynh_script_progression --message="Generating fonts..."
+ynh_script_progression "Generating fonts..."
 
 /usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
 
@@ -46,10 +47,9 @@ ynh_script_progression --message="Generating fonts..."
 #=================================================
 
 # Set permissions to app files
-chmod 750 "$install_dir"
-chmod -R o-rwx "$install_dir"
-chown -R ds:ds "$install_dir"
-
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 750 "$install_dir"
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R ds:ds "$install_dir"
 #=================================================
 # ADVERTISE SERVICE IN ADMIN PANEL
 #=================================================
@@ -63,19 +63,19 @@ done
 #=================================================
 
 for service in "ds-converter" "ds-docservice" "ds-metrics"; do
-    ynh_systemd_action --action=restart --service_name="$service"
+    ynh_systemctl --action=restart --service="$service"
 done
 
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring NGINX web server..."
+ynh_script_progression "Configuring NGINX web server..."
 
 # Create a dedicated NGINX config
-ynh_add_nginx_config
+ynh_config_add_nginx
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed"
+ynh_script_progression "Installation of $app completed"

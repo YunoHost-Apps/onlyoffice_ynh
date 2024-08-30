@@ -8,31 +8,28 @@
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
-#=================================================
-# DECLARE DATA AND CONF FILES TO BACKUP
-#=================================================
-ynh_print_info --message="Declaring files to be backed up..."
+ynh_print_info "Declaring files to be backed up..."
 
 #=================================================
 # SYSTEM CONFIGURATION
 #=================================================
 
-ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
 
-ynh_backup --src_path="/etc/onlyoffice"
-ynh_backup --src_path="/var/lib/onlyoffice/documentserver/App_Data/cache/files" --not_mandatory
+ynh_backup "/etc/onlyoffice"
+ynh_backup "/var/lib/onlyoffice/documentserver/App_Data/cache/files" || true
 
-ynh_backup --src_path="/var/log/$app/"
+ynh_backup "/var/log/$app/"
 
 #=================================================
 # BACKUP THE POSTGRESQL DATABASE
 #=================================================
-ynh_print_info --message="Backing up the PostgreSQL database..."
+ynh_print_info "Backing up the PostgreSQL database..."
 
-ynh_psql_dump_db --database="$db_name" > db.sql
+ynh_psql_dump_db > db.sql
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."
+ynh_print_info "Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."
