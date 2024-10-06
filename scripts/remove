@@ -1,22 +1,24 @@
 #!/bin/bash
 
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# REMOVE SERVICE FROM ADMIN PANEL
+# REMOVE SYSTEM CONFIGURATIONS
 #=================================================
+ynh_script_progression "Removing system configurations related to $app..."
 
 for service in "ds-converter" "ds-docservice" "ds-metrics"; do
-    if yunohost service status "$service" >/dev/null 2>&1
-    then
+    if yunohost service status "$service" >/dev/null 2>&1; then
         yunohost service remove "$service"
     fi
 done
+
+ynh_config_remove_nginx
+
+ynh_safe_rm "/etc/onlyoffice"
+
+ynh_safe_rm "/var/lib/onlyoffice"
 
 #=================================================
 # REMOVE ONLYOFFICE
@@ -35,22 +37,6 @@ ynh_safe_rm /var/lib/dpkg/info/onlyoffice-documentserver.prerm
 _ynh_apt autoremove --purge onlyoffice-documentserver
 
 dpkg --configure -a
-
-#=================================================
-# REMOVE SYSTEM CONFIGURATIONS
-#=================================================
-ynh_script_progression "Removing system configurations related to $app..."
-
-# Remove the dedicated NGINX config
-ynh_config_remove_nginx
-
-#=================================================
-# REMOVE VARIOUS FILES
-#=================================================
-
-# Remove a directory securely
-ynh_safe_rm "/etc/onlyoffice"
-ynh_safe_rm "/var/lib/onlyoffice"
 
 #=================================================
 # END OF SCRIPT
