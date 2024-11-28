@@ -5,7 +5,9 @@ Hij mag NIET handmatig aangepast worden.
 
 # OnlyOffice voor Yunohost
 
-[![Integratieniveau](https://dash.yunohost.org/integration/onlyoffice.svg)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/) ![Mate van functioneren](https://ci-apps.yunohost.org/ci/badges/onlyoffice.status.svg) ![Onderhoudsstatus](https://ci-apps.yunohost.org/ci/badges/onlyoffice.maintain.svg)
+[![Integratieniveau](https://apps.yunohost.org/badge/integration/onlyoffice)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
+![Mate van functioneren](https://apps.yunohost.org/badge/state/onlyoffice)
+![Onderhoudsstatus](https://apps.yunohost.org/badge/maintained/onlyoffice)
 
 [![OnlyOffice met Yunohost installeren](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=onlyoffice)
 
@@ -30,7 +32,7 @@ Online collaborative edition of ONLYOFFICE documents requires:
 A solution made easy by YunoHost is to install (1.i) and (2.i), see [section below](https://github.com/YunoHost-Apps/onlyoffice_ynh/#configuration-of-onlyoffice-server). The Nextcloud addicts may follow [this tutorial](https://github.com/YunoHost-Apps/nextcloud_ynh#configure-onlyoffice-integration) to install (1.ii) and (2.i) on one Nextcloud instance. However, performance and architecture are limited.
 
 
-**Geleverde versie:** 8.2.1~ynh1
+**Geleverde versie:** 8.2.2~ynh1
 
 **Demo:** <https://www.onlyoffice.com/fr/download-desktop.aspx>
 
