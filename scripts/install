@@ -53,13 +53,6 @@ chown -R ds:ds "$install_dir"
 
 for service in "ds-converter" "ds-docservice" "ds-metrics"; do
     yunohost service add "$service"
-done
-
-#=================================================
-# START SERVICES
-#=================================================
-
-for service in "ds-converter" "ds-docservice" "ds-metrics"; do
     ynh_systemctl --action=restart --service="$service"
 done
 
@@ -68,7 +61,6 @@ done
 #=================================================
 ynh_script_progression "Configuring NGINX web server..."
 
-# Create a dedicated NGINX config
 ynh_config_add_nginx
 
 #=================================================
