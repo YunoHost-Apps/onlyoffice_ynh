@@ -22,8 +22,10 @@ cpe = "cpe:2.3:a:onlyoffice:document_server"
 yunohost = ">= 11.2"
 architectures = ["amd64", "arm64"]
 multi_instance = false
+
 ldap = "not_relevant"
 sso = "not_relevant"
+
 disk = "2000M"
 ram.build = "800M"
 ram.runtime = "800M"
