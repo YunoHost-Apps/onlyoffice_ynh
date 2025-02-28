@@ -52,6 +52,16 @@ ram.runtime = "800M"
     type = "user"
 
 [resources]
+
+    [resources.sources.main]
+    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v8.3.1/onlyoffice-documentserver_amd64.deb"
+    amd64.sha256 = "671e199f88c518beb222c8adc7e51be0b861b0bb53264f0d01ff64b94748d400"
+    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v8.3.1/onlyoffice-documentserver_arm64.deb"
+    arm64.sha256 = "1f4cd5509f94d2c0ddf34d0b454e65a888cff91a2e989bcb8ace744cbe513b58"
+    rename = "onlyoffice-documentserver.deb"
+    autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
+    autoupdate.asset.arm64 = "^onlyoffice-documentserver_arm64.deb$"
+    autoupdate.strategy = "latest_github_release"
     [resources.system_user]
 
     [resources.install_dir]
@@ -70,16 +80,6 @@ ram.runtime = "800M"
         "rabbitmq-server",
         "libcurl4-openssl-dev",
     ]
-
-    [resources.sources.main]
-    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v8.3.1/onlyoffice-documentserver_amd64.deb"
-    amd64.sha256 = "671e199f88c518beb222c8adc7e51be0b861b0bb53264f0d01ff64b94748d400"
-    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v8.3.1/onlyoffice-documentserver_arm64.deb"
-    arm64.sha256 = "1f4cd5509f94d2c0ddf34d0b454e65a888cff91a2e989bcb8ace744cbe513b58"
-    rename = "onlyoffice-documentserver.deb"
-    autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
-    autoupdate.asset.arm64 = "^onlyoffice-documentserver_arm64.deb$"
-    autoupdate.strategy = "latest_github_release"
 
     [resources.database]
     type = "postgresql"
