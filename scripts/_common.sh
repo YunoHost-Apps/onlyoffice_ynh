@@ -1,23 +1,20 @@
 #!/bin/bash
 
 #=================================================
-# COMMON VARIABLES
-#=================================================
-
-#=================================================
-# PERSONAL HELPERS
+# COMMON VARIABLES AND CUSTOM HELPERS
 #=================================================
 
 _install_msfonts_deb() {
-    
+
     # Do not replace app dependencies
     YNH_INSTALL_APP_DEPENDENCIES_REPLACE="false"
 
     # Run this here because it's less verbose for some reason
-    ynh_exec_warn_less ynh_install_extra_app_dependencies \
+    ynh_hide_warnings ynh_apt_install_dependencies_from_extra_repository \
         --repo="deb http://deb.debian.org/debian/ $(lsb_release --codename --short) main contrib" \
         --key="https://ftp-master.debian.org/keys/release-$(lsb_release --release --short).asc" \
-        --package="ttf-mscorefonts-installer" 
+        --package="ttf-mscorefonts-installer"
+
 }
 
 _install_onlyoffice_deb() {
@@ -32,15 +29,7 @@ _install_onlyoffice_deb() {
     # the install/configure of their package, which is awful since that will
     # restart NGINX and the whole webadmin and maybe even the YunoHost command
     # running the install...
-    
+
     ynh_setup_source --dest_dir="$install_dir"
-    ynh_package_install $install_dir/onlyoffice-documentserver.deb
+    _ynh_apt_install $install_dir/onlyoffice-documentserver.deb
 }
-
-#=================================================
-# EXPERIMENTAL HELPERS
-#=================================================
-
-#=================================================
-# FUTURE OFFICIAL HELPERS
-#=================================================
