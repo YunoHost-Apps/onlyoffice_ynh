@@ -31,7 +31,7 @@ ynh_script_progression --message="Adding $app's configuration file..."
 
 ynh_replace_string --target_file="/etc/onlyoffice/documentserver/default.json" \
     --match_string="\"rejectUnauthorized\": true" \
-    --replace_string="\"rejectUnauthorized\": false" 
+    --replace_string="\"rejectUnauthorized\": false"
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
 
 #=================================================

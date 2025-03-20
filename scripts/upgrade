@@ -32,9 +32,15 @@ ynh_script_progression --message="Updating a configuration file..."
 
 ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
 
+# If we want to change options, we can do it in the local.json file
+# As explained here https://helpcenter.onlyoffice.com/installation/docs-developer-configuring.aspx
+if [ -f "/etc/onlyoffice/documentserver/default.json.dpkg-dist" ]; then
+    mv "/etc/onlyoffice/documentserver/default.json.dpkg-dist" "/etc/onlyoffice/documentserver/default.json"
+fi
+
 ynh_replace_string --target_file="/etc/onlyoffice/documentserver/default.json" \
     --match_string="\"rejectUnauthorized\": true" \
-    --replace_string="\"rejectUnauthorized\": false" 
+    --replace_string="\"rejectUnauthorized\": false"
 
 # Recalculate and store the checksum of the file for the next upgrade.
 ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
