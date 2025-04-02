@@ -39,7 +39,7 @@ _install_onlyoffice_deb() {
     # Disable example
     # https://medium.com/@mihat2/onlyoffice-document-server-path-traversal-fdd573fec291
     systemctl stop ds-example
-    systemctl disable ds-example
+    systemctl disable --quiet ds-example
 }
 
 #=================================================
