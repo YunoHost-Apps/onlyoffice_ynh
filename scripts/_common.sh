@@ -35,6 +35,11 @@ _install_onlyoffice_deb() {
     
     ynh_setup_source --dest_dir="$install_dir"
     ynh_package_install $install_dir/onlyoffice-documentserver.deb
+
+    # Disable example
+    # https://medium.com/@mihat2/onlyoffice-document-server-path-traversal-fdd573fec291
+    systemctl stop ds-example
+    systemctl disable ds-example
 }
 
 #=================================================
