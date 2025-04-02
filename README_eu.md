@@ -52,7 +52,7 @@ A solution made easy by YunoHost is to install (1.i) and (2.i), see [section bel
 
 Bidali `pull request`a [`testing` abarrera](https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing).
 
-`testing` abarra probatzeko, ondorengoa egin:
+`testing` abarra probatzeko, honakoa egin:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/onlyoffice_ynh/tree/testing --debug
