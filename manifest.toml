@@ -7,7 +7,7 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "8.3.2~ynh1"
+version = "8.3.2~ynh2"
 
 maintainers = []
 
