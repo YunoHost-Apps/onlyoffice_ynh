@@ -4,7 +4,7 @@ It shall NOT be edited by hand.
 -->
 
 <h1>
-  <img src="https://raw.githubusercontent.com/YunoHost/apps/master/logos/onlyoffice.png" width="32px" alt="Logo of OnlyOffice">
+  <img src="https://raw.githubusercontent.com/YunoHost/apps/main/logos/onlyoffice.png" width="32px" alt="Logo of OnlyOffice">
   OnlyOffice, packaged for YunoHost
 </h1>
 
@@ -12,7 +12,7 @@ Create and edit documents collaboratively
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://www.onlyoffice.com)
 [![App Demo](https://img.shields.io/badge/App_Demo-blue?style=for-the-badge)](https://www.onlyoffice.com/fr/download-desktop.aspx)
-![Version: 8.3.2~ynh2](https://img.shields.io/badge/Version-8.3.2~ynh2-rgba(0,150,0,1)?style=for-the-badge)
+[![Version: 9.0.0~ynh1](https://img.shields.io/badge/Version-9.0.0~ynh1-rgba(0,150,0,1)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/onlyoffice"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
@@ -20,6 +20,8 @@ Create and edit documents collaboratively
 </div>
 
 ## 📦 Developer info
+
+[![Automatic tests level](https://apps.yunohost.org/badge/cilevel/onlyoffice)](https://ci-apps.yunohost.org/ci/apps/onlyoffice/)
 
 🛠️ Upstream OnlyOffice repository: <https://github.com/ONLYOFFICE/DocumentServer>
 
