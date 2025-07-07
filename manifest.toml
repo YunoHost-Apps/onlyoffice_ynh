@@ -7,19 +7,19 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "9.0.0~ynh1"
+version = "9.0.2~ynh1"
 
 maintainers = []
 
 [upstream]
-license = "GPL-3.0-or-later"
+license = "AGPL-3.0-or-later"
 website = "https://www.onlyoffice.com"
 demo = "https://www.onlyoffice.com/fr/download-desktop.aspx"
 code = "https://github.com/ONLYOFFICE/DocumentServer"
 cpe = "cpe:2.3:a:onlyoffice:document_server"
 
 [integration]
-yunohost = ">= 11.2"
+yunohost = ">= 12.0"
 architectures = ["amd64", "arm64"]
 multi_instance = false
 
@@ -54,17 +54,28 @@ ram.runtime = "800M"
 [resources]
 
     [resources.sources.main]
-    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.0/onlyoffice-documentserver_amd64.deb"
-    amd64.sha256 = "3fcaeb3d6ca5dd4d88f416e81128eeaed8d07e6ecb8a1d980a176e6ae51e5dcb"
-    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.0/onlyoffice-documentserver_arm64.deb"
-    arm64.sha256 = "bf500fb01eb052d8c44842f3c1a3eb938526918c06a44afeebb5d4c835d8e0b1"
-    rename = "onlyoffice-documentserver.deb"
-    autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
-    autoupdate.asset.arm64 = "^onlyoffice-documentserver_arm64.deb$"
+    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.2/onlyoffice-documentserver_amd64.deb"
+    amd64.sha256 = "272dc092623ca12964c09aa0893676aa508bf0900a5ab04215d7086306d2583d"
+    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.2/onlyoffice-documentserver_arm64.deb"
+    arm64.sha256 = "95c41caad8a285b8d0b148934a733be31d8cdbc4f99e10545b3bd2b6654a93ae"
+    format = "tar.gz"
     autoupdate.strategy = "latest_github_release"
+    
+    [resources.sources.sources]
+    url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.0.2.17.tar.gz"
+    sha256 = "d32c3d808c3824c075af68f835613edac9a7c4988e4be62c67e3985b4351dffc"
+    autoupdate.strategy = "latest_github_release"
+    
+    [resources.sources.fonts]
+    url = "https://forge.liiib.re/indiehost/libre.sh/fonts/-/archive/4f5ad93ee65a862bddfc70eb48ac98e531968da7/fonts-4f5ad93ee65a862bddfc70eb48ac98e531968da7.tar.gz"
+    sha256 = "aed831e465bf775320a6298a5a7aac0197754de410f736c1020996267678016f"
+
     [resources.system_user]
 
     [resources.install_dir]
+
+    [resources.data_dir]
+    subdirs = ['docbuilder', 'cache/files']
 
     [resources.permissions]
     main.url = "/"
@@ -79,7 +90,11 @@ ram.runtime = "800M"
         "libstdc++6",
         "rabbitmq-server",
         "libcurl4-openssl-dev",
+        #"ttf-mscorefonts-installer",
     ]
 
     [resources.database]
     type = "postgresql"
+
+    [resources.nodejs]
+    version = "18"

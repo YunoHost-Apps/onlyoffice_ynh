@@ -11,68 +11,105 @@ source /usr/share/yunohost/helpers
 # INITIALIZE AND STORE SETTINGS
 #=================================================
 
-admin_mail=$(ynh_user_get_info --username=$admin --key="mail")
-
 jwt_secret=$(ynh_string_random --length=32)
 ynh_app_setting_set --app="$app" --key=jwt_secret --value="$jwt_secret"
 
 #=================================================
-# INSTALL ONLYOFFICE
+# DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Install OnlyOffice..."
+ynh_script_progression "Setting up source files..."
 
-_install_msfonts_deb
-_install_onlyoffice_deb
+conf_dir="$install_dir/config"
+mkdir -p "$install_dir/Data"
+mkdir -p "/var/log/$app/"
+ynh_setup_source --dest_dir="$install_dir/deb"
+
+# We use the .deb cause tar.xz doesn't contains submodules and management scripts
+tar xf "$install_dir/deb/data.tar.xz"
+mv "$install_dir/deb/etc/onlyoffice/documentserver" "$conf_dir"
+mv "$install_dir/deb/var/www/onlyoffice/documentserver" "$install_dir/documentserver"
+mv "$install_dir/deb/usr/bin" "$install_dir/bin"
+ynh_safe_rm "$install_dir/deb"
+
+# We use sources in order to recompile binary
+ynh_setup_source --source_id="src"  --dest_dir="$install_dir/src"
+ynh_replace --match="const buildVersion = " --replace="const buildVersion = '${YNH_APP_MANIFEST_VERSION}';" --file="$install_dir/src/Common/sources/commondefines.js"
+buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//" | grep -Eo "[0-9]+$")
+ynh_replace --match="const buildNumber = " --replace="const buildNumber = $buildNumber;" --file="$install_dir/src/Common/sources/commondefines.js"
+ynh_replace --match="const buildDate = " --replace="const buildDate = '$( date +%F )';" --file="$install_dir/src/Common/sources/license.js"
+
+chown -R "$app:$app" "$install_dir"
+
+ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 
 
 #=================================================
-# ADD A CONFIGURATION
+# COMPILE ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Adding $app's configuration file..."
+ynh_script_progression --message="Compiling $app..."
+npm install -g @yao-pkg/pkg
+pushd "$install_dir/src"
+npm ci && npm run build
 
-ynh_replace_string --target_file="/etc/onlyoffice/documentserver/default.json" \
-    --match_string="\"rejectUnauthorized\": true" \
-    --replace_string="\"rejectUnauthorized\": false"
-ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
+pkg DocService --options max_old_space_size=4096 -o $install_dir/documentserver/server/DocService/docservice
+pkg FileConverter -o $install_dir/documentserver/server/FileConverter/converter
+pkg Metrics -o $install_dir/documentserver/server/Metrics/metrics
+popd
 
+#=================================================
+# APP INITIAL CONFIGURATION
+#=================================================
+ynh_script_progression "Adding $app's configuration files..."
+
+ynh_config_add --template="local.json" --destination="$conf_dir/"
+chmod 400 "$conf_dir/local.json"
+chown "$app:$app" "$conf_dir/local.json"
+
+ynh_replace --match="/var/www/onlyoffice/" --replace="$install_dir/" --file="$conf_dir/production-linux.json"
+ynh_replace --match="/etc/onlyoffice/documentserver/" --replace="$install_dir/config/" --file="$conf_dir/production-linux.json"
+ynh_replace --match="/var/lib/onlyoffice/documentserver/" --replace="$data_dir/" --file="$conf_dir/production-linux.json"
+ynh_store_file_checksum "$conf_dir/production-linux.json"
+# TODO: rejectUnauthorized: false was set but i think it's a bad security behaviour
+
+for script in $(ls "$install_dir/bin/")
+do
+    ynh_replace --match="/var/www/onlyoffice/" --replace="$install_dir/" --file="$install_dir/bin/$script"
+    ynh_replace --match="/etc/onlyoffice/documentserver/" --replace="$conf_dir/" --file="$install_dir/bin/$script"
+    ynh_replace --match="ds:ds" --replace="$app:$app" --file="$install_dir/bin/$script"
+    ynh_replace --match="ds-docservice" --replace="$app-docservice" --file="$install_dir/bin/$script"
+    ynh_replace --match="ds-converter" --replace="$app-converter" --file="$install_dir/bin/$script"
+done
 #=================================================
 # REGENERATE FONTS
 #=================================================
 ynh_script_progression --message="Generating fonts..."
 
-/usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
+$install_dir/bin/documentserver-generate-allfonts.sh 2>/dev/null
 
 #=================================================
-# SECURE FILES AND DIRECTORIES
+# SYSTEM CONFIGURATION
 #=================================================
+ynh_script_progression "Adding system configurations related to $app..."
 
-# Set permissions to app files
-chmod 750 "$install_dir"
-chmod -R o-rwx "$install_dir"
-chown -R ds:ds "$install_dir"
+# Create a dedicated NGINX config using the conf/nginx.conf template
+ynh_config_add_nginx
 
-#=================================================
-# ADVERTISE SERVICE IN ADMIN PANEL
-#=================================================
-
-for service in "ds-converter" "ds-docservice" "ds-metrics"; do
-    yunohost service add "$service"
+# Create a dedicated systemd config
+for service in "converter" "docservice" "metrics"; do
+    ynh_config_add_systemd --service="$app-$service" --template="$service"
+    yunohost service add "$app-$service" --description="$app $service" --log="/var/log/$app/$service.log"
 done
+
+# Use logrotate to manage application logfile(s)
+ynh_config_add_logrotate
+
 
 #=================================================
 # START SERVICES
 #=================================================
 
-for service in "ds-converter" "ds-docservice" "ds-metrics"; do
-    ynh_systemd_action --action=restart --service_name="$service"
+for service in "converter" "docservice" "metrics"; do
+    ynh_systemctl --action=start --service="$app-$service" 
 done
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Configuring NGINX web server..."
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
 
 #=================================================
 # END OF SCRIPT

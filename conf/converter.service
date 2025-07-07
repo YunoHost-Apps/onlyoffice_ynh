@@ -1,0 +1,26 @@
+[Unit]
+Description=Docs Converter
+After=network.target syslog.target redis-server.service ds-metrics.service
+Wants=redis-server.service ds-metrics.service
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__INSTALL_DIR__/documentserver/server/FileConverter
+ExecStart=/bin/sh -c 'exec __INSTALL_DIR__/documentserver/server/FileConverter/converter'
+StandardOutput=append:/var/log/__APP__/converter.log
+StandardError=inherit
+Environment=NODE_ENV=production-linux NODE_CONFIG_DIR=__INSTALL_DIR__/config NODE_DISABLE_COLORS=1 APPLICATION_NAME=ONLYOFFICE
+Environment=LD_LIBRARY_PATH=__INSTALL_DIR__/documentserver/server/FileConverter/bin
+
+Restart=always
+RestartSec=30
+
+# Give up if ping don't get an answer
+TimeoutSec=600
+
+[Install]
+WantedBy=multi-user.target
+
+
