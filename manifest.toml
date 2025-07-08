@@ -20,6 +20,7 @@ cpe = "cpe:2.3:a:onlyoffice:document_server"
 
 [integration]
 yunohost = ">= 12.0"
+helpers_version = "2.1"
 architectures = ["amd64", "arm64"]
 multi_instance = false
 
@@ -48,20 +49,20 @@ ram.runtime = "800M"
     type = "string"
     example = "yunohost.domain/nextcloud or nextcloud.yunohost.domain"
 
-    [install.admin]
-    type = "user"
-
 [resources]
 
     [resources.sources.main]
     amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.2/onlyoffice-documentserver_amd64.deb"
-    amd64.sha256 = "272dc092623ca12964c09aa0893676aa508bf0900a5ab04215d7086306d2583d"
+    amd64.sha256 = "61b4b30a86b4aa1ef419520a6ce1946530d1db4166590b6269658daab9caca84"
     arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.2/onlyoffice-documentserver_arm64.deb"
     arm64.sha256 = "95c41caad8a285b8d0b148934a733be31d8cdbc4f99e10545b3bd2b6654a93ae"
-    format = "tar.gz"
+    extract = false
+    rename = "onlyoffice-documentserver.deb"
+    autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
+    autoupdate.asset.arm64 = "^onlyoffice-documentserver_arm64.deb$"
     autoupdate.strategy = "latest_github_release"
     
-    [resources.sources.sources]
+    [resources.sources.src]
     url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.0.2.17.tar.gz"
     sha256 = "d32c3d808c3824c075af68f835613edac9a7c4988e4be62c67e3985b4351dffc"
     autoupdate.strategy = "latest_github_release"

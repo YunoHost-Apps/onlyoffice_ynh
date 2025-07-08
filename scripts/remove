@@ -8,22 +8,9 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# REMOVE SERVICE FROM ADMIN PANEL
-#=================================================
-
-
-#=================================================
-# REMOVE ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Removing OnlyOffice..."
-
-ynh_secure_remove --file=/var/lib/dpkg/info/onlyoffice-documentserver.prerm
-
-
-#=================================================
 # REMOVE SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Removing system configurations related to $app..." --weight=1
+ynh_script_progression "Removing system configurations related to $app..." --weight=1
 
 ynh_config_remove_logrotate
 
@@ -35,7 +22,7 @@ for service in "converter" "docservice" "metrics"; do
     ynh_config_remove_systemd "$app-$service"
 done
 
-ynh_remove_nginx_config
+ynh_config_remove_nginx
 
 ynh_safe_rm "/etc/cron.d/$app"
 
@@ -44,11 +31,10 @@ ynh_safe_rm "/etc/cron.d/$app"
 #=================================================
 
 # Remove a directory securely
-ynh_secure_remove --file="/etc/onlyoffice"
-ynh_safe_rm --file="$install_dir"
+ynh_safe_rm "$install_dir"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Removal of $app completed"
+ynh_script_progression "Removal of $app completed"

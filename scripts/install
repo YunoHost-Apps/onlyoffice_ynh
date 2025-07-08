@@ -23,12 +23,16 @@ conf_dir="$install_dir/config"
 mkdir -p "$install_dir/Data"
 mkdir -p "/var/log/$app/"
 ynh_setup_source --dest_dir="$install_dir/deb"
+pushd "$install_dir/deb"
+ar vx "$install_dir/deb/onlyoffice-documentserver.deb"
 
 # We use the .deb cause tar.xz doesn't contains submodules and management scripts
 tar xf "$install_dir/deb/data.tar.xz"
 mv "$install_dir/deb/etc/onlyoffice/documentserver" "$conf_dir"
 mv "$install_dir/deb/var/www/onlyoffice/documentserver" "$install_dir/documentserver"
 mv "$install_dir/deb/usr/bin" "$install_dir/bin"
+mkdir -p "$install_dir/documentserver/fonts"
+popd
 ynh_safe_rm "$install_dir/deb"
 
 # We use sources in order to recompile binary
@@ -45,14 +49,15 @@ ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/"
 #=================================================
 # COMPILE ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Compiling $app..."
-npm install -g @yao-pkg/pkg
+ynh_script_progression "Compiling $app..."
+ynh_hide_warnings npm install -g @yao-pkg/pkg
 pushd "$install_dir/src"
-npm ci && npm run build
+ynh_hide_warnings npm ci
+ynh_hide_warnings npm run build
 
-pkg DocService --options max_old_space_size=4096 -o $install_dir/documentserver/server/DocService/docservice
-pkg FileConverter -o $install_dir/documentserver/server/FileConverter/converter
-pkg Metrics -o $install_dir/documentserver/server/Metrics/metrics
+ynh_hide_warnings pkg DocService --options max_old_space_size=4096 -o $install_dir/documentserver/server/DocService/docservice
+ynh_hide_warnings pkg FileConverter -o $install_dir/documentserver/server/FileConverter/converter
+ynh_hide_warnings pkg Metrics -o $install_dir/documentserver/server/Metrics/metrics
 popd
 
 #=================================================
@@ -60,13 +65,13 @@ popd
 #=================================================
 ynh_script_progression "Adding $app's configuration files..."
 
-ynh_config_add --template="local.json" --destination="$conf_dir/"
+ynh_config_add --template="local.json" --destination="$conf_dir/local.json"
 chmod 400 "$conf_dir/local.json"
 chown "$app:$app" "$conf_dir/local.json"
 
 ynh_replace --match="/var/www/onlyoffice/" --replace="$install_dir/" --file="$conf_dir/production-linux.json"
 ynh_replace --match="/etc/onlyoffice/documentserver/" --replace="$install_dir/config/" --file="$conf_dir/production-linux.json"
-ynh_replace --match="/var/lib/onlyoffice/documentserver/" --replace="$data_dir/" --file="$conf_dir/production-linux.json"
+ynh_replace --match="/var/lib/onlyoffice/documentserver/App_Data/" --replace="$data_dir/" --file="$conf_dir/production-linux.json"
 ynh_store_file_checksum "$conf_dir/production-linux.json"
 # TODO: rejectUnauthorized: false was set but i think it's a bad security behaviour
 
@@ -78,12 +83,15 @@ do
     ynh_replace --match="ds-docservice" --replace="$app-docservice" --file="$install_dir/bin/$script"
     ynh_replace --match="ds-converter" --replace="$app-converter" --file="$install_dir/bin/$script"
 done
-#=================================================
-# REGENERATE FONTS
-#=================================================
-ynh_script_progression --message="Generating fonts..."
 
-$install_dir/bin/documentserver-generate-allfonts.sh 2>/dev/null
+#=================================================
+# SETUP DATABASE
+#=================================================
+ynh_script_progression "Populating postgresql database $app..."
+db_dump="$install_dir/documentserver/server/schema/postgresql/createdb.sql"
+echo "alter table doc_changes owner to $app;" >> $db_dump
+echo "alter table task_result owner to $app;" >> $db_dump
+ynh_psql_db_shell $app < "$install_dir/documentserver/server/schema/postgresql/createdb.sql"
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -95,13 +103,24 @@ ynh_config_add_nginx
 
 # Create a dedicated systemd config
 for service in "converter" "docservice" "metrics"; do
-    ynh_config_add_systemd --service="$app-$service" --template="$service"
+    ynh_config_add_systemd --service="$app-$service" --template="$service.service"
     yunohost service add "$app-$service" --description="$app $service" --log="/var/log/$app/$service.log"
 done
+chown -R "$app:$app" "/var/log/$app/"
+chown "$app:$app" "$data_dir/cache"
+chmod 750 "$data_dir/cache"
 
 # Use logrotate to manage application logfile(s)
 ynh_config_add_logrotate
 
+#=================================================
+# REGENERATE FONTS
+#=================================================
+ynh_script_progression "Generating fonts..."
+PATH="$install_dir/bin/:$PATH"
+pushd $install_dir/bin/
+ynh_hide_warnings documentserver-generate-allfonts.sh
+popd
 
 #=================================================
 # START SERVICES
@@ -115,4 +134,4 @@ done
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed"
+ynh_script_progression "Installation of $app completed"

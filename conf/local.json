@@ -1,13 +1,31 @@
 {
   "services": {
     "CoAuthoring": {
+      "server": {
+            "port": __PORT__
+      },
       "sql": {
         "type": "postgres",
         "dbHost": "127.0.0.1",
         "dbPort": "5432",
         "dbName": "__DB_NAME__",
         "dbUser": "__DB_USER__",
-        "dbPass": "__DB_PAD__"
+        "dbPass": "__DB_PWD__"
+      },
+      "redis": {
+        "name": "redis",
+        "prefix": "__APP__:",
+        "host": "127.0.0.1",
+        "port": 6379,
+        "options": {},
+        "optionsCluster": {},
+        "iooptions": {
+            "lazyConnect": true
+        },
+        "iooptionsClusterNodes": [],
+        "iooptionsClusterOptions": {
+            "lazyConnect": true
+        }
       },
       "token": {
         "enable": {
