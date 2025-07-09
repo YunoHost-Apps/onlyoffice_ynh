@@ -14,15 +14,35 @@ source /usr/share/yunohost/helpers
 ynh_print_info --message="Declaring files to be backed up..."
 
 #=================================================
+# BACKUP THE APP MAIN DIR
+#=================================================
+
+ynh_backup "$install_dir"
+
+#=================================================
+# BACKUP THE DATA DIR
+#=================================================
+
+ynh_backup "$data_dir"
+
+#=================================================
 # SYSTEM CONFIGURATION
 #=================================================
 
 ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
-ynh_backup --src_path="/etc/onlyoffice"
-ynh_backup --src_path="/var/lib/onlyoffice/documentserver/App_Data/cache/files" --not_mandatory
+ynh_backup "/etc/systemd/system/$app-docservice.service"
+ynh_backup "/etc/systemd/system/$app-converter.service"
+ynh_backup "/etc/systemd/system/$app-metrics.service"
 
+ynh_backup "/etc/logrotate.d/$app"
+
+#=================================================
+# BACKUP VARIOUS FILES
+#=================================================
+ynh_backup "/etc/cron.d/$app"
 ynh_backup --src_path="/var/log/$app/"
+
 
 #=================================================
 # BACKUP THE POSTGRESQL DATABASE

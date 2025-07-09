@@ -1,0 +1,24 @@
+[Unit]
+Description=Docs Metrics
+After=network.target syslog.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__INSTALL_DIR__/documentserver/server/Metrics
+ExecStart=/bin/sh -c 'exec __INSTALL_DIR__/documentserver/server/Metrics/metrics ./config/config.js'
+StandardOutput=append:/var/log/__APP__/metrics.log
+StandardError=inherit
+Environment=NODE_DISABLE_COLORS=1
+
+Restart=always
+RestartSec=30
+
+# Give up if ping don't get an answer
+TimeoutSec=600
+
+[Install]
+WantedBy=multi-user.target
+
+
