@@ -37,13 +37,14 @@ ynh_safe_rm "$install_dir/deb"
 
 # We use sources in order to recompile binary
 ynh_setup_source --source_id="src"  --dest_dir="$install_dir/src"
-ynh_replace --match="const buildVersion = " --replace="const buildVersion = '${YNH_APP_MANIFEST_VERSION}';" --file="$install_dir/src/Common/sources/commondefines.js"
+ynh_replace --match="const buildVersion = " --replace="const buildVersion = '${YNH_APP_MANIFEST_VERSION%%~*}';" --file="$install_dir/src/Common/sources/commondefines.js"
 buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//" | grep -Eo "[0-9]+$")
 ynh_replace --match="const buildNumber = " --replace="const buildNumber = $buildNumber;" --file="$install_dir/src/Common/sources/commondefines.js"
 ynh_replace --match="const buildDate = " --replace="const buildDate = '$( date +%F )';" --file="$install_dir/src/Common/sources/license.js"
 
 chown -R "$app:$app" "$install_dir"
-
+chmod go=--- "$install_dir/{src,bin,config,Data}"
+chmod o=--- "$install_dir/documentserver"
 ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 
 
 #=================================================
@@ -107,8 +108,6 @@ for service in "converter" "docservice" "metrics"; do
     yunohost service add "$app-$service" --description="$app $service" --log="/var/log/$app/$service.log"
 done
 chown -R "$app:$app" "/var/log/$app/"
-chown "$app:$app" "$data_dir/cache"
-chmod 750 "$data_dir/cache"
 
 # Use logrotate to manage application logfile(s)
 ynh_config_add_logrotate
