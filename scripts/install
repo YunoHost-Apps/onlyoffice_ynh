@@ -43,7 +43,7 @@ ynh_replace --match="const buildNumber = " --replace="const buildNumber = $build
 ynh_replace --match="const buildDate = " --replace="const buildDate = '$( date +%F )';" --file="$install_dir/src/Common/sources/license.js"
 
 chown -R "$app:$app" "$install_dir"
-chmod go=--- "$install_dir/{src,bin,config,Data}"
+chmod go=--- "$install_dir/"{src,bin,config,Data}
 chmod o=--- "$install_dir/documentserver"
 ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 
 
