@@ -44,6 +44,7 @@ ynh_replace --match="const buildDate = " --replace="const buildDate = '$( date +
 
 chown -R "$app:$app" "$install_dir"
 chown "$app:www-data" "$install_dir"
+chown "$app:www-data" "$install_dir/documentserver"
 chmod go=--- "$install_dir/"{src,bin,config,Data}
 chmod o=--- "$install_dir/documentserver"
 ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 
