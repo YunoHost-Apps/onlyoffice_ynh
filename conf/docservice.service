@@ -1,6 +1,7 @@
 [Unit]
 Description=Docs Docservice
-After=network.target syslog.target redis-server.service __APP__-metrics.service
+PartOf=__APP__.service
+After=network.target syslog.target redis-server.service __APP__-metrics.service __APP__.service
 Wants=redis-server.service __APP__-metrics.service
 
 [Service]
@@ -20,6 +21,6 @@ RestartSec=30
 TimeoutSec=600
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=__APP__.service
 
 

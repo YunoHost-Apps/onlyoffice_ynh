@@ -34,6 +34,7 @@ ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 ynh_backup "/etc/systemd/system/$app-docservice.service"
 ynh_backup "/etc/systemd/system/$app-converter.service"
 ynh_backup "/etc/systemd/system/$app-metrics.service"
+ynh_backup "/etc/systemd/system/$app.service"
 
 ynh_backup "/etc/logrotate.d/$app"
 

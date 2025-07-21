@@ -49,6 +49,10 @@ for service in "converter" "docservice" "metrics"; do
 
     yunohost service add "$app-$service" --description="$app $service" --log="/var/log/$app/$service.log"
 done
+ynh_restore "/etc/systemd/system/$app.service"
+systemctl enable "$app.service" --quiet
+yunohost service add "$app" --description="$app"
+
 ynh_restore "/etc/logrotate.d/$app"
 
 #=================================================

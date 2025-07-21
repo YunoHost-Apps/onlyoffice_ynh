@@ -1,6 +1,7 @@
 [Unit]
 Description=Docs Metrics
-After=network.target syslog.target
+PartOf=__APP__.service
+After=network.target syslog.target __APP__.service
 
 [Service]
 Type=simple
@@ -19,6 +20,6 @@ RestartSec=30
 TimeoutSec=600
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=__APP__.service
 
 

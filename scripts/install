@@ -105,6 +105,8 @@ ynh_script_progression "Adding system configurations related to $app..."
 ynh_config_add_nginx
 
 # Create a dedicated systemd config
+ynh_config_add_systemd --service="$app"
+yunohost service add "$app" --description="$app"
 for service in "converter" "docservice" "metrics"; do
     ynh_config_add_systemd --service="$app-$service" --template="$service.service"
     yunohost service add "$app-$service" --description="$app $service" --log="/var/log/$app/$service.log"
@@ -127,9 +129,7 @@ popd
 # START SERVICES
 #=================================================
 
-for service in "converter" "docservice" "metrics"; do
-    ynh_systemctl --action=start --service="$app-$service" 
-done
+ynh_systemctl --action=start --service="$app" 
 
 #=================================================
 # END OF SCRIPT

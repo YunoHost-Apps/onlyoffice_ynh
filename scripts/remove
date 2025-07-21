@@ -14,12 +14,12 @@ ynh_script_progression "Removing system configurations related to $app..." --wei
 
 ynh_config_remove_logrotate
 
-for service in "converter" "docservice" "metrics"; do
-    if ynh_hide_warnings yunohost service status "$app-$service" >/dev/null
+for service in "$app-converter" "$app-docservice" "$app-metrics" "$app"; do
+    if ynh_hide_warnings yunohost service status "$service" >/dev/null
     then
-        yunohost service remove "$app-$service"
+        yunohost service remove "$service"
     fi
-    ynh_config_remove_systemd "$app-$service"
+    ynh_config_remove_systemd "$service"
 done
 
 ynh_config_remove_nginx
