@@ -14,6 +14,15 @@ source /usr/share/yunohost/helpers
 jwt_secret=$(ynh_string_random --length=32)
 ynh_app_setting_set --app="$app" --key=jwt_secret --value="$jwt_secret"
 
+cache_tag=$(date +'%Y.%m.%d-%H%M' | openssl md5 | awk '{print $2}')
+ynh_app_setting_set --app="$app" --key=cache_tag --value="$cache_tag"
+
+secure_link_secret=$(ynh_string_random)
+ynh_app_setting_set --app="$app" --key=secure_link_secret --value="$secure_link_secret"
+
+
+
+
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
@@ -47,6 +56,7 @@ chown "$app:www-data" "$install_dir"
 chown "$app:www-data" "$install_dir/documentserver"
 chmod go=--- "$install_dir/"{src,bin,config,Data}
 chmod o=--- "$install_dir/documentserver"
+chmod a-w "$install_dir/documentserver"
 ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 
 
 #=================================================
@@ -63,6 +73,24 @@ ynh_hide_warnings pkg FileConverter -o $install_dir/documentserver/server/FileCo
 ynh_hide_warnings pkg Metrics -o $install_dir/documentserver/server/Metrics/metrics
 popd
 
+# Activate smartphone editor
+sed -i 's/isSupportEditFeature=()=>!1/isSupportEditFeature=()=>!0/g' $install_dir/documentserver/web-apps/apps/*/mobile/dist/js/app.js
+
+#=================================================
+# SETUP RABBIT MQ VHOST
+#=================================================
+ynh_script_progression "Configuring rabbitmq vhost $app..."
+
+ynh_rabbitmq_setup_vhost
+
+#=================================================
+# SETUP REDIS DB
+#=================================================
+ynh_script_progression "Configuring redis db..."
+
+redis_db=$(ynh_redis_get_free_db)
+ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
+
 #=================================================
 # APP INITIAL CONFIGURATION
 #=================================================
@@ -78,14 +106,25 @@ ynh_replace --match="/var/lib/onlyoffice/documentserver/App_Data/" --replace="$d
 ynh_store_file_checksum "$conf_dir/production-linux.json"
 # TODO: rejectUnauthorized: false was set but i think it's a bad security behaviour
 
+# Hack for documentserver script
 for script in $(ls "$install_dir/bin/")
 do
     ynh_replace --match="/var/www/onlyoffice/" --replace="$install_dir/" --file="$install_dir/bin/$script"
-    ynh_replace --match="/etc/onlyoffice/documentserver/" --replace="$conf_dir/" --file="$install_dir/bin/$script"
+    ynh_replace --match="/etc/onlyoffice/documentserver" --replace="$conf_dir" --file="$install_dir/bin/$script"
     ynh_replace --match="ds:ds" --replace="$app:$app" --file="$install_dir/bin/$script"
     ynh_replace --match="ds-docservice" --replace="$app-docservice" --file="$install_dir/bin/$script"
     ynh_replace --match="ds-converter" --replace="$app-converter" --file="$install_dir/bin/$script"
 done
+ynh_replace --match="localhost:8000" --replace="localhost:$port" --file="$install_dir/bin/documentserver-prepare4shutdown.sh"
+
+ynh_replace --match=".*/etc/nginx/includes/ds-cache.conf.*" --replace='sed "/set $cache_tag /s/.*/set \$cache_tag \"$HASH\";/" /etc/nginx/conf.d/'$domain'.d/'$app'.conf' --file="$install_dir/bin/documentserver-prepare4shutdown.sh"
+
+ynh_safe_rm "$conf_dir/nginx/ds.conf"
+ln -s /etc/nginx/conf.d/$domain.d/$app.conf "$conf_dir/nginx/ds.conf"
+ynh_safe_rm "$conf_dir/nginx/includes/ds-docservice.conf"
+ln -s /etc/nginx/conf.d/$domain.d/$app.conf "$conf_dir/nginx/includes/ds-docservice.conf"
+
+$install_dir/bin/documentserver-flush-cache.sh
 
 #=================================================
 # SETUP DATABASE
@@ -95,6 +134,7 @@ db_dump="$install_dir/documentserver/server/schema/postgresql/createdb.sql"
 echo "alter table doc_changes owner to $app;" >> $db_dump
 echo "alter table task_result owner to $app;" >> $db_dump
 ynh_psql_db_shell $app < "$install_dir/documentserver/server/schema/postgresql/createdb.sql"
+
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -122,8 +162,17 @@ ynh_config_add_logrotate
 ynh_script_progression "Generating fonts..."
 PATH="$install_dir/bin/:$PATH"
 pushd $install_dir/bin/
-ynh_hide_warnings documentserver-generate-allfonts.sh
+ynh_hide_warnings ./documentserver-generate-allfonts.sh
 popd
+
+#=================================================
+# ADD CRON
+#=================================================
+ynh_script_progression "Adding cron..."
+# This is not in official setup but it could help to avoid overload and lost data
+# It runs a restart which triggers document-prepare4shutdown.sh script (in ExecStop) so all documents are force saved and all clients disconnected.
+# Note: may be the autoAssembly config is enough, and that's not necessary anymore.
+echo "45  3  *  *  * root /usr/bin/systemctl try-restart onlyoffice" > /etc/cron.d/$app
 
 #=================================================
 # START SERVICES

@@ -17,7 +17,9 @@
         "prefix": "__APP__:",
         "host": "127.0.0.1",
         "port": 6379,
-        "options": {},
+        "options": {
+            "database": __REDIS_DB__
+        },
         "optionsCluster": {},
         "iooptions": {
             "lazyConnect": true
@@ -52,10 +54,20 @@
         "session": {
           "string": "__JWT_SECRET__"
         }
+      },
+      "autoAssembly": {
+        "enable": true,
+        "interval": "1m",
+        "step": "30s"
       }
     }
   },
+  "storage": {
+    "fs": {
+      "secretString": "__SECURE_LINK_SECRET__"
+    }
+  },
   "rabbitmq": {
-    "url": "amqp://guest:guest@localhost"
+    "url": "amqp://__RABBITMQ_USER__:__RABBITMQ_PWD__@localhost/__RABBITMQ_VHOST__"
   }
 }

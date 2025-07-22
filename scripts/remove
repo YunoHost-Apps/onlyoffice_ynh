@@ -27,6 +27,20 @@ ynh_config_remove_nginx
 ynh_safe_rm "/etc/cron.d/$app"
 
 #=================================================
+# REMOVE RABBIT MQ VHOST
+#=================================================
+ynh_script_progression "Removing rabbitmq vhost $app..."
+
+ynh_rabbitmq_remove_vhost
+
+#=================================================
+# REMOVE REDIS DB
+#=================================================
+ynh_script_progression "Removing redis db..."
+
+ynh_redis_remove_db $redis_db
+
+#=================================================
 # REMOVE VARIOUS FILES
 #=================================================
 
