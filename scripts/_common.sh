@@ -15,7 +15,8 @@ ynh_rabbitmq_setup_vhost() {
     rabbitmqctl delete_user "guest"
     rabbitmq_user=$app
     rabbitmq_vhost=$app
-    rabbitmq_pwd=$(ynh_string_random)
+    rabbitmq_pwd=$(ynh_app_setting_get --app="$app" --key=rabbitmq_pwd)
+    rabbitmq_pwd=${rabbitmq_pwd:-$(ynh_string_random)}
     ynh_app_setting_set --app="$app" --key=rabbitmq_user --value="$rabbitmq_user"
     ynh_app_setting_set --app="$app" --key=rabbitmq_vhost --value="$rabbitmq_vhost"
     ynh_app_setting_set --app="$app" --key=rabbitmq_pwd --value="$rabbitmq_pwd"

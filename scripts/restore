@@ -19,6 +19,12 @@ ynh_script_progression "Restoring the app main directory..."
 ynh_restore "$install_dir"
 
 chown -R "$app:$app" "$install_dir"
+chown "$app:www-data" "$install_dir"
+chown "$app:www-data" "$install_dir/documentserver"
+chmod go=--- "$install_dir/"{src,bin,config,Data}
+chmod o=--- "$install_dir/documentserver"
+chmod a-w "$install_dir/documentserver"
+chmod 400 "$conf_dir/local.json"
 
 #=================================================
 # RESTORE THE DATA DIRECTORY
@@ -28,6 +34,22 @@ ynh_script_progression "Restoring the data directory..."
 ynh_restore "$data_dir"
 
 chown -R "$app:$app" "$data_dir"
+
+#=================================================
+# SETUP RABBIT MQ VHOST
+#=================================================
+ynh_script_progression "Configuring rabbitmq vhost $app..."
+
+ynh_rabbitmq_setup_vhost
+
+#=================================================
+# SETUP REDIS DB
+#=================================================
+ynh_script_progression "Configuring redis db..."
+
+redis_db=$(ynh_redis_get_free_db)
+ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
+ynh_write_var_in_file --file="$install_dir/config/local.json" --key="database" --value="$redis_db" --after="redis"
 
 #=================================================
 # RESTORE THE POSTGRESQL DATABASE
