@@ -7,12 +7,25 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+
+
 #=================================================
 # MODIFY URL IN NGINX CONF
 #=================================================
 ynh_script_progression --message="Updating NGINX web server configuration..."
 
 ynh_change_url_nginx_config
+
+#=================================================
+# SPECIFIC MODIFICATIONS
+#=================================================
+conf_dir="$install_dir/config"
+
+unlink "$conf_dir/nginx/ds.conf"
+unlink "$conf_dir/nginx/includes/ds-docservice.conf"
+ln -s /etc/nginx/conf.d/$new_domain.d/$app.conf "$conf_dir/nginx/ds.conf"
+ln -s /etc/nginx/conf.d/$new_domain.d/$app.conf "$conf_dir/nginx/includes/ds-docservice.conf"
+ynh_replace --match="$old_domain.d" --replace="$new_domain" --file="$install_dir/bin/documentserver-flush-cache.sh"
 
 #=================================================
 # END OF SCRIPT
