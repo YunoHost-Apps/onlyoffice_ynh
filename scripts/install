@@ -63,14 +63,16 @@ ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/"
 # COMPILE ONLYOFFICE
 #=================================================
 ynh_script_progression "Compiling $app..."
-ynh_hide_warnings npm install -g @yao-pkg/pkg
+pushd "$install_dir"
+ynh_hide_warnings npm install @yao-pkg/pkg
+popd
 pushd "$install_dir/src"
 ynh_hide_warnings npm ci
 ynh_hide_warnings npm run build
 
-ynh_hide_warnings pkg DocService --options max_old_space_size=4096 -o $install_dir/documentserver/server/DocService/docservice
-ynh_hide_warnings pkg FileConverter -o $install_dir/documentserver/server/FileConverter/converter
-ynh_hide_warnings pkg Metrics -o $install_dir/documentserver/server/Metrics/metrics
+ynh_hide_warnings ../node_modules/.bin/pkg DocService --options max_old_space_size=4096 -o $install_dir/documentserver/server/DocService/docservice
+ynh_hide_warnings ../node_modules/.bin/pkg FileConverter -o $install_dir/documentserver/server/FileConverter/converter
+ynh_hide_warnings ../node_modules/.bin/pkg Metrics -o $install_dir/documentserver/server/Metrics/metrics
 popd
 
 # Activate smartphone editor
@@ -117,14 +119,12 @@ do
 done
 ynh_replace --match="localhost:8000" --replace="localhost:$port" --file="$install_dir/bin/documentserver-prepare4shutdown.sh"
 
-ynh_replace --match=".*/etc/nginx/includes/ds-cache.conf.*" --replace='sed "/set $cache_tag /s/.*/set \$cache_tag \"$HASH\";/" /etc/nginx/conf.d/'$domain'.d/'$app'.conf' --file="$install_dir/bin/documentserver-prepare4shutdown.sh"
+ynh_replace --match=".*/etc/nginx/includes/ds-cache.conf.*" --replace='sed "/set $cache_tag /s/.*/set \$cache_tag \"$HASH\";/" /etc/nginx/conf.d/'$domain'.d/'$app'.conf' --file="$install_dir/bin/documentserver-flush-cache.sh"
 
-ynh_safe_rm "$conf_dir/nginx/ds.conf"
 ln -s /etc/nginx/conf.d/$domain.d/$app.conf "$conf_dir/nginx/ds.conf"
 ynh_safe_rm "$conf_dir/nginx/includes/ds-docservice.conf"
 ln -s /etc/nginx/conf.d/$domain.d/$app.conf "$conf_dir/nginx/includes/ds-docservice.conf"
 
-$install_dir/bin/documentserver-flush-cache.sh
 
 #=================================================
 # SETUP DATABASE
@@ -157,12 +157,14 @@ chown -R "$app:$app" "/var/log/$app/"
 ynh_config_add_logrotate
 
 #=================================================
-# REGENERATE FONTS
+# REGENERATE FONTS AND FLUSH CACHE
 #=================================================
-ynh_script_progression "Generating fonts..."
+ynh_script_progression "Generating fonts and flushing cache..."
 PATH="$install_dir/bin/:$PATH"
 pushd $install_dir/bin/
 ynh_hide_warnings ./documentserver-generate-allfonts.sh
+$install_dir/bin/documentserver-flush-cache.sh
+
 popd
 
 #=================================================
