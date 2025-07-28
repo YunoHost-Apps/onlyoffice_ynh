@@ -22,7 +22,7 @@ cpe = "cpe:2.3:a:onlyoffice:document_server"
 yunohost = ">= 12.0"
 helpers_version = "2.1"
 architectures = ["amd64", "arm64"]
-multi_instance = false
+multi_instance = true
 
 ldap = "not_relevant"
 sso = "not_relevant"
