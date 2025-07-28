@@ -7,6 +7,17 @@
 #=================================================
 # PERSONAL HELPERS
 #=================================================
+set_permissions() {
+    chown -R "$app:$app" "$install_dir"
+    chown "$app:www-data" "$install_dir"
+    chown "$app:www-data" "$install_dir/documentserver"
+    chmod go=--- "$install_dir/"{src,bin,config,Data}
+    chmod o=--- "$install_dir/documentserver"
+    chmod a-w "$install_dir/documentserver"
+    if [ -f "$install_dir/config/local.json" ] ; then
+        chmod 400 "$install_dir/config/local.json"
+    fi
+}
 
 #=================================================
 # EXPERIMENTAL HELPERS

@@ -51,12 +51,8 @@ buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//"
 ynh_replace --match="const buildNumber = " --replace="const buildNumber = $buildNumber;" --file="$install_dir/src/Common/sources/commondefines.js"
 ynh_replace --match="const buildDate = " --replace="const buildDate = '$( date +%F )';" --file="$install_dir/src/Common/sources/license.js"
 
-chown -R "$app:$app" "$install_dir"
-chown "$app:www-data" "$install_dir"
-chown "$app:www-data" "$install_dir/documentserver"
-chmod go=--- "$install_dir/"{src,bin,config,Data}
-chmod o=--- "$install_dir/documentserver"
-chmod a-w "$install_dir/documentserver"
+set_permissions
+
 ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 
 
 #=================================================

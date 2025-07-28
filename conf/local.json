@@ -45,6 +45,9 @@
         }
       },
       "secret": {
+        "browser": {
+          "string": "__JWT_SECRET__"
+        },
         "inbox": {
           "string": "__JWT_SECRET__"
         },
@@ -58,7 +61,10 @@
       "autoAssembly": {
         "enable": true,
         "interval": "1m",
-        "step": "30s"
+        "step": "1m"
+      },
+      "requestDefaults": {
+        "rejectUnauthorized": false
       }
     }
   },

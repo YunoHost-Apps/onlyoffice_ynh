@@ -31,6 +31,9 @@ disk = "2000M"
 ram.build = "800M"
 ram.runtime = "800M"
 
+[antifeatures]
+arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of user and opened documents. This package recompile this part according to AGPLv3 licence to remove this artificial limitations."
+
 [install]
     [install.domain]
     type = "domain"
@@ -41,13 +44,13 @@ ram.runtime = "800M"
     type = "group"
     default = "visitors"
 
-    [install.nextclouddomain]
-    ask.en = "The domain of the Nextcloud to connect to OnlyOffice"
-    ask.fr = "Le domaine du Nextcloud à connecter à OnlyOffice"
+    [install.allowed_urls]
+    ask.en = "List of web addresses authorized to integrate the OnlyOffice editor separated by space"
+    ask.fr = "Liste des adresses web autorisées à intégrer l'éditeur OnlyOffice séparées par un espace"
     help.en = "Install the OnlyOffice connector to edit documents from Nextcloud."
     help.fr = "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
     type = "string"
-    example = "yunohost.domain/nextcloud or nextcloud.yunohost.domain"
+    example = "https://cloud.yunohost.domain/nextcloud https://example.com"
 
 [resources]
 
