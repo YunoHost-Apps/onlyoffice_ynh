@@ -55,10 +55,10 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
 [resources]
 
     [resources.sources.main]
-    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.2/onlyoffice-documentserver_amd64.deb"
-    amd64.sha256 = "61b4b30a86b4aa1ef419520a6ce1946530d1db4166590b6269658daab9caca84"
-    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.2/onlyoffice-documentserver_arm64.deb"
-    arm64.sha256 = "95c41caad8a285b8d0b148934a733be31d8cdbc4f99e10545b3bd2b6654a93ae"
+    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.3/onlyoffice-documentserver_amd64.deb"
+    amd64.sha256 = "83c4a418a6e2c2857e6e6e544a90aba71494bcceda10fc014795de5e7d0d5f8d"
+    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.3/onlyoffice-documentserver_arm64.deb"
+    arm64.sha256 = "7671c4c66de25a4eb6de3f043f26d96f830b452ed5c122082089cba927ac01a0"
     extract = false
     rename = "onlyoffice-documentserver.deb"
     autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
@@ -66,8 +66,8 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     autoupdate.strategy = "latest_github_release"
     
     [resources.sources.src]
-    url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.0.2.17.tar.gz"
-    sha256 = "d32c3d808c3824c075af68f835613edac9a7c4988e4be62c67e3985b4351dffc"
+    url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.0.3.31.tar.gz"
+    sha256 = "b398762099b6a0a4006bcfb332de22f09be01a83b25352a9f42cc93ae6429246"
     autoupdate.strategy = "latest_github_release"
     
     [resources.sources.fonts]
