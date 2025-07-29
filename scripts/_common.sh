@@ -37,6 +37,7 @@ setup_sources() {
     ynh_hide_info ynh_safe_rm "$install_dir/deb"
     ynh_hide_info ynh_safe_rm "$install_dir/src"
     ynh_hide_info ynh_safe_rm "$install_dir/bin"
+    ynh_hide_info ynh_safe_rm "$install_dir/documentserver"
     ynh_hide_info ynh_safe_rm "$conf_dir"
     mkdir -p "$conf_dir"
     ynh_setup_source --dest_dir="$install_dir/deb"
@@ -145,7 +146,7 @@ configure_redis() {
 # EXPERIMENTAL HELPERS
 #=================================================
 ynh_rabbitmq_setup_vhost() {
-    ynh_hide_warning rabbitmqctl delete_user "guest" || true
+    ynh_hide_warnings rabbitmqctl delete_user "guest" || true
     rabbitmq_user=$app
     rabbitmq_vhost=$app
     rabbitmq_pwd=$(ynh_app_setting_get --app="$app" --key=rabbitmq_pwd)
@@ -153,7 +154,7 @@ ynh_rabbitmq_setup_vhost() {
     ynh_app_setting_set --app="$app" --key=rabbitmq_user --value="$rabbitmq_user"
     ynh_app_setting_set --app="$app" --key=rabbitmq_vhost --value="$rabbitmq_vhost"
     ynh_app_setting_set --app="$app" --key=rabbitmq_pwd --value="$rabbitmq_pwd"
-    ynh_hide_warning rabbitmqctl add_user "$rabbitmq_user" "$rabbitmq_pwd" || true
+    ynh_hide_warnings rabbitmqctl add_user "$rabbitmq_user" "$rabbitmq_pwd" || true
     rabbitmqctl set_user_tags "$rabbitmq_user" administrator || true
     rabbitmqctl add_vhost "$rabbitmq_vhost" || true
     rabbitmqctl set_permissions -p "$rabbitmq_vhost" "$rabbitmq_user" ".*" ".*" ".*"
