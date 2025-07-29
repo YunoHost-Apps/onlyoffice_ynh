@@ -40,12 +40,12 @@ ynh_script_progression "Configuring redis db..."
 
 configure_redis
 ynh_write_var_in_file --file="$install_dir/config/local.json" --key="database" --value="$redis_db" --after="redis"
-ynh_store_file_checksum --file="$install_dir/config/local.json"
+ynh_store_file_checksum "$install_dir/config/local.json"
 
 #=================================================
 # RESTORE THE POSTGRESQL DATABASE
 #=================================================
-ynh_script_progression --message="Restoring the PostgreSQL database..." --weight=1
+ynh_script_progression "Restoring the PostgreSQL database..."
 
 ynh_psql_db_shell < ./db.sql
 
@@ -64,7 +64,7 @@ for service in "converter" "docservice" "metrics"; do
 done
 ynh_restore "/etc/systemd/system/$app.service"
 systemctl enable "$app.service" --quiet
-yunohost service add "$app" --description="$app"
+yunohost service add "$app" --description="$app" --test_status="systemctl is-active $app-docservice $app-converter |uniq"
 
 ynh_restore "/etc/logrotate.d/$app"
 
@@ -92,4 +92,4 @@ ynh_systemctl --service="$app" --action="start"
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Restoration completed for $app"
+ynh_script_progression "Restoration completed for $app"

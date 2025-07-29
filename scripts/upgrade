@@ -19,22 +19,22 @@ ynh_systemctl --service="$app" --action="stop"
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-ynh_script_progression --message="Ensuring downward compatibility..."
+ynh_script_progression "Ensuring downward compatibility..."
 
-ynh_app_setting_set_default --key=allowed_urls --value="https://$nextclouddomain"
+ynh_app_setting_set_default --key=allowed_urls --value="https://${nextclouddomain:-}"
 init_settings
 
-ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
-ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/local.json"
 
 # Remove old install made by .deb
 if dpkg-query --show onlyoffice-documentserver &> /dev/null; then
+    ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
+    ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/local.json"
     ynh_package_autopurge onlyoffice-documentserver
-    ynh_hide_warnings ynh_safe_rm "/etc/apt/sources.list.d/onlyoffice.list"
-    ynh_hide_warnings ynh_safe_rm "/etc/apt/sources.list.d/nodesource.list"
-    ynh_hide_warnings ynh_safe_rm "/var/lib/dpkg/info/onlyoffice-documentserver.prerm"
-    ynh_hide_warnings ynh_safe_rm "/var/lib/onlyoffice"
-    ynh_hide_warnings ynh_safe_rm "/etc/onlyoffice"
+    ynh_hide_info ynh_safe_rm "/etc/apt/sources.list.d/onlyoffice.list"
+    ynh_hide_info ynh_safe_rm "/etc/apt/sources.list.d/nodesource.list"
+    ynh_hide_info ynh_safe_rm "/var/lib/dpkg/info/onlyoffice-documentserver.prerm"
+    ynh_hide_info ynh_safe_rm "/var/lib/onlyoffice"
+    ynh_hide_info ynh_safe_rm "/etc/onlyoffice"
 
     for service in "ds-converter" "ds-docservice" "ds-metrics"; do
         if yunohost service status "$service" >/dev/null 2>&1
@@ -47,7 +47,7 @@ fi
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Upgrading OnlyOffice..."
+ynh_script_progression "Upgrading OnlyOffice..."
 
 setup_sources
 
@@ -75,7 +75,7 @@ configure_redis
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Updating a configuration file..."
+ynh_script_progression "Updating a configuration file..."
 
 ynh_config_add --template="local.json" --destination="$conf_dir/local.json"
 chmod 400 "$conf_dir/local.json"
@@ -104,4 +104,4 @@ ynh_systemctl --action=restart --service="$app"
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed"
+ynh_script_progression "Upgrade of $app completed"
