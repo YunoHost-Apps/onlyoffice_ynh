@@ -1,0 +1,1 @@
+45  3  *  *  * root /usr/bin/systemctl try-restart __APP__

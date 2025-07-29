@@ -36,6 +36,3 @@ example = "1m"
 pattern.regexp = '^\d+m$'
 pattern.error = "Provide a value in minutes like '1m'"
 
-[panel.section.my_action]
-type = "button"
-ask.en = ""

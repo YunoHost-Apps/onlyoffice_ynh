@@ -59,12 +59,12 @@
         }
       },
       "autoAssembly": {
-        "enable": true,
-        "interval": "1m",
-        "step": "1m"
+        "enable": __AUTOASSEMBLY_ENABLE__,
+        "interval": "__AUTOASSEMBLY_INTERVAL__",
+        "step": "__AUTOASSEMBLY_STEP__"
       },
       "requestDefaults": {
-        "rejectUnauthorized": false
+        "rejectUnauthorized": __REJECT_UNAUTHORIZED__
       }
     }
   },
