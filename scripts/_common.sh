@@ -4,6 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 conf_dir="$install_dir/config"
+nodejs_version="18"
 
 #=================================================
 # PERSONAL HELPERS
@@ -96,7 +97,6 @@ buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//"
 
 
 compile() {
-    nodejs_version="$(ynh_read_manifest resources.nodejs.version)"
     if yunohost --version --json | jq -r ".yunohost.version" | grep -q "^12\.0\." ; then
         ynh_nodejs_install
     fi
@@ -116,6 +116,14 @@ compile() {
     sed -i 's/isSupportEditFeature=()=>!1/isSupportEditFeature=()=>!0/g' $install_dir/documentserver/web-apps/apps/*/mobile/dist/js/app.js
 }
 
+add_services_in_ynh() {
+    for service in "converter" "docservice" "metrics"; do
+        systemctl enable "$app-$service.service" --quiet
+        yunohost service add "$app-$service" --description="$app $service" --log="/var/log/$app/$service.log"
+    done
+    systemctl enable "$app.service" --quiet
+    yunohost service add "$app" --description="$app" --test_status="systemctl is-active $app-docservice $app-converter |uniq"
+}
 
 apply_system_config() {
     # Create a dedicated NGINX config using the conf/nginx.conf template
@@ -123,11 +131,10 @@ apply_system_config() {
 
     # Create a dedicated systemd config
     ynh_config_add_systemd --service="$app"
-    yunohost service add "$app" --description="$app" --test_status="systemctl is-active $app-docservice $app-converter |uniq"
     for service in "converter" "docservice" "metrics"; do
         ynh_config_add_systemd --service="$app-$service" --template="$service.service"
-        yunohost service add "$app-$service" --description="$app $service" --log="/var/log/$app/$service.log"
     done
+    add_services_in_ynh
     chown -R "$app:$app" "/var/log/$app/"
 
     # Use logrotate to manage application logfile(s)
@@ -141,7 +148,7 @@ apply_system_config() {
 }
 configure_redis() {
     redis_db=$(ynh_app_setting_get --app="$app" --key=redis_db)
-    if [[ "$redis_db" ]]; then
+    if [[ "$redis_db" == "" ]]; then
         redis_db=$(ynh_redis_get_free_db)
         ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
     fi
