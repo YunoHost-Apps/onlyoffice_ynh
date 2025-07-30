@@ -96,6 +96,10 @@ buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//"
 
 
 compile() {
+    nodejs_version="$(ynh_read_manifest resources.nodejs.version)"
+    if yunohost --version --json | jq -r ".yunohost.version" | grep -q "^12\.0\." ; then
+        ynh_nodejs_install
+    fi
     pushd "$install_dir"
     ynh_hide_warnings npm install @yao-pkg/pkg
     popd
