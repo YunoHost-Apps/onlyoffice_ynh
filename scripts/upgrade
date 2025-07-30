@@ -29,7 +29,7 @@ init_settings
 if dpkg-query --show onlyoffice-documentserver &> /dev/null; then
     ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
     ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/local.json"
-    ynh_package_autopurge onlyoffice-documentserver
+    _ynh_apt purge onlyoffice-documentserver
     ynh_hide_info ynh_safe_rm "/etc/apt/sources.list.d/onlyoffice.list"
     ynh_hide_info ynh_safe_rm "/etc/apt/sources.list.d/nodesource.list"
     ynh_hide_info ynh_safe_rm "/var/lib/dpkg/info/onlyoffice-documentserver.prerm"
