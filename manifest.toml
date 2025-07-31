@@ -99,6 +99,7 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
         "postgresql-contrib",
         "libstdc++6",
         "rabbitmq-server",
+        "redis",
         "libcurl4-openssl-dev",
         #"ttf-mscorefonts-installer",
     ]
