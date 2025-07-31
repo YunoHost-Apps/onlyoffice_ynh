@@ -100,6 +100,7 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
         "libstdc++6",
         "rabbitmq-server",
         "redis",
+        "redis-tools",
         "libcurl4-openssl-dev",
         #"ttf-mscorefonts-installer",
     ]
