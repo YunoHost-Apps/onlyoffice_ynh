@@ -16,13 +16,13 @@ services = ["__APP__-docservice"]
 [main.auto_assembly.autoassembly_enable]
 ask.en = "Enable automatic forcesaving"
 type = "boolean"
-bind = "autoAssembly>enable:__INSTALL_DIR/config/local.json"
+bind = "autoAssembly>enable:__INSTALL_DIR__/config/local.json"
 help.en = "The automatic forcesaving will only be initiated after some changes were made to the document. The empty versions will not be forcesaved automatically. Additionally, file versioning needs to be implemented on the document management system's side for this parameter to work."
 
 [main.auto_assembly.autoassembly_interval]
 ask.en = "Interval time in minutes"
 type = "string"
-bind = "autoAssembly>interval:__INSTALL_DIR/config/local.json"
+bind = "autoAssembly>interval:__INSTALL_DIR__/config/local.json"
 help.en = "Defines the interval time in minutes for initiating the automatic forcesaving."
 example = "5m"
 pattern.regexp = '^\d+m$'
@@ -31,7 +31,7 @@ pattern.error = "Provide a value in minutes like '5m'"
 [main.auto_assembly.autoassembly_step]
 ask.en = "Delay in minutes between the intervals"
 type = "string"
-bind = "autoAssembly>step:__INSTALL_DIR/config/local.json"
+bind = "autoAssembly>step:__INSTALL_DIR__/config/local.json"
 example = "1m"
 pattern.regexp = '^\d+m$'
 pattern.error = "Provide a value in minutes like '1m'"
