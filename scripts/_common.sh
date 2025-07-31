@@ -50,6 +50,7 @@ setup_sources() {
     popd
     mv "$install_dir/deb/etc/onlyoffice/documentserver/default.json" "$conf_dir/default.json"
     mv "$install_dir/deb/etc/onlyoffice/documentserver/production-linux.json" "$conf_dir/production-linux.json"
+    mv "$install_dir/deb/etc/onlyoffice/documentserver/log4js" "$conf_dir/log4js"
     mv "$install_dir/deb/etc/onlyoffice/documentserver/nginx" "$conf_dir/nginx"
     mv "$install_dir/deb/var/www/onlyoffice/documentserver" "$install_dir/documentserver"
     mv "$install_dir/deb/usr/bin" "$install_dir/bin"
@@ -97,9 +98,7 @@ buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//"
 
 
 compile() {
-    if yunohost --version --json | jq -r ".yunohost.version" | grep -q "^12\.0\." ; then
-        ynh_nodejs_install
-    fi
+    ynh_nodejs_install
     pushd "$install_dir"
     ynh_hide_warnings npm install @yao-pkg/pkg
     popd

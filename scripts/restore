@@ -58,14 +58,9 @@ ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 for service in "converter" "docservice" "metrics"; do
     ynh_restore "/etc/systemd/system/$app-$service.service"
-    systemctl enable "$app-$service.service" --quiet
-
-    yunohost service add "$app-$service" --description="$app $service" --log="/var/log/$app/$service.log"
 done
 ynh_restore "/etc/systemd/system/$app.service"
-systemctl enable "$app.service" --quiet
-yunohost service add "$app" --description="$app" --test_status="systemctl is-active $app-docservice $app-converter |uniq"
-
+add_services_in_ynh
 ynh_restore "/etc/logrotate.d/$app"
 
 #=================================================
