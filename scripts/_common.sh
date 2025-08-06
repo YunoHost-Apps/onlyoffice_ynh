@@ -113,6 +113,9 @@ compile() {
 
     # Activate smartphone editor
     sed -i 's/isSupportEditFeature=()=>!1/isSupportEditFeature=()=>!0/g' $install_dir/documentserver/web-apps/apps/*/mobile/dist/js/app.js
+    
+    # Avoid taking up space unnecessarily
+    ynh_hide_info ynh_safe_rm "$install_dir/src"
 }
 
 add_services_in_ynh() {
