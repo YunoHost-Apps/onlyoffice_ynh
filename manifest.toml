@@ -12,27 +12,35 @@ version = "9.0.3~ynh1"
 maintainers = []
 
 [upstream]
-license = "GPL-3.0-or-later"
+license = "AGPL-3.0-or-later"
 website = "https://www.onlyoffice.com"
 demo = "https://www.onlyoffice.com/fr/download-desktop.aspx"
 code = "https://github.com/ONLYOFFICE/DocumentServer"
 cpe = "cpe:2.3:a:onlyoffice:document_server"
 
 [integration]
-yunohost = ">= 11.2"
+yunohost = ">= 12.0.9"
+helpers_version = "2.1"
 architectures = ["amd64", "arm64"]
-multi_instance = false
+multi_instance = true
 
 ldap = "not_relevant"
 sso = "not_relevant"
 
-disk = "2000M"
+disk = "2100M"
 ram.build = "800M"
 ram.runtime = "800M"
+
+[antifeatures]
+arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of user and opened documents. This package recompile this part according to AGPLv3 licence to remove this artificial limitations."
 
 [install]
     [install.domain]
     type = "domain"
+
+    [install.path]
+    type = "path"
+    default = "/"
 
     [install.init_main_permission]
     help.en = "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!"
@@ -40,16 +48,13 @@ ram.runtime = "800M"
     type = "group"
     default = "visitors"
 
-    [install.nextclouddomain]
-    ask.en = "The domain of the Nextcloud to connect to OnlyOffice"
-    ask.fr = "Le domaine du Nextcloud à connecter à OnlyOffice"
+    [install.allowed_urls]
+    ask.en = "List of web addresses authorized to integrate the OnlyOffice editor separated by space"
+    ask.fr = "Liste des adresses web autorisées à intégrer l'éditeur OnlyOffice séparées par un espace"
     help.en = "Install the OnlyOffice connector to edit documents from Nextcloud."
     help.fr = "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
     type = "string"
-    example = "yunohost.domain/nextcloud or nextcloud.yunohost.domain"
-
-    [install.admin]
-    type = "user"
+    example = "https://cloud.yunohost.domain/nextcloud https://example.com"
 
 [resources]
 
@@ -58,13 +63,29 @@ ram.runtime = "800M"
     amd64.sha256 = "83c4a418a6e2c2857e6e6e544a90aba71494bcceda10fc014795de5e7d0d5f8d"
     arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.3/onlyoffice-documentserver_arm64.deb"
     arm64.sha256 = "7671c4c66de25a4eb6de3f043f26d96f830b452ed5c122082089cba927ac01a0"
+    extract = false
     rename = "onlyoffice-documentserver.deb"
     autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
     autoupdate.asset.arm64 = "^onlyoffice-documentserver_arm64.deb$"
     autoupdate.strategy = "latest_github_release"
+    
+    [resources.sources.src]
+    url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.0.3.31.tar.gz"
+    sha256 = "b398762099b6a0a4006bcfb332de22f09be01a83b25352a9f42cc93ae6429246"
+    autoupdate.strategy = "latest_github_release"
+    
+    [resources.sources.fonts]
+    url = "https://forge.liiib.re/indiehost/libre.sh/fonts/-/archive/4f5ad93ee65a862bddfc70eb48ac98e531968da7/fonts-4f5ad93ee65a862bddfc70eb48ac98e531968da7.tar.gz"
+    sha256 = "aed831e465bf775320a6298a5a7aac0197754de410f736c1020996267678016f"
+
     [resources.system_user]
 
     [resources.install_dir]
+    group = "www-data:rx"
+
+    [resources.data_dir]
+    subdirs = ['docbuilder', 'cache/files']
+    group = "www-data:rx"
 
     [resources.permissions]
     main.url = "/"
@@ -78,8 +99,14 @@ ram.runtime = "800M"
         "postgresql-contrib",
         "libstdc++6",
         "rabbitmq-server",
+        "redis",
+        "redis-tools",
         "libcurl4-openssl-dev",
+        #"ttf-mscorefonts-installer",
     ]
 
     [resources.database]
     type = "postgresql"
+
+#    [resources.nodejs]
+#    version = "18"

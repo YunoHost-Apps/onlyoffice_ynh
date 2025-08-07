@@ -8,52 +8,49 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# REMOVE SERVICE FROM ADMIN PANEL
+# REMOVE SYSTEM CONFIGURATIONS
 #=================================================
+ynh_script_progression "Removing system configurations related to $app..."
 
-for service in "ds-converter" "ds-docservice" "ds-metrics"; do
-    if yunohost service status "$service" >/dev/null 2>&1
+ynh_config_remove_logrotate
+
+for service in "$app-converter" "$app-docservice" "$app-metrics" "$app"; do
+    if ynh_hide_warnings yunohost service status "$service" >/dev/null
     then
         yunohost service remove "$service"
     fi
+    ynh_config_remove_systemd "$service"
 done
 
-#=================================================
-# REMOVE ONLYOFFICE
-#=================================================
-ynh_script_progression --message="Removing OnlyOffice..."
+ynh_config_remove_nginx
 
-ynh_secure_remove --file=/var/lib/dpkg/info/onlyoffice-documentserver.prerm
-
-# Here you will wonder what the fuck this is, and the answer is : this is a
-# fucking stupid hack because onlyoffice's dev deviced to put a "supervisorctl
-# update" inside their postrm, but when their postrm is ran, supervisorctl is
-# already removed ... so their removal fails which breaks dpkg.
-# So instead, we trick it with this stupid link to /bin/true which is removed
-# right after.
-#ln -s /bin/true /usr/local/bin/supervisorctl
-ynh_package_autopurge onlyoffice-documentserver
-
-dpkg --configure -a
+ynh_safe_rm "/etc/cron.d/$app"
 
 #=================================================
-# REMOVE SYSTEM CONFIGURATIONS
+# REMOVE RABBIT MQ VHOST
 #=================================================
-ynh_script_progression --message="Removing system configurations related to $app..." --weight=1
+ynh_script_progression "Removing rabbitmq vhost $app..."
 
-# Remove the dedicated NGINX config
-ynh_remove_nginx_config
+ynh_rabbitmq_remove_vhost
+
+#=================================================
+# REMOVE REDIS DB
+#=================================================
+ynh_script_progression "Removing redis db..."
+
+ynh_redis_remove_db $redis_db
 
 #=================================================
 # REMOVE VARIOUS FILES
 #=================================================
 
 # Remove a directory securely
-ynh_secure_remove --file="/etc/onlyoffice"
-ynh_secure_remove --file="/var/lib/onlyoffice"
+ynh_safe_rm "$install_dir"
+
+ynh_nodejs_remove
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Removal of $app completed"
+ynh_script_progression "Removal of $app completed"
