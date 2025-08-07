@@ -63,7 +63,7 @@ setup_sources() {
     ynh_safe_rm "$install_dir/deb"
 
     # We use sources in order to recompile binary
-    if [ "$official_build" = true ] ; then
+    if [[ "$official_build" == "0" ]] ; then
         ynh_setup_source --source_id="src"  --dest_dir="$install_dir/src"
         ynh_replace --match="const buildVersion = " --replace="const buildVersion = '${YNH_APP_MANIFEST_VERSION%%~*}';" --file="$install_dir/src/Common/sources/commondefines.js"
     buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//" | grep -Eo "[0-9]+$")

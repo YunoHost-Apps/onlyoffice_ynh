@@ -55,7 +55,7 @@ setup_sources
 #=================================================
 # COMPILE ONLYOFFICE
 #=================================================
-if [[ "$official_build" == "1" ]] ; then
+if [[ "$official_build" == "0" ]] ; then
     ynh_script_progression "Compiling $app..."
 
     compile

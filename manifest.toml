@@ -68,7 +68,7 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     ask.en = "Don't remove limitations and keep official OnlyOffice binaries"
     ask.fr = "Ne pas supprimer les limitations et garder les binaires officiels d'OnlyOffice"
     type = "boolean"
-    default = false
+    default = 0
     help.en = "The install and upgrade will be faster, but until you pay a license, you will be limited in number of users and opened documents" 
     help.fr = "L'installation et la mise à jour seront plus rapides, mais à moins de payer une licence, vous serez limité en nombre de documents et du'ilisateurices simultanées" 
 
