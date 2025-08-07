@@ -14,7 +14,7 @@ test_format = 1.0
     # Default args to use for install
     # -------------------------------
 
-    args.nextclouddomain = "nextcloud.tld"
+    args.allowed_urls = "https://nextcloud.tld"
 
     # -------------------------------
     # Commits to test upgrade from

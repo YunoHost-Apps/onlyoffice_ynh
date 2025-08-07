@@ -11,71 +11,80 @@ source /usr/share/yunohost/helpers
 # INITIALIZE AND STORE SETTINGS
 #=================================================
 
-admin_mail=$(ynh_user_get_info --username=$admin --key="mail")
+init_settings
 
-jwt_secret=$(ynh_string_random --length=32)
-ynh_app_setting_set --app="$app" --key=jwt_secret --value="$jwt_secret"
 
 #=================================================
-# INSTALL ONLYOFFICE
+# DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Install OnlyOffice..."
+ynh_script_progression "Setting up source files..."
 
-_install_msfonts_deb
-_install_onlyoffice_deb
-
-#=================================================
-# ADD A CONFIGURATION
-#=================================================
-ynh_script_progression --message="Adding $app's configuration file..."
-
-ynh_replace_string --target_file="/etc/onlyoffice/documentserver/default.json" \
-    --match_string="\"rejectUnauthorized\": true" \
-    --replace_string="\"rejectUnauthorized\": false"
-ynh_store_file_checksum --file="/etc/onlyoffice/documentserver/default.json"
+setup_sources
 
 #=================================================
-# REGENERATE FONTS
+# COMPILE ONLYOFFICE
 #=================================================
-ynh_script_progression --message="Generating fonts..."
+ynh_script_progression "Compiling $app..."
 
-/usr/bin/documentserver-generate-allfonts.sh 2>/dev/null
-
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
-# Set permissions to app files
-chmod 750 "$install_dir"
-chmod -R o-rwx "$install_dir"
-chown -R ds:ds "$install_dir"
+compile
 
 #=================================================
-# ADVERTISE SERVICE IN ADMIN PANEL
+# SETUP RABBIT MQ VHOST
 #=================================================
+ynh_script_progression "Configuring rabbitmq vhost $app..."
 
-for service in "ds-converter" "ds-docservice" "ds-metrics"; do
-    yunohost service add "$service"
-done
+ynh_rabbitmq_setup_vhost
+
+#=================================================
+# SETUP REDIS DB
+#=================================================
+ynh_script_progression "Configuring redis db..."
+
+configure_redis
+
+
+#=================================================
+# APP INITIAL CONFIGURATION
+#=================================================
+ynh_script_progression "Adding $app's configuration files..."
+
+ynh_config_add --template="local.json" --destination="$conf_dir/local.json"
+chmod 400 "$conf_dir/local.json"
+chown "$app:$app" "$conf_dir/local.json"
+
+
+
+#=================================================
+# SETUP DATABASE
+#=================================================
+ynh_script_progression "Populating postgresql database $app..."
+db_dump="$install_dir/documentserver/server/schema/postgresql/createdb.sql"
+echo "alter table doc_changes owner to $app;" >> $db_dump
+echo "alter table task_result owner to $app;" >> $db_dump
+ynh_psql_db_shell $app < "$install_dir/documentserver/server/schema/postgresql/createdb.sql"
+
+
+#=================================================
+# SYSTEM CONFIGURATION
+#=================================================
+ynh_script_progression "Adding system configurations related to $app..."
+
+apply_system_config
+
+#=================================================
+# REGENERATE FONTS AND FLUSH CACHE
+#=================================================
+ynh_script_progression "Generating fonts and flushing cache..."
+ynh_hide_warnings $install_dir/bin/documentserver-generate-allfonts.sh
 
 #=================================================
 # START SERVICES
 #=================================================
 
-for service in "ds-converter" "ds-docservice" "ds-metrics"; do
-    ynh_systemd_action --action=restart --service_name="$service"
-done
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Configuring NGINX web server..."
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
+ynh_systemctl --action=start --service="$app" 
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed"
+ynh_script_progression "Installation of $app completed"
