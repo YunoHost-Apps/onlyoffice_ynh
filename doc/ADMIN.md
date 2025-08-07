@@ -1,51 +1,76 @@
-## Demo
+## Integrate your ONLYOFFICE Server into an app
 
-* A free 30 days demo of Document Server is available from ONLYOFFICE connector for Nextcloud:
-  * Install Nextcloud and the ONLYOFFICE app (connector).
-  * Go in the Nextcloud administrator settings, section ONLYOFFICE.
-  * Tick the box `Connection to demo ONLYOFFICE Document Server` in Server Parameters.
-* Some testing is also possible using [ONLYOFFICE Desktop Editor](https://www.onlyoffice.com/fr/download-desktop.aspx).
+To integrate the editors into your app (nextcloud, seafile, etc.):
+1. Install the dedicated onlyoffice connector extension in your apps
+2. Feel the following settings in the configuration of this extension and save (or restart the app service if it's a config file):
+  - Address of the Document Server: "https://__DOMAIN____PATH__"
+  - Secret key: "__JWT_SECRET__"
+3. Test to edit or create a document on your app
 
-## Prerequisite
+### Nextcloud
+To configure OnlyOffice with Nextcloud:
 
-You should not install ONLYOFFICE on your main YunoHost domain, especially if you want to use it with a Nextcloud installed on the same domain.
+- Within Nextcloud, install ONLYOFFICE app
+- go to the settings under "Administration > ONLYOFFICE > Server settings
+- Address of the Document Server: "https://__DOMAIN____PATH__"
+- Secret key: "__JWT_SECRET__"
 
-* Add a new domain for ONLYOFFICE in YunoHost.
-  * If your main YunoHost domain was provided by YunoHost, e.g. `domain.nohost.me`, then you don't have to buy/register a new domain name.
-  * Just click on `I already have a domain`.
-  * Type e.g. `office.domain.nohost.me` and click on `Add`.
-* Add a Let's Encrypt certificate for this domain.
+OnlyOffice should now work with your Nextcloud!
 
-## Configuration of ONLYOFFICE Server
+### Seafile
+Add the following config option to `seahub_settings.py`.
+```
+# Enable OnlyOffice
+ENABLE_ONLYOFFICE = True
+VERIFY_ONLYOFFICE_CERTIFICATE = True
+ONLYOFFICE_APIJS_URL = 'https://__DOMAIN____PATH__/web-apps/apps/api/documents/api.js'
+ONLYOFFICE_FILE_EXTENSION = ('doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'odt', 'fodt', 'odp', 'fodp', 'ods', 'fods')
+ONLYOFFICE_EDIT_FILE_EXTENSION = ('docx', 'pptx', 'xlsx')
 
-* Assuming that:
-  * `yunohost.domain` is your main YunoHost domain.
-  * You have configured `office.yunohost.domain` for ONLYOFFICE, see Prerequisite above.
-  * You have Nextcloud installed on `yunohost.domain/nextcloud` or `nextcloud.yunohost.domain`.
-* Install `ONLYOFFICE` using CLI or webadmin.
-  * Choose a domain name for ONLYOFFICE that is different from your Nextcloud domain, e.g. `office.yunohost.domain` (or `office.domain.nohost.me`, see previous section).
-  * Choose a path for ONLYOFFICE, e.g. `/` if you install on `office.yunohost.domain` (do not install any other app on this domain).
-  * The domain of your Nextcloud instance, e.g. `yunohost.domain/nextcloud` or `nextcloud.yunohost.domain`.
-  * Is it a public application? **If you want to connect it to Nextcloud, ONLYOFFICE should be public**: then select `visitors``.
+# Enable force save to let user can save file when he/she press the save button on OnlyOffice file edit page.
+ONLYOFFICE_FORCE_SAVE = True
 
-## How to edit ONLYOFFICE documents?
+# if JWT enabled
+ONLYOFFICE_JWT_SECRET = '__JWT_SECRET__'
+```
 
-### Web Edition in Nextcloud
+Restart seafile
+```
+systemctl restart seafile
+systemctl restart seahub
+```
 
-Prerequisite: **ONLYOFFICE should be public**, see previous section.
+### YesWiki
+A yeswiki-extension-documents which support OnlyOffice exists.
+Feel free to contribute if you find a way to setup it.
+See https://github.com/YesWiki/yeswiki-extension-documents/blob/main/services/OnlyOfficeDocumentProvider.php
 
-* In Nextcloud apps store, install `ONLYOFFICE`, i.e. the [ONLYOFFICE connector for Nextcloud](https://apps.nextcloud.com/apps/onlyoffice).
-* Go in the Nextcloud `settings` > `Administration` > `ONLYOFFICE` > `Server settings` > `Address of the Document Server`.
-* Give the installation domain of your `onlyoffice`, e.g. `https://office.yunohost.domain/`.
-* Give the secret key that was sent to you by email during the install (you can also retrieve it with the CLI command `sudo documentserver-jwt-status.sh`).
-* Click `Save`.
-* Create a new document and enjoy!
+### Others
 
-### Desktop Edition on PC
+For Owncloud, Opencloud, Mattermost, Odoo, Moodle, Redmine, Wordpress, Humhub, you can find infos to integrate onlyoffice here: https://www.onlyoffice.com/all-connectors.aspx
 
-* Download and install a [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/fr/download-desktop.aspx).
-* Start ONLYOFFICE and Go to `Connect to cloud` > `Add cloud`.
-  * Select `ONLYOFFICE` and give the installation domain of your `ONLYOFFICE`, e.g. `office.yunohost.domain`
-  * or (only if you connected `ONLYOFFICE` to Nextcloud, see previous section).
-  * Select `Nextcloud` and give your Nextcloud installation domain, e.g. `yunohost.domain/nextcloud`.
-* Create a new document and enjoy!
+
+## Question & Answer
+### My apps can't have a valid certificate (local ip), could i connect it to onlyoffice ?
+Yes, you could do it by deactivating `Prevent unauthenticated requests`. 
+
+Important:it could be a security hole if you can't trust your local router, and your local users...
+
+### I am not able to connect my app to this OnlyOffice server
+ - Check you have a valid Let's Encrypt certificate (https) for your app and this OnlyOffice
+ - Check your app and the onlyoffice app are public (so the visitors group should be able to access the app or at least the API...).
+ - Check your app doesn't contains a mechanism that forbid local request onto 127.0.0.1, if it's the case, you can try to delete `rm /etc/dsnmasq.d/__DOMAIN__` and restart dnsmasq service `systemctl restart dnsmasq`
+
+### Some change on documents are lost
+If you use nextcloud client synchronization and OnlyOffice web apps on the same file, you could face sometimes situations where OnlyOffice rewrite a change made from a local device and sync with nextcloud client. You probably should adopt practice with your team to avoid this situation. For example, by adopting naming convention for collaborative files to open by the web onlyoffice.
+
+### What about the OnlyOffice limitations ? Is it legal to remove it like this package did it ?
+OnlyOffice is edited by a company which have decided to integrate strong limitations on their "free software" (like others office apps). Those limitations (20 sessions in the same time) are not easy to understand by end users ("why i can't edit the document ???")
+
+So a way to remove those limitations and to help the editors is to buy a license.
+
+On the other way, we know a lot of self hosters don't have enough money to pay expensive licence.
+
+And, OnlyOffice Document Server is an AGPL v3 software (like YunoHost) and was popularized thanks in part to the fame of this license... AGPLv3 license says we can change the source code if we publish the new source code with the same license (what we do here: the patch is under AGPLv3). 
+
+So, as it's legal and a lot of users waited for this, we decided to patch those anti-features.
