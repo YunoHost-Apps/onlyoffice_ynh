@@ -7,8 +7,6 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
-
-
 #=================================================
 # MODIFY URL IN NGINX CONF
 #=================================================
@@ -19,6 +17,7 @@ ynh_change_url_nginx_config
 #=================================================
 # SPECIFIC MODIFICATIONS
 #=================================================
+
 conf_dir="$install_dir/config"
 
 unlink "$conf_dir/nginx/ds.conf"

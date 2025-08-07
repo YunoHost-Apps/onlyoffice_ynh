@@ -8,7 +8,6 @@
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
-
 #=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
@@ -24,6 +23,7 @@ set_permissions
 ynh_script_progression "Restoring the data directory..."
 
 ynh_restore "$data_dir"
+
 chown -R $app:www-data "$data_dir"
 
 #=================================================
@@ -74,6 +74,7 @@ ynh_restore "/var/log/$app/"
 # REGENERATE FONTS AND FLUSH CACHE
 #=================================================
 ynh_script_progression "Generating fonts and flushing cache..."
+
 ynh_hide_warnings $install_dir/bin/documentserver-generate-allfonts.sh
 
 #=================================================

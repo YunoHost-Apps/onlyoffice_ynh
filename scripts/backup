@@ -41,9 +41,9 @@ ynh_backup "/etc/logrotate.d/$app"
 #=================================================
 # BACKUP VARIOUS FILES
 #=================================================
+
 ynh_backup "/etc/cron.d/$app"
 ynh_backup "/var/log/$app/"
-
 
 #=================================================
 # BACKUP THE POSTGRESQL DATABASE

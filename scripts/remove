@@ -10,7 +10,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # REMOVE SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression "Removing system configurations related to $app..." --weight=1
+ynh_script_progression "Removing system configurations related to $app..."
 
 ynh_config_remove_logrotate
 
@@ -48,6 +48,7 @@ ynh_redis_remove_db $redis_db
 ynh_safe_rm "$install_dir"
 
 ynh_nodejs_remove
+
 #=================================================
 # END OF SCRIPT
 #=================================================

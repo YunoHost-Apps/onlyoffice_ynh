@@ -13,7 +13,6 @@ source /usr/share/yunohost/helpers
 
 init_settings
 
-
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
@@ -42,7 +41,6 @@ ynh_script_progression "Configuring redis db..."
 
 configure_redis
 
-
 #=================================================
 # APP INITIAL CONFIGURATION
 #=================================================
@@ -52,17 +50,15 @@ ynh_config_add --template="local.json" --destination="$conf_dir/local.json"
 chmod 400 "$conf_dir/local.json"
 chown "$app:$app" "$conf_dir/local.json"
 
-
-
 #=================================================
 # SETUP DATABASE
 #=================================================
 ynh_script_progression "Populating postgresql database $app..."
+
 db_dump="$install_dir/documentserver/server/schema/postgresql/createdb.sql"
 echo "alter table doc_changes owner to $app;" >> $db_dump
 echo "alter table task_result owner to $app;" >> $db_dump
 ynh_psql_db_shell $app < "$install_dir/documentserver/server/schema/postgresql/createdb.sql"
-
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -75,6 +71,7 @@ apply_system_config
 # REGENERATE FONTS AND FLUSH CACHE
 #=================================================
 ynh_script_progression "Generating fonts and flushing cache..."
+
 ynh_hide_warnings $install_dir/bin/documentserver-generate-allfonts.sh
 
 #=================================================
