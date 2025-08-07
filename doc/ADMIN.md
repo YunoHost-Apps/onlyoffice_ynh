@@ -50,7 +50,7 @@ See https://github.com/YesWiki/yeswiki-extension-documents/blob/main/services/On
 For Owncloud, Opencloud, Mattermost, Odoo, Moodle, Redmine, Wordpress, Humhub, you can find infos to integrate onlyoffice here: https://www.onlyoffice.com/all-connectors.aspx
 
 
-## Question & Answer
+## Questions & Answers
 ### My apps can't have a valid certificate (local ip), could i connect it to onlyoffice ?
 Yes, you could do it by deactivating `Prevent unauthenticated requests`. 
 
