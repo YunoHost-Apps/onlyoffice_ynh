@@ -23,9 +23,11 @@ setup_sources
 #=================================================
 # COMPILE ONLYOFFICE
 #=================================================
-ynh_script_progression "Compiling $app..."
+if [[ "$official_build" == "0" ]] ; then
+    ynh_script_progression "Compiling $app..."
 
-compile
+    compile
+fi
 
 #=================================================
 # SETUP RABBIT MQ VHOST

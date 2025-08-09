@@ -7,7 +7,7 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "9.0.4~ynh1"
+version = "9.0.4~ynh2"
 
 maintainers = []
 
@@ -43,8 +43,8 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     default = "/"
 
     [install.init_main_permission]
-    help.en = "You will only be able to connect OnlyOffice to Nextcloud if both apps are public!"
-    help.fr = "Nextcloud et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
+    help.en = "You will only be able to connect OnlyOffice to your app if both apps are public!"
+    help.fr = "Votre app et OnlyOffice doivent être des applications publiques si vous voulez les connecter !"
     type = "group"
     default = "visitors"
 
@@ -55,6 +55,22 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     help.fr = "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
     type = "string"
     example = "https://cloud.yunohost.domain/nextcloud https://example.com"
+    
+    [install.reject_unauthorized]
+    ask.en = "Prevent integration with an app that is not authenticated by a valid certificate (example: Let's Encrypt)"
+    ask.fr = "Empécher l'intégration avec une app non authentifiée par un certificat valide (exemple: Let's Encrypt)"
+    type = "boolean"
+    default = true
+    help.en = "Disabling this option allows OnlyOffice to accept unauthenticated HTTPS requests, which can be useful if your server is not exposed to the internet and cannot obtain a Let's Encrypt certificate."
+    help.fr = "Désactiver cette option permet à OnlyOffice d'accepter les requêtes HTTPS non authentifiées, ce qui peut être utile si votre serveur n'est pas exposé sur internet et ne peut pas obtenir de certificat Let's Encrypt."
+    
+    [install.official_build]
+    ask.en = "Don't remove limitations and keep official OnlyOffice binaries"
+    ask.fr = "Ne pas supprimer les limitations et garder les binaires officiels d'OnlyOffice"
+    type = "boolean"
+    default = 0
+    help.en = "The install and upgrade will be faster, but until you pay a license, you will be limited in number of users and opened documents" 
+    help.fr = "L'installation et la mise à jour seront plus rapides, mais à moins de payer une licence, vous serez limité en nombre de documents et du'ilisateurices simultanées" 
 
 [resources]
 

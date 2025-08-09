@@ -26,6 +26,8 @@ init_settings
 
 # Remove old install made by .deb
 if dpkg-query --show onlyoffice-documentserver &> /dev/null; then
+
+    documentserver-prepare4shutdown.sh
     ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/default.json"
     ynh_backup_if_checksum_is_different --file="/etc/onlyoffice/documentserver/local.json"
     _ynh_apt purge onlyoffice-documentserver
@@ -53,9 +55,11 @@ setup_sources
 #=================================================
 # COMPILE ONLYOFFICE
 #=================================================
-ynh_script_progression "Compiling $app..."
+if [[ "$official_build" == "0" ]] ; then
+    ynh_script_progression "Compiling $app..."
 
-compile
+    compile
+fi
 
 #=================================================
 # SETUP RABBIT MQ VHOST

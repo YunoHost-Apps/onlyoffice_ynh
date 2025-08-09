@@ -15,7 +15,8 @@ init_settings() {
     ynh_app_setting_set_default --key=autoassembly_enable --value="true"
     ynh_app_setting_set_default --key=autoassembly_step --value="1m"
     ynh_app_setting_set_default --key=autoassembly_interval --value="1m"
-    ynh_app_setting_set_default --key=reject_unauthorized --value="false"
+    ynh_app_setting_set_default --key=reject_unauthorized --value="true"
+    ynh_app_setting_set_default --key=official_build --value="0" # false
     
     # Renew cache tag
     cache_tag=$(date +'%Y.%m.%d-%H%M' | openssl md5 | awk '{print $2}')
@@ -62,12 +63,13 @@ setup_sources() {
     ynh_safe_rm "$install_dir/deb"
 
     # We use sources in order to recompile binary
-    ynh_setup_source --source_id="src"  --dest_dir="$install_dir/src"
-    ynh_replace --match="const buildVersion = " --replace="const buildVersion = '${YNH_APP_MANIFEST_VERSION%%~*}';" --file="$install_dir/src/Common/sources/commondefines.js"
-buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//" | grep -Eo "[0-9]+$")
-    ynh_replace --match="const buildNumber = " --replace="const buildNumber = $buildNumber;" --file="$install_dir/src/Common/sources/commondefines.js"
-    ynh_replace --match="const buildDate = " --replace="const buildDate = '$( date +%F )';" --file="$install_dir/src/Common/sources/license.js"
-
+    if [[ "$official_build" == "0" ]] ; then
+        ynh_setup_source --source_id="src"  --dest_dir="$install_dir/src"
+        ynh_replace --match="const buildVersion = " --replace="const buildVersion = '${YNH_APP_MANIFEST_VERSION%%~*}';" --file="$install_dir/src/Common/sources/commondefines.js"
+    buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//" | grep -Eo "[0-9]+$")
+        ynh_replace --match="const buildNumber = " --replace="const buildNumber = $buildNumber;" --file="$install_dir/src/Common/sources/commondefines.js"
+        ynh_replace --match="const buildDate = " --replace="const buildDate = '$( date +%F )';" --file="$install_dir/src/Common/sources/license.js"
+    fi
     set_permissions
 
     ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 

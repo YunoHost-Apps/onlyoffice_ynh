@@ -1,14 +1,22 @@
 version = "1.0"
 [main]
-[main.allowed_urls]
-services = ["nginx"]
-[main.allowed_urls.allowed_urls]
+[main.integration]
+name.en = "Integration"
+services = ["nginx", "__APP__-docservice"]
+[main.integration.allowed_urls]
 ask.en = "List of web addresses authorized to integrate the OnlyOffice editor separated by space"
 ask.fr = "Liste des adresses web autorisées à intégrer l'éditeur OnlyOffice séparées par un espace"
 help.en = "Install the OnlyOffice connector to edit documents from Nextcloud."
 help.fr = "Installez le connecteur OnlyOffice pour éditer des documents dans Nextcloud."
 type = "string"
 example = "https://cloud.yunohost.domain/nextcloud https://example.com"
+[main.integration.reject_unauthorized]
+ask.en = "Prevent unauthenticated requests"
+ask.fr = "Empécher les requêtes non authentifiées"
+type = "boolean"
+help.en = "In the general case you should keep this option activated. Disabling this option allows OnlyOffice to accept unauthenticated HTTPS requests, which can be useful if your server is not exposed to the internet and cannot obtain a Let's Encrypt certificate."
+help.fr = "En général, vous devriez laisser cette option activée. Désactiver cette option permet à OnlyOffice d'accepter les requêtes HTTPS non authentifiées, ce qui peut être utile si votre serveur n'est pas exposé sur internet et ne peut pas obtenir de certificat Let's Encrypt."
+bind = "rejectUnauthorized:__INSTALL_DIR__/config/local.json"
 
 [main.auto_assembly]
 name.en = "Automatic forcesaving"
