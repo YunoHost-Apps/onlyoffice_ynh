@@ -72,7 +72,7 @@ setup_sources() {
     fi
     set_permissions
 
-    ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 
+    #ynh_setup_source --source_id="fonts" --dest_dir="/usr/share/fonts/custom/" 
 
     # Some config an scripts should be patched in order to support 
     # ynh files and port organisation

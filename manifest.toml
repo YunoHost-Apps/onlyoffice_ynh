@@ -7,7 +7,7 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "9.0.4~ynh3"
+version = "9.0.4~ynh4"
 
 maintainers = []
 
@@ -89,10 +89,11 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.0.4.54.tar.gz"
     sha256 = "08ea459fe5946f4bb1e83e5e557cdeb7bf8f0ab6d6095e3fc284914e63652deb"
     autoupdate.strategy = "latest_github_release"
+    autoupdate.upstream = "https://github.com/ONLYOFFICE/server"
     
-    [resources.sources.fonts]
-    url = "https://forge.liiib.re/indiehost/libre.sh/fonts/-/archive/4f5ad93ee65a862bddfc70eb48ac98e531968da7/fonts-4f5ad93ee65a862bddfc70eb48ac98e531968da7.tar.gz"
-    sha256 = "aed831e465bf775320a6298a5a7aac0197754de410f736c1020996267678016f"
+#    [resources.sources.fonts]
+#    url = "https://forge.liiib.re/indiehost/libre.sh/fonts/-/archive/4f5ad93ee65a862bddfc70eb48ac98e531968da7/fonts-4f5ad93ee65a862bddfc70eb48ac98e531968da7.tar.gz"
+#    sha256 = "aed831e465bf775320a6298a5a7aac0197754de410f736c1020996267678016f"
 
     [resources.system_user]
 
