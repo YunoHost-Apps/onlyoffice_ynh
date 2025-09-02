@@ -19,7 +19,7 @@ code = "https://github.com/ONLYOFFICE/DocumentServer"
 cpe = "cpe:2.3:a:onlyoffice:document_server"
 
 [integration]
-yunohost = ">= 12.0.9"
+yunohost = ">= 12.1.17"
 helpers_version = "2.1"
 architectures = ["amd64", "arm64"]
 multi_instance = true
