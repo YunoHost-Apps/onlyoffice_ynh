@@ -88,7 +88,8 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     [resources.sources.src]
     url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.0.4.54.tar.gz"
     sha256 = "08ea459fe5946f4bb1e83e5e557cdeb7bf8f0ab6d6095e3fc284914e63652deb"
-    autoupdate.strategy = "latest_github_release"
+    autoupdate.strategy = "latest_github_tab"
+    autoupdate.version_regex = "^v9.*$"
     autoupdate.upstream = "https://github.com/ONLYOFFICE/server"
     
 #    [resources.sources.fonts]
