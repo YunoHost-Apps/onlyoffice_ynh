@@ -14,6 +14,8 @@ example = "https://cloud.yunohost.domain/nextcloud https://example.com"
 ask.en = "Prevent unauthenticated requests"
 ask.fr = "Empécher les requêtes non authentifiées"
 type = "boolean"
+yes = true
+no = false
 help.en = "In the general case you should keep this option activated. Disabling this option allows OnlyOffice to accept unauthenticated HTTPS requests, which can be useful if your server is not exposed to the internet and cannot obtain a Let's Encrypt certificate."
 help.fr = "En général, vous devriez laisser cette option activée. Désactiver cette option permet à OnlyOffice d'accepter les requêtes HTTPS non authentifiées, ce qui peut être utile si votre serveur n'est pas exposé sur internet et ne peut pas obtenir de certificat Let's Encrypt."
 bind = "rejectUnauthorized:__INSTALL_DIR__/config/local.json"
@@ -44,3 +46,12 @@ example = "1m"
 pattern.regexp = '^\d+m$'
 pattern.error = "Provide a value in minutes like '1m'"
 
+[main.rebuild]
+name.en = "Limitations"
+[main.rebuild.rebuild_without_limitations]
+ask.en = "Remove usage limitations"
+ask.fr = "Supprimer les limites d'usage"
+type = "boolean"
+default = 1
+help.en = "Recompile binaries in order to remove usage limitations (number of users, opened documents, smartphone usage). Note: the install and upgrade will be slower. After changing this setting you should trigger a force upgrade of this app by yourself to be effective." 
+help.fr = "Recompile les binaires afin de supprimer les limitations d'utilisation (nombre d'utilisateurs, documents ouverts, utilisation sur smartphone). NB: l'installation et la mise à jour seront plus lentes. Après avoir modifié ce paramètre, vous devez déclencher vous-même une mise à jour forcée de l'app pour que le changement soit éffectif." 

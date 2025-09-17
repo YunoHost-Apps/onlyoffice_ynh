@@ -16,7 +16,9 @@ init_settings() {
     ynh_app_setting_set_default --key=autoassembly_step --value="1m"
     ynh_app_setting_set_default --key=autoassembly_interval --value="1m"
     ynh_app_setting_set_default --key=reject_unauthorized --value="true"
-    ynh_app_setting_set_default --key=official_build --value="0" # false
+    # if official_build was set previously, invert the value
+    official_build=${official_build:-0}
+    ynh_app_setting_set_default --key=rebuild_without_limitations --value="$((1-official_build))" # true
     
     # Renew cache tag
     cache_tag=$(date +'%Y.%m.%d-%H%M' | openssl md5 | awk '{print $2}')
@@ -63,7 +65,7 @@ setup_sources() {
     ynh_safe_rm "$install_dir/deb"
 
     # We use sources in order to recompile binary
-    if [[ "$official_build" == "0" ]] ; then
+    if [[ "$rebuild_without_limitations" == "1" ]] ; then
         ynh_setup_source --source_id="src"  --dest_dir="$install_dir/src"
         ynh_replace --match="const buildVersion = " --replace="const buildVersion = '${YNH_APP_MANIFEST_VERSION%%~*}';" --file="$install_dir/src/Common/sources/commondefines.js"
     buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//" | grep -Eo "[0-9]+$")
