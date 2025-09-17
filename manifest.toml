@@ -125,5 +125,5 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     [resources.database]
     type = "postgresql"
 
-#    [resources.nodejs]
-#    version = "18"
+    [resources.nodejs]
+    version = "18"
