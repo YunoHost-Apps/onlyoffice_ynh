@@ -29,6 +29,10 @@
             "lazyConnect": true
         }
       },
+      "request-filtering-agent" : {
+        "allowPrivateIPAddress": true,
+        "allowMetaIPAddress": false
+      },
       "token": {
         "enable": {
           "request": {
