@@ -24,7 +24,7 @@ unlink "$conf_dir/nginx/ds.conf"
 unlink "$conf_dir/nginx/includes/ds-docservice.conf"
 ln -s /etc/nginx/conf.d/$new_domain.d/$app.conf "$conf_dir/nginx/ds.conf"
 ln -s /etc/nginx/conf.d/$new_domain.d/$app.conf "$conf_dir/nginx/includes/ds-docservice.conf"
-ynh_replace --match="$old_domain.d" --replace="$new_domain" --file="$install_dir/bin/documentserver-flush-cache.sh"
+ynh_replace --match="$old_domain" --replace="$new_domain" --file="$install_dir/bin/documentserver-flush-cache.sh"
 
 #=================================================
 # END OF SCRIPT
