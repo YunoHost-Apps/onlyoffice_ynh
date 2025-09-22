@@ -26,6 +26,8 @@ services = ["__APP__-docservice"]
 [main.auto_assembly.autoassembly_enable]
 ask.en = "Enable automatic forcesaving"
 type = "boolean"
+yes = true
+no = false
 bind = "autoAssembly>enable:__INSTALL_DIR__/config/local.json"
 help.en = "The automatic forcesaving will only be initiated after some changes were made to the document. The empty versions will not be forcesaved automatically. Additionally, file versioning needs to be implemented on the document management system's side for this parameter to work."
 
