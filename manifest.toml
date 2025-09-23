@@ -122,6 +122,7 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
         "redis",
         "redis-tools",
         "libcurl4-openssl-dev",
+        "binutils",
         #"ttf-mscorefonts-installer",
     ]
 
