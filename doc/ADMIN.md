@@ -45,6 +45,9 @@ A yeswiki-extension-documents which supports OnlyOffice exists.
 Feel free to contribute if you find a way to set it up.
 See https://github.com/YesWiki/yeswiki-extension-documents/blob/main/services/OnlyOfficeDocumentProvider.php
 
+### Moodle
+If you install Moodle on the same YNH as OnlyOffice, remember to remove 127.0.0.0/8 from curlsecurityblockedhosts (in Site Administration / Security / HTTP Security).
+
 ### Others
 
 For Owncloud, Opencloud, Mattermost, Odoo, Moodle, Redmine, Wordpress, Humhub, you can find info on how to integrate OnlyOffice here: https://www.onlyoffice.com/all-connectors.aspx
