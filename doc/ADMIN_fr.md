@@ -45,6 +45,9 @@ Une extension existe.
 Soyez libre de contribuer si vous trouvez comment l'installer.
 Cf: https://github.com/YesWiki/yeswiki-extension-documents/blob/main/services/OnlyOfficeDocumentProvider.php
 
+### Moodle 
+Si on installe Moodle sur le même YNH qu'OnlyOffice, il faut penser à enlever 127.0.0.0/8 de la curlsecurityblockedhosts (in Site Administration / Security / HTTP Security).
+
 ### Autres
 
 Pour Owncloud, Opencloud, Mattermost, Odoo, Moodle, Redmine, Wordpress, Humhub, vous pouvez trouver les infos d'intégration ici: https://www.onlyoffice.com/all-connectors.aspx
