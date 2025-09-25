@@ -32,7 +32,8 @@ ram.build = "800M"
 ram.runtime = "800M"
 
 [antifeatures]
-arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of user and opened documents. This package recompile this part according to AGPLv3 licence to remove this artificial limitations."
+arbitrary-limitations.en = "The official OnlyOffice build limits the number of users and open documents. This package recompiles this part according to the AGPLv3 licence, removing these artificial limitations."
+arbitrary-limitations.fr = "La version officielle d'OnlyOffice limite le nombre d'utilisateurs et de documents ouverts. Ce paquet recompile cette partie conformément à la licence AGPLv3, supprimant ainsi ces limitations artificielles."
 
 [install]
     [install.domain]
@@ -58,7 +59,7 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     
     [install.reject_unauthorized]
     ask.en = "Prevent integration with an app that is not authenticated by a valid certificate (example: Let's Encrypt)"
-    ask.fr = "Empécher l'intégration avec une app non authentifiée par un certificat valide (exemple: Let's Encrypt)"
+    ask.fr = "Empécher l'intégration avec une app non authentifiée par un certificat valide (exemple : Let's Encrypt)"
     type = "boolean"
     default = true
     yes = true

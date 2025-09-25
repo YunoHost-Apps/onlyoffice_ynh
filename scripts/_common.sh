@@ -3,6 +3,7 @@
 #=================================================
 # COMMON VARIABLES
 #=================================================
+
 conf_dir="$install_dir/config"
 nodejs_version="18"
 
@@ -32,6 +33,7 @@ init_settings() {
     cache_tag=$(date +'%Y.%m.%d-%H%M' | openssl md5 | awk '{print $2}')
     ynh_app_setting_set --app="$app" --key=cache_tag --value="$cache_tag"
 }
+
 set_permissions() {
     chown -R "$app:$app" "$install_dir"
     chown "$app:www-data" "$install_dir"
@@ -47,6 +49,7 @@ set_permissions() {
         chmod 400 "$install_dir/config/local.json"
     fi
 }
+
 setup_sources() {
     mkdir -p "$install_dir/Data"
     mkdir -p "/var/log/$app/"
@@ -74,7 +77,7 @@ setup_sources() {
 
     # We use sources in order to recompile binary
     if [[ "$rebuild_without_limitations" == "1" ]] ; then
-        ynh_setup_source --source_id="src"  --dest_dir="$install_dir/src"
+        ynh_setup_source --source_id="src" --dest_dir="$install_dir/src"
         ynh_replace --match="const buildVersion = " --replace="const buildVersion = '${YNH_APP_MANIFEST_VERSION%%~*}';" --file="$install_dir/src/Common/sources/commondefines.js"
     buildNumber=$(ynh_read_manifest "resources.sources.src.url"| sed "s/\.tar\.gz//" | grep -Eo "[0-9]+$")
         ynh_replace --match="const buildNumber = " --replace="const buildNumber = $buildNumber;" --file="$install_dir/src/Common/sources/commondefines.js"
@@ -108,10 +111,7 @@ setup_sources() {
     ln -s /etc/nginx/conf.d/$domain.d/$app.conf "$conf_dir/nginx/ds.conf"
     ynh_hide_info ynh_safe_rm "$conf_dir/nginx/includes/ds-docservice.conf"
     ln -s /etc/nginx/conf.d/$domain.d/$app.conf "$conf_dir/nginx/includes/ds-docservice.conf"
-
-
 }
-
 
 compile() {
     ynh_nodejs_install
@@ -164,6 +164,7 @@ apply_system_config() {
     ynh_config_add --template="cron" --destination="/etc/cron.d/$app"
  
 }
+
 configure_redis() {
     redis_db=$(ynh_app_setting_get --app="$app" --key=redis_db)
     if [[ "$redis_db" == "" ]]; then
@@ -171,9 +172,11 @@ configure_redis() {
         ynh_app_setting_set --app="$app" --key=redis_db --value="$redis_db"
     fi
 }
+
 #=================================================
 # EXPERIMENTAL HELPERS
 #=================================================
+
 ynh_rabbitmq_setup_vhost() {
     ynh_hide_warnings rabbitmqctl delete_user "guest" || true
     rabbitmq_user=$app
@@ -188,10 +191,10 @@ ynh_rabbitmq_setup_vhost() {
     rabbitmqctl add_vhost "$rabbitmq_vhost" || true
     rabbitmqctl set_permissions -p "$rabbitmq_vhost" "$rabbitmq_user" ".*" ".*" ".*"
 }
+
 ynh_rabbitmq_remove_vhost() {
     rabbitmqctl delete_user "$rabbitmq_user"
     rabbitmqctl delete_vhost "$rabbitmq_vhost"
-    
 }
 
 ynh_hide_info() {
@@ -201,6 +204,3 @@ ynh_hide_info() {
     "$@"
     YNH_STDINFO=$OLD_YNH_STDINFO
 }
-#=================================================
-# FUTURE OFFICIAL HELPERS
-#=================================================

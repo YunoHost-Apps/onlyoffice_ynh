@@ -23,6 +23,7 @@ setup_sources
 #=================================================
 # COMPILE ONLYOFFICE
 #=================================================
+
 if [[ "$rebuild_without_limitations" == "1" ]] ; then
     ynh_script_progression "Compiling $app..."
 
