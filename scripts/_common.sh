@@ -5,7 +5,7 @@
 #=================================================
 
 conf_dir="$install_dir/config"
-nodejs_version="18"
+#REMOVEME? nodejs_version="18"
 
 #=================================================
 # PERSONAL HELPERS
@@ -114,7 +114,7 @@ setup_sources() {
 }
 
 compile() {
-    ynh_nodejs_install
+    #REMOVEME? ynh_nodejs_install
     pushd "$install_dir"
     ynh_hide_warnings npm install @yao-pkg/pkg
     popd
