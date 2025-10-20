@@ -7,7 +7,7 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "9.0.4~ynh6"
+version = "9.1.0~ynh1"
 
 maintainers = []
 
@@ -78,10 +78,10 @@ arbitrary-limitations.fr = "La version officielle d'OnlyOffice limite le nombre 
 [resources]
 
     [resources.sources.main]
-    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.4/onlyoffice-documentserver_amd64.deb"
-    amd64.sha256 = "57368d014a7d0ed2c69392591f44f30f102a679bfcb921b9d9b820000963dc7a"
-    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.4/onlyoffice-documentserver_arm64.deb"
-    arm64.sha256 = "a0ce8674ccaff3dea996c9f9517675a55c1699c6e850cf3943fee74e2d3a07eb"
+    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.1.0/onlyoffice-documentserver_amd64.deb"
+    amd64.sha256 = "32652ae9d578fdc0de782d142f6e3453ec9872a06c8b5bea0740703ca5a80dd7"
+    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.1.0/onlyoffice-documentserver_arm64.deb"
+    arm64.sha256 = "41e7897bda6fc2380bac846fd98b82e421361077af19f2cfddcf9e23a47cd08d"
     extract = false
     rename = "onlyoffice-documentserver.deb"
     autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
