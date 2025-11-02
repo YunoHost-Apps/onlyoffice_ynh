@@ -14,47 +14,50 @@ index 4fc0d807..cd504b73 100644
  
  exports.AVS_OFFICESTUDIO_FILE_UNKNOWN =  0x0000;
 diff --git a/Common/sources/license.js b/Common/sources/license.js
-index d43ee210..c0f63d4b 100644
---- a/Common/sources/license.js
-+++ b/Common/sources/license.js
-@@ -44,22 +44,23 @@ exports.readLicense = async function () {
- 	return [{
- 		count: 1,
- 		type: c_LR.Success,
--		packageType: constants.PACKAGE_TYPE_OS,
-+		packageType: constants.PACKAGE_TYPE_I,
- 		mode: constants.LICENSE_MODE.None,
--		branding: false,
-+		branding: true,
- 		connections: constants.LICENSE_CONNECTIONS,
- 		connectionsView: constants.LICENSE_CONNECTIONS,
--		customization: false,
--		advancedApi: false,
--		usersCount: 0,
--		usersViewCount: 0,
-+		customization: true,
-+		advancedApi: true,
-+		usersCount: constants.LICENSE_CONNECTIONS,
-+		usersViewCount: constants.LICENSE_CONNECTIONS,
- 		usersExpire: constants.LICENSE_EXPIRE_USERS_ONE_DAY,
--		hasLicense: false,
-+		hasLicense: true,
-+		plugins: true,
- 		buildDate: oBuildDate,
- 		startDate: startDate,
--		endDate: null,
-+		endDate: new Date("2099-01-01T23:59:59.000Z"),
- 		customerId: "",
--		alias: "",
-+		alias: "community",
- 		multitenancy: false
- 	}, null];
+index d43ee210..c0f63d4b 100644                                    
+--- a/Common/sources/license.js     
++++ b/Common/sources/license.js   
+@@ -45,22 +45,23 @@
+     {
+       count: 1,
+       type: c_LR.Success,
+-      packageType: constants.PACKAGE_TYPE_OS,
++      packageType: constants.PACKAGE_TYPE_I,
+       mode: constants.LICENSE_MODE.None,
+-      branding: false,
++      branding: true,
+       connections: constants.LICENSE_CONNECTIONS,
+       connectionsView: constants.LICENSE_CONNECTIONS,
+-      customization: false,
+-      advancedApi: false,
+-      usersCount: 0,
+-      usersViewCount: 0,
++      customization: true,
++      advancedApi: true,
++      usersCount: constants.LICENSE_CONNECTIONS,
++      usersViewCount: constants.LICENSE_CONNECTIONS,
+       usersExpire: constants.LICENSE_EXPIRE_USERS_ONE_DAY,
+-      hasLicense: false,
++      hasLicense: true,
++      plugins: true,
+       buildDate: oBuildDate,
+       startDate,
+-      endDate: null,
++      endDate: new Date("2099-01-01T23:59:59.000Z"),
+       customerId: '',
+-      alias: '',
++      alias: 'community',
+       multitenancy: false
+     },
+     null
+  ];
  };
+
 diff --git a/Common/sources/tenantManager.js b/Common/sources/tenantManager.js
 index 703c81d2..898296be 100644
 --- a/Common/sources/tenantManager.js
 +++ b/Common/sources/tenantManager.js
-@@ -261,10 +261,11 @@ async function getTenantLicense(ctx) {
+@@ -304,10 +304,11 @@ async function getTenantLicense(ctx) {
        }
        res = licenseTupleTenant;
      } else {
@@ -110,3 +113,6 @@ index e8e1308f..23f7e2ef 100644
  
  build-date: $(GRUNT_FILES)
  	sed "s|\(const buildVersion = \).*|\1'${PRODUCT_VERSION}';|" -i $(COMMON_DEFINES_JS)
+
+
+
