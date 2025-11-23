@@ -13,17 +13,17 @@ nodejs_version="18"
 init_settings() {
     ynh_app_setting_set_default --key=jwt_secret --value="$(ynh_string_random --length=32)"
     ynh_app_setting_set_default --key=secure_link_secret --value="$(ynh_string_random)"
-    ynh_app_setting_set_default --key=autoassembly_enable --value="true"
+  #  ynh_app_setting_set_default --key=autoassembly_enable --value="true"
     ynh_app_setting_set_default --key=autoassembly_step --value="1m"
     ynh_app_setting_set_default --key=autoassembly_interval --value="3m"
 
     # ynh_add_config doesn't transform 0 into false and 1 into true...
-    ynh_app_setting_set_default --key=reject_unauthorized --value="true"
-    if [[ "$reject_unauthorized" == "0" ]]; then
-        reject_unauthorized=false
-    elif [[ "$reject_unauthorized" == "1" ]]; then
-        reject_unauthorized=true
-    fi
+  #  ynh_app_setting_set_default --key=reject_unauthorized --value="true"
+  #  if [[ "$reject_unauthorized" == "0" ]]; then
+  #      reject_unauthorized=false
+  #  elif [[ "$reject_unauthorized" == "1" ]]; then
+  #      reject_unauthorized=true
+  #  fi
     reject_unauthorized=${reject_unauthorized,,}
     # if official_build was set previously, invert the value
     official_build=${official_build:-0}
