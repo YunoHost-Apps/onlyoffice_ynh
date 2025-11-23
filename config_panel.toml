@@ -2,7 +2,7 @@ version = "1.0"
 [main]
 [main.integration]
 name.en = "Integration"
-services = ["nginx", "__APP__-docservice"]
+services = ["nginx", "__APP__-docservice", "__APP__-converter"]
 [main.integration.allowed_urls]
 ask.en = "List of web addresses authorized to integrate the OnlyOffice editor separated by space"
 ask.fr = "Liste des adresses web autorisées à intégrer l'éditeur OnlyOffice séparées par un espace"
