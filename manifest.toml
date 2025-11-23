@@ -61,9 +61,7 @@ arbitrary-limitations.fr = "La version officielle d'OnlyOffice limite le nombre 
     ask.en = "Prevent integration with an app that is not authenticated by a valid certificate (example: Let's Encrypt)"
     ask.fr = "Empécher l'intégration avec une app non authentifiée par un certificat valide (exemple : Let's Encrypt)"
     type = "boolean"
-    default = true
-    yes = true
-    no = false
+    default = 1
     help.en = "Disabling this option allows OnlyOffice to accept unauthenticated HTTPS requests, which can be useful if your server is not exposed to the internet and cannot obtain a Let's Encrypt certificate."
     help.fr = "Désactiver cette option permet à OnlyOffice d'accepter les requêtes HTTPS non authentifiées, ce qui peut être utile si votre serveur n'est pas exposé sur internet et ne peut pas obtenir de certificat Let's Encrypt."
 
