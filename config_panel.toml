@@ -14,8 +14,6 @@ example = "https://cloud.yunohost.domain/nextcloud https://example.com"
 ask.en = "Prevent unauthenticated requests"
 ask.fr = "Empécher les requêtes non authentifiées"
 type = "boolean"
-yes = true
-no = false
 help.en = "In the general case you should keep this option activated. Disabling this option allows OnlyOffice to accept unauthenticated HTTPS requests, which can be useful if your server is not exposed to the internet and cannot obtain a Let's Encrypt certificate."
 help.fr = "En général, vous devriez laisser cette option activée. Désactiver cette option permet à OnlyOffice d'accepter les requêtes HTTPS non authentifiées, ce qui peut être utile si votre serveur n'est pas exposé sur internet et ne peut pas obtenir de certificat Let's Encrypt."
 bind = "rejectUnauthorized:__INSTALL_DIR__/config/local.json"
@@ -26,8 +24,6 @@ services = ["__APP__-docservice"]
 [main.auto_assembly.autoassembly_enable]
 ask.en = "Enable automatic forcesaving"
 type = "boolean"
-yes = true
-no = false
 bind = "autoAssembly>enable:__INSTALL_DIR__/config/local.json"
 help.en = "The automatic forcesaving will only be initiated after some changes were made to the document. The empty versions will not be forcesaved automatically. Additionally, file versioning needs to be implemented on the document management system's side for this parameter to work."
 
