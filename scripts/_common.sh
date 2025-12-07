@@ -24,7 +24,7 @@ init_settings() {
   #  elif [[ "$reject_unauthorized" == "1" ]]; then
   #      reject_unauthorized=true
   #  fi
-  #  reject_unauthorized=${reject_unauthorized}
+    reject_unauthorized=${reject_unauthorized}
     # if official_build was set previously, invert the value
     official_build=${official_build:-0}
     ynh_app_setting_set_default --key=rebuild_without_limitations --value="$((1-official_build))" # true
