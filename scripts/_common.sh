@@ -13,7 +13,7 @@ nodejs_version="18"
 init_settings() {
     ynh_app_setting_set_default --key=jwt_secret --value="$(ynh_string_random --length=32)"
     ynh_app_setting_set_default --key=secure_link_secret --value="$(ynh_string_random)"
-  #  ynh_app_setting_set_default --key=autoassembly_enable --value="true"
+    ynh_app_setting_set_default --key=autoassembly_enable --value="true"
     ynh_app_setting_set_default --key=autoassembly_step --value="1m"
     ynh_app_setting_set_default --key=autoassembly_interval --value="3m"
 
