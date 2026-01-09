@@ -29,6 +29,10 @@
             "lazyConnect": true
         }
       },
+      "request-filtering-agent" : {
+        "allowPrivateIPAddress": true,
+        "allowMetaIPAddress": false
+      },
       "token": {
         "enable": {
           "request": {
@@ -64,7 +68,8 @@
         "step": "__AUTOASSEMBLY_STEP__"
       },
       "requestDefaults": {
-        "rejectUnauthorized": __REJECT_UNAUTHORIZED__
+        "rejectUnauthorized": __REJECT_UNAUTHORIZED__,
+        "family": 4
       }
     }
   },

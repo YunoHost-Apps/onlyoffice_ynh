@@ -7,7 +7,7 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "9.0.4~ynh4"
+version = "9.2.1~ynh1"
 
 maintainers = []
 
@@ -19,7 +19,7 @@ code = "https://github.com/ONLYOFFICE/DocumentServer"
 cpe = "cpe:2.3:a:onlyoffice:document_server"
 
 [integration]
-yunohost = ">= 12.1.17"
+yunohost = ">= 12.1.32"
 helpers_version = "2.1"
 architectures = ["amd64", "arm64"]
 multi_instance = true
@@ -32,7 +32,8 @@ ram.build = "800M"
 ram.runtime = "800M"
 
 [antifeatures]
-arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of user and opened documents. This package recompile this part according to AGPLv3 licence to remove this artificial limitations."
+arbitrary-limitations.en = "The official OnlyOffice build limits the number of users and open documents. This package recompiles this part according to the AGPLv3 licence, removing these artificial limitations."
+arbitrary-limitations.fr = "La version officielle d'OnlyOffice limite le nombre d'utilisateurs et de documents ouverts. Ce paquet recompile cette partie conformément à la licence AGPLv3, supprimant ainsi ces limitations artificielles."
 
 [install]
     [install.domain]
@@ -58,27 +59,29 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     
     [install.reject_unauthorized]
     ask.en = "Prevent integration with an app that is not authenticated by a valid certificate (example: Let's Encrypt)"
-    ask.fr = "Empécher l'intégration avec une app non authentifiée par un certificat valide (exemple: Let's Encrypt)"
+    ask.fr = "Empécher l'intégration avec une app non authentifiée par un certificat valide (exemple : Let's Encrypt)"
     type = "boolean"
     default = true
+    yes = true
+    no = false
     help.en = "Disabling this option allows OnlyOffice to accept unauthenticated HTTPS requests, which can be useful if your server is not exposed to the internet and cannot obtain a Let's Encrypt certificate."
     help.fr = "Désactiver cette option permet à OnlyOffice d'accepter les requêtes HTTPS non authentifiées, ce qui peut être utile si votre serveur n'est pas exposé sur internet et ne peut pas obtenir de certificat Let's Encrypt."
     
-    [install.official_build]
-    ask.en = "Don't remove limitations and keep official OnlyOffice binaries"
-    ask.fr = "Ne pas supprimer les limitations et garder les binaires officiels d'OnlyOffice"
+    [install.rebuild_without_limitations]
+    ask.en = "Remove usage limitations by replacing official OnlyOffice binaries"
+    ask.fr = "Supprimer les limites d'usage en remplaçant les binaires officiels d'OnlyOffice"
     type = "boolean"
-    default = 0
-    help.en = "The install and upgrade will be faster, but until you pay a license, you will be limited in number of users and opened documents" 
-    help.fr = "L'installation et la mise à jour seront plus rapides, mais à moins de payer une licence, vous serez limité en nombre de documents et du'ilisateurices simultanées" 
+    default = 1
+    help.en = "Recompile binaries in order to remove usage limitations (number of users, opened documents, smartphone usage). Note: the install and upgrade will be slower."
+    help.fr = "Recompile les binaires afin de supprimer les limitations d'utilisation (nombre d'utilisateurs, documents ouverts, utilisation sur smartphone)."
 
 [resources]
 
     [resources.sources.main]
-    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.4/onlyoffice-documentserver_amd64.deb"
-    amd64.sha256 = "57368d014a7d0ed2c69392591f44f30f102a679bfcb921b9d9b820000963dc7a"
-    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.0.4/onlyoffice-documentserver_arm64.deb"
-    arm64.sha256 = "a0ce8674ccaff3dea996c9f9517675a55c1699c6e850cf3943fee74e2d3a07eb"
+    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.2.1/onlyoffice-documentserver_amd64.deb"
+    amd64.sha256 = "fc7ff1d3af4903d32dadf20ba2ce4a453d0828e1ca3ae4bb9c8d59b298b3bef0"
+    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.2.1/onlyoffice-documentserver_arm64.deb"
+    arm64.sha256 = "d6148647af2fd9acd14f63ecb615ca8c47a419e92002fd051444ab5caeaf1acd"
     extract = false
     rename = "onlyoffice-documentserver.deb"
     autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
@@ -86,10 +89,12 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
     autoupdate.strategy = "latest_github_release"
     
     [resources.sources.src]
-    url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.0.4.54.tar.gz"
-    sha256 = "08ea459fe5946f4bb1e83e5e557cdeb7bf8f0ab6d6095e3fc284914e63652deb"
-    autoupdate.strategy = "latest_github_release"
-    autoupdate.upstream = "https://github.com/ONLYOFFICE/server"
+    url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.1.0.183.tar.gz"
+    sha256 = "ca41f0e4b05679c813ce840c96553e752fa44f9ec04746fb3ef1e2da239b2945"
+    # Autoupdater disabled because keeps failing everyday, because no tag found after sanity filtering
+    # autoupdate.strategy = "latest_github_tag"
+    # autoupdate.version_regex = "^v9.*$"
+    # autoupdate.upstream = "https://github.com/ONLYOFFICE/server"
     
 #    [resources.sources.fonts]
 #    url = "https://forge.liiib.re/indiehost/libre.sh/fonts/-/archive/4f5ad93ee65a862bddfc70eb48ac98e531968da7/fonts-4f5ad93ee65a862bddfc70eb48ac98e531968da7.tar.gz"
@@ -119,6 +124,7 @@ arbitrary-limitations.en = "Official build of OnlyOffice limitate the number of 
         "redis",
         "redis-tools",
         "libcurl4-openssl-dev",
+        "binutils",
         #"ttf-mscorefonts-installer",
     ]
 

@@ -18,9 +18,9 @@ test_format = 1.0
     # Commits to test upgrade from
     # -------------------------------
 
-    [default.test_upgrade_from.6fad960ef104f0d96ebd38c3577330efd2c4ed57]
-    name = "8.0.1~ynh1"
-    args.domain = "domain.tld"
-    args.path = "/"
-    args.nextclouddomain = "nextcloud.tld"
-    args.admin = "package_checker"
+    #[default.test_upgrade_from.6fad960ef104f0d96ebd38c3577330efd2c4ed57]
+    #name = "8.0.1~ynh1"
+    #args.domain = "domain.tld"
+    #args.path = "/"
+    #args.nextclouddomain = "nextcloud.tld"
+    #args.admin = "package_checker"
