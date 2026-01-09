@@ -7,7 +7,7 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "9.2.1~ynh1"
+version = "9.2.1~ynh2"
 
 maintainers = []
 
@@ -131,5 +131,5 @@ arbitrary-limitations.fr = "La version officielle d'OnlyOffice limite le nombre 
     [resources.database]
     type = "postgresql"
 
-#    [resources.nodejs]
-#    version = "18"
+    [resources.nodejs]
+    version = "18"
