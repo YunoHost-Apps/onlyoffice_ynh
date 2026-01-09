@@ -47,8 +47,6 @@ ynh_redis_remove_db $redis_db
 # Remove a directory securely
 ynh_safe_rm "$install_dir"
 
-#REMOVEME? ynh_nodejs_remove
-
 #=================================================
 # END OF SCRIPT
 #=================================================
