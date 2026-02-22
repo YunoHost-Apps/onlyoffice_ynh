@@ -21,7 +21,6 @@ Create and edit documents collaboratively
 
 
 ## Screenshots
-![Screenshot of OnlyOffice](./doc/screenshots/01-presentation.jpg)
 ![Screenshot of OnlyOffice](./doc/screenshots/02-document-short.png)
 
 ## 📦 Developer info
