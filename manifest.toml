@@ -7,7 +7,7 @@ name = "OnlyOffice"
 description.en = "Create and edit documents collaboratively"
 description.fr = "Créez et éditer des documents collaborativement"
 
-version = "9.2.1~ynh2"
+version = "9.3.0~ynh1"
 
 maintainers = []
 
@@ -78,10 +78,10 @@ arbitrary-limitations.fr = "La version officielle d'OnlyOffice limite le nombre 
 [resources]
 
     [resources.sources.main]
-    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.2.1/onlyoffice-documentserver_amd64.deb"
-    amd64.sha256 = "fc7ff1d3af4903d32dadf20ba2ce4a453d0828e1ca3ae4bb9c8d59b298b3bef0"
-    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.2.1/onlyoffice-documentserver_arm64.deb"
-    arm64.sha256 = "d6148647af2fd9acd14f63ecb615ca8c47a419e92002fd051444ab5caeaf1acd"
+    amd64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.3.0/onlyoffice-documentserver_amd64.deb"
+    amd64.sha256 = "0569121d53985cc74de9f4fa6e61a45a09508c624e6b8325cc5ebe03cfe2d52e"
+    arm64.url = "https://github.com/ONLYOFFICE/DocumentServer/releases/download/v9.3.0/onlyoffice-documentserver_arm64.deb"
+    arm64.sha256 = "413b059e5c76e41df24523a71af20ac6a0e50f4377e38ae8bdc943557288a14e"
     extract = false
     rename = "onlyoffice-documentserver.deb"
     autoupdate.asset.amd64 = "^onlyoffice-documentserver_amd64.deb$"
@@ -89,8 +89,8 @@ arbitrary-limitations.fr = "La version officielle d'OnlyOffice limite le nombre 
     autoupdate.strategy = "latest_github_release"
     
     [resources.sources.src]
-    url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.1.0.183.tar.gz"
-    sha256 = "ca41f0e4b05679c813ce840c96553e752fa44f9ec04746fb3ef1e2da239b2945"
+    url = "https://github.com/ONLYOFFICE/server/archive/refs/tags/v9.3.0.133.tar.gz"
+    sha256 = "a3d1c84624260c60334e9364b559c18cc1435fbc4ff891f81486f3bc5e571d00"
     # Autoupdater disabled because keeps failing everyday, because no tag found after sanity filtering
     # autoupdate.strategy = "latest_github_tag"
     # autoupdate.version_regex = "^v9.*$"
