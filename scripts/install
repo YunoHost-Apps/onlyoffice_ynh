@@ -53,6 +53,21 @@ ynh_config_add --template="local.json" --destination="$conf_dir/local.json"
 chmod 400 "$conf_dir/local.json"
 chown "$app:$app" "$conf_dir/local.json"
 
+pushd "$install_dir"
+openssl req -x509 -newkey rsa:2048 \
+-keyout onlyoffice.key \
+-out onlyoffice.crt \
+-days 3650 \
+-nodes \
+-subj "/C=/ST=/L=/O=/OU=/CN=onlyoffice"
+openssl pkcs12 -export \
+-out onlyoffice.pfx \
+-inkey onlyoffice.key \
+-in onlyoffice.crt \
+-password pass:
+mv onlyoffice.pfx $install_dir/documentserver/server/FileConverter/
+popd 
+
 #=================================================
 # SETUP DATABASE
 #=================================================
