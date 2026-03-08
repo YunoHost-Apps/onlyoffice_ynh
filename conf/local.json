@@ -80,5 +80,13 @@
   },
   "rabbitmq": {
     "url": "amqp://__RABBITMQ_USER__:__RABBITMQ_PWD__@localhost/__RABBITMQ_VHOST__"
+  },
+  "FileConverter": {
+      "converter": {
+          "signing": {
+            "keyStorePath": "../documentserver/server/FileConverter/onlyoffice.pfx",
+            "keyStorePassword": ""
+          }
+      }
   }
 }
