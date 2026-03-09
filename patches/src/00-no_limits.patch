@@ -2,7 +2,7 @@ diff --git a/Common/sources/constants.js b/Common/sources/constants.js
 index 4fc0d807..cd504b73 100644
 --- a/Common/sources/constants.js
 +++ b/Common/sources/constants.js
-@@ -87,8 +87,8 @@ exports.LICENSE_RESULT = {
+@@ -88,8 +88,8 @@ exports.LICENSE_RESULT = {
    NotBefore: 16
  };
  
@@ -77,7 +77,7 @@ diff --git a/DocService/sources/server.js b/DocService/sources/server.js
 index 150dca50..3b40b35e 100644
 --- a/DocService/sources/server.js
 +++ b/DocService/sources/server.js
-@@ -124,8 +124,6 @@ if (!(cfgTokenEnableBrowser && cfgTokenEnableRequestInbox && cfgTokenEnableReque
+@@ -142,8 +142,6 @@ if (!(cfgTokenEnableBrowser && cfgTokenEnableRequestInbox && cfgTokenEnableReque
  }
  
  updateLicense();
@@ -90,7 +90,7 @@ diff --git a/FileConverter/sources/convertermaster.js b/FileConverter/sources/co
 index 2209e8c9..37e71847 100644
 --- a/FileConverter/sources/convertermaster.js
 +++ b/FileConverter/sources/convertermaster.js
-@@ -89,9 +89,6 @@ if (cluster.isMaster) {
+@@ -90,9 +90,6 @@ if (cluster.isMaster) {
    });
  
    updateLicense();
@@ -113,6 +113,9 @@ index e8e1308f..23f7e2ef 100644
  
  build-date: $(GRUNT_FILES)
  	sed "s|\(const buildVersion = \).*|\1'${PRODUCT_VERSION}';|" -i $(COMMON_DEFINES_JS)
+
+
+
 
 
 
