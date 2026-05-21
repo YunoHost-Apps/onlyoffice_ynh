@@ -23,11 +23,11 @@ set__allowed_urls() {
 }
 
 # FIXME: this is a yolo fix to remove after merging https://github.com/YunoHost/yunohost/pull/2186
-ynh_app_config_apply() {
-    _ynh_app_config_apply
-    ynh_replace --match='"[Ff]alse"' --replace="false" --file="$install_dir/config/local.json" 
-    ynh_replace --match='"[Tt]rue"' --replace="true" --file="$install_dir/config/local.json" 
-    ynh_store_file_checksum "$install_dir/config/local.json"
-}
+#ynh_app_config_apply() {
+#    _ynh_app_config_apply
+#    ynh_replace --match='"[Ff]alse"' --replace="false" --file="$install_dir/config/local.json" 
+#    ynh_replace --match='"[Tt]rue"' --replace="true" --file="$install_dir/config/local.json" 
+#    ynh_store_file_checksum "$install_dir/config/local.json"
+#}
 #=================================================
 ynh_app_config_run "$1"
