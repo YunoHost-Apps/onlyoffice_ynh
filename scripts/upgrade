@@ -48,7 +48,7 @@ fi
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression "Upgrading OnlyOffice..."
+ynh_script_progression "Upgrading $app..."
 
 setup_sources
 
@@ -72,7 +72,7 @@ ynh_rabbitmq_setup_vhost
 #=================================================
 # SETUP REDIS DB
 #=================================================
-ynh_script_progression "Configuring redis db..."
+ynh_script_progression "Configuring Redis db..."
 
 configure_redis
 
@@ -86,18 +86,18 @@ chmod 400 "$conf_dir/local.json"
 chown "$app:$app" "$conf_dir/local.json"
 
 pushd "$install_dir"
-openssl req -x509 -newkey rsa:2048 \
--keyout onlyoffice.key \
--out onlyoffice.crt \
--days 3650 \
--nodes \
--subj "/C=/ST=/L=/O=/OU=/CN=onlyoffice"
-openssl pkcs12 -export \
--out onlyoffice.pfx \
--inkey onlyoffice.key \
--in onlyoffice.crt \
--password pass:
-mv onlyoffice.pfx $install_dir/documentserver/server/FileConverter/
+    ynh_hide_warnings openssl req -x509 -newkey rsa:2048 \
+    -keyout onlyoffice.key \
+    -out onlyoffice.crt \
+    -days 3650 \
+    -nodes \
+    -subj "/C=/ST=/L=/O=/OU=/CN=onlyoffice"
+    openssl pkcs12 -export \
+    -out onlyoffice.pfx \
+    -inkey onlyoffice.key \
+    -in onlyoffice.crt \
+    -password pass:
+    mv onlyoffice.pfx $install_dir/documentserver/server/FileConverter/
 popd 
 
 #=================================================

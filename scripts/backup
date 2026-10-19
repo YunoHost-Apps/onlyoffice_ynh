@@ -9,11 +9,6 @@ source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# DECLARE DATA AND CONF FILES TO BACKUP
-#=================================================
-ynh_print_info "Declaring files to be backed up..."
-
-#=================================================
 # BACKUP THE APP MAIN DIR
 #=================================================
 

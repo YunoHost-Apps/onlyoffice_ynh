@@ -26,21 +26,20 @@ setup_sources
 
 if [[ "$rebuild_without_limitations" == "1" ]] ; then
     ynh_script_progression "Compiling $app..."
-
     compile
 fi
 
 #=================================================
 # SETUP RABBIT MQ VHOST
 #=================================================
-ynh_script_progression "Configuring rabbitmq vhost $app..."
+ynh_script_progression "Configuring Rabbitmq vhost $app..."
 
 ynh_rabbitmq_setup_vhost
 
 #=================================================
 # SETUP REDIS DB
 #=================================================
-ynh_script_progression "Configuring redis db..."
+ynh_script_progression "Configuring Redis db..."
 
 configure_redis
 
@@ -54,7 +53,7 @@ chmod 400 "$conf_dir/local.json"
 chown "$app:$app" "$conf_dir/local.json"
 
 pushd "$install_dir"
-    openssl req -x509 -newkey rsa:2048 \
+    ynh_hide_warnings openssl req -x509 -newkey rsa:2048 \
     -keyout onlyoffice.key \
     -out onlyoffice.crt \
     -days 3650 \
