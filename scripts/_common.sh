@@ -9,6 +9,7 @@ conf_dir="$install_dir/config"
 #=================================================
 # PERSONAL HELPERS
 #=================================================
+
 init_settings() {
     ynh_app_setting_set_default --key=jwt_secret --value="$(ynh_string_random --length=32)"
     ynh_app_setting_set_default --key=secure_link_secret --value="$(ynh_string_random)"
