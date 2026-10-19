@@ -21,14 +21,14 @@ OnlyOffice should now work with your Nextcloud!
 Add the following config option to `seahub_settings.py`.
 ```
 # Enable OnlyOffice
-ENABLE_ONLYOFFICE = True
-VERIFY_ONLYOFFICE_CERTIFICATE = True
+ENABLE_ONLYOFFICE = true
+VERIFY_ONLYOFFICE_CERTIFICATE = true
 ONLYOFFICE_APIJS_URL = 'https://__DOMAIN____PATH__/web-apps/apps/api/documents/api.js'
 ONLYOFFICE_FILE_EXTENSION = ('doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'odt', 'fodt', 'odp', 'fodp', 'ods', 'fods')
 ONLYOFFICE_EDIT_FILE_EXTENSION = ('docx', 'pptx', 'xlsx')
 
 # Enable force save to let user save file when he/she presses the save button on the OnlyOffice file edit page.
-ONLYOFFICE_FORCE_SAVE = True
+ONLYOFFICE_FORCE_SAVE = true
 
 # if JWT enabled
 ONLYOFFICE_JWT_SECRET = '__JWT_SECRET__'
