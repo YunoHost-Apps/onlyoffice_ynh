@@ -132,4 +132,4 @@ arbitrary-limitations.fr = "La version officielle d'OnlyOffice limite le nombre 
     type = "postgresql"
 
     [resources.nodejs]
-    version = "18"
+    version = "24"
